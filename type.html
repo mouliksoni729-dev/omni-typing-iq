@@ -6,10 +6,14 @@
   <title>OmniType & JARVIS AGI</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    /* THEMES */
+    /* 7 UNIQUE THEMES */
     :root[data-theme="stark"] { --bg: #050a0f; --panel: rgba(10, 15, 25, 0.8); --accent: #00e5ff; --accent-alt: #0077ff; --text: #e0ffff; --muted: #005577; --correct: #00ff88; --wrong: #ff003c; --font: 'Rajdhani', sans-serif; }
     :root[data-theme="hacker"] { --bg: #000000; --panel: rgba(10, 0, 0, 0.9); --accent: #ff003c; --accent-alt: #880000; --text: #ff3333; --muted: #440000; --correct: #00ff00; --wrong: #ffcc00; --font: 'Share Tech Mono', monospace; }
     :root[data-theme="matrix"] { --bg: #020502; --panel: rgba(5, 15, 5, 0.85); --accent: #00ff41; --accent-alt: #008f11; --text: #00ff41; --muted: #003b00; --correct: #ffffff; --wrong: #ff0000; --font: 'Share Tech Mono', monospace; }
+    :root[data-theme="ironman"] { --bg: #110000; --panel: rgba(30, 0, 0, 0.85); --accent: #ffcc00; --accent-alt: #ff0000; --text: #ffdd66; --muted: #880000; --correct: #00ff88; --wrong: #ff003c; --font: 'Orbitron', sans-serif; }
+    :root[data-theme="cyberpunk"] { --bg: #0d0e15; --panel: rgba(22, 25, 37, 0.85); --accent: #00f0ff; --accent-alt: #ff007f; --text: #e0e6ed; --muted: #4a5568; --correct: #00ff88; --wrong: #ff3366; --font: 'Rajdhani', sans-serif; }
+    :root[data-theme="synthwave"] { --bg: #1a0933; --panel: rgba(45, 17, 77, 0.85); --accent: #f72585; --accent-alt: #7209b7; --text: #4cc9f0; --muted: #3f37c9; --correct: #4361ee; --wrong: #f72585; --font: 'Rajdhani', sans-serif; }
+    :root[data-theme="dark"] { --bg: #121212; --panel: rgba(30, 30, 30, 0.85); --accent: #bb86fc; --accent-alt: #03dac6; --text: #e1e1e1; --muted: #555555; --correct: #4caf50; --wrong: #f44336; --font: system-ui, sans-serif; }
 
     * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, border-color 0.3s; }
     body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
@@ -145,7 +149,21 @@
       <section id="iq-tab" class="section-page">
         <div class="card">
           <h2 style="color:var(--accent); margin-bottom:1rem;">Advanced Cognitive Evaluation</h2>
-          <button class="action-btn" onclick="renderIQQuestions()" style="margin-bottom:1.5rem;">Load / Reset Questions</button>
+          
+          <div class="controls-grid" style="margin-bottom:1rem;">
+            <div>
+              <label>Number of Questions</label>
+              <select id="iq-q-count" onchange="generateDynamicIQTest()">
+                <option value="3">3 Questions</option>
+                <option value="5" selected>5 Questions</option>
+                <option value="10">10 Questions</option>
+              </select>
+            </div>
+            <div>
+              <label>&nbsp;</label>
+              <button class="action-btn" onclick="generateDynamicIQTest()">Load / Reset Questions</button>
+            </div>
+          </div>
           
           <div id="iq-questions-container"></div>
           <hr style="border-color:var(--muted); margin: 1.5rem 0;">
@@ -158,12 +176,13 @@
 
           <button class="action-btn" style="margin-top:1rem;" onclick="submitIQAndGenerateCertificate()">Calculate IQ & Render Degree</button>
           
+          <div id="iq-result" style="margin-top:1rem; font-size:1.2rem; font-weight:bold; color:var(--accent); text-align:center;"></div>
           <canvas id="certificate-canvas" width="800" height="600"></canvas>
           <button id="download-cert-btn" class="action-btn" style="display:none; margin-top:1rem; background:var(--correct);" onclick="downloadCertificate()">📥 Download Authentic Certificate</button>
         </div>
       </section>
 
-      <!-- 3. CODE LAB (NEW) -->
+      <!-- 3. CODE LAB -->
       <section id="codelab-tab" class="section-page">
         <div class="card">
           <h2 style="color:var(--accent); margin-bottom:1rem;">💻 Dev Sandbox (HTML/JS/CSS)</h2>
@@ -173,7 +192,7 @@
         </div>
       </section>
 
-      <!-- 4. ZEN MODE (NEW) -->
+      <!-- 4. ZEN MODE -->
       <section id="zen-tab" class="section-page">
         <div class="card" style="text-align:center;">
           <h2 style="color:var(--accent);">🧘 Matrix Zen Mode</h2>
@@ -189,14 +208,18 @@
           <h2 style="color:var(--accent); margin-bottom:1rem;">⚙️ Configuration & Memory Vault</h2>
           
           <div class="builder-form">
-            <label>UI Theme</label>
+            <label>UI Theme (7 Themes Available)</label>
             <select id="theme-selector" onchange="changeTheme(this.value)" style="margin-bottom:1rem;">
               <option value="stark" selected>Stark Glassmorphism</option>
               <option value="hacker">Crimson Hacker</option>
               <option value="matrix">Matrix Green</option>
+              <option value="ironman">Iron Man Gold</option>
+              <option value="cyberpunk">Cyberpunk Neon</option>
+              <option value="synthwave">Synthwave Violet</option>
+              <option value="dark">Dark Minimal</option>
             </select>
 
-            <label>Gemini API Key (Required for JARVIS Brain)</label>
+            <label>Gemini API Key (Required for JARVIS Brain & Dynamic IQ)</label>
             <div style="display:flex; gap:10px; margin-bottom:1rem;">
               <input type="password" id="gemini-api-key" placeholder="Paste Gemini API Key here...">
               <button class="action-btn" style="width:auto;" onclick="saveAPIKey()">Save</button>
@@ -268,7 +291,7 @@
       document.getElementById(tabId + '-tab').classList.add('active');
       document.querySelector(`nav button[onclick="switchTab('${tabId}')"]`).classList.add('active');
       if(tabId === 'zen') initMatrix();
-      if(tabId === 'iq') renderIQQuestions();
+      if(tabId === 'iq' && iqData.length === 0) generateDynamicIQTest();
     }
 
     function changeTheme(theme) {
@@ -360,15 +383,22 @@
     }
 
     /* =======================================================
-       TTS VOICE ENGINE (FIXED CHUNKING FOR LONG HINDI TEXT)
+       TTS VOICE ENGINE (ENHANCED PRONUNCIATION & CLEANING)
        ======================================================= */
     let speechQueue = [];
-    let isSpeakingChunk = false;
+
+    function sanitizeForSpeech(text) {
+      return text
+        .replace(/[*_~#`@$%^&()=+[\]{}|\\<>/]/g, ' ') // Clean symbols/markdown
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
 
     function speakJARVIS(text) {
       if(!text) return;
       window.speechSynthesis.cancel();
-      speechQueue = text.match(/[^.!?]+[.!?]+/g) || [text]; // Split into sentences
+      let cleanText = sanitizeForSpeech(text);
+      speechQueue = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText]; 
       speakNextChunk();
     }
 
@@ -383,12 +413,15 @@
 
       let u = new SpeechSynthesisUtterance(chunk);
       let voices = window.speechSynthesis.getVoices();
-      // Target Indian Hindi/English Voice
-      let hiVoice = voices.find(v => v.lang === 'hi-IN') || voices.find(v => v.lang.includes('hi'));
+      
+      // Preferred Indian voices for clean Hinglish pronunciation
+      let hiVoice = voices.find(v => v.lang === 'hi-IN') || 
+                    voices.find(v => v.lang === 'en-IN') || 
+                    voices.find(v => v.lang.includes('hi') || v.lang.includes('IN'));
       if(hiVoice) u.voice = hiVoice;
       
-      u.rate = 1.15; // Fast and snappy
-      u.pitch = 0.9;
+      u.rate = 1.0;  // Standard natural speed to prevent stuttering
+      u.pitch = 1.0;
       
       u.onstart = () => { document.getElementById('jarvis-orb').classList.add('speaking'); };
       u.onend = () => { speakNextChunk(); };
@@ -404,7 +437,7 @@
     }
 
     /* =======================================================
-       GEMINI AGI ENGINE (PRIVACY FOCUSED PUBLIC PROMPT)
+       GEMINI AGI ENGINE (EXACT UNTOUCHED SYSTEM PROMPT & MODEL)
        ======================================================= */
     const PUBLIC_PERSONA = `You are jarvis, an advanced AI assistant. 
     Crucial Context: You were created by the genius developer, Moulik Soni. You are currently interacting with a PUBLIC USER on the web.
@@ -436,7 +469,7 @@
         memoryVault.userName = n;
         localStorage.setItem('JARVIS_MEMORY', JSON.stringify(memoryVault));
         updateMemoryDisplay();
-        speakJARVIS(`Got it! I'll remember your name is ${n}.`);
+        speakJARVIS(`Got it! I will remember your name is ${n}.`);
         return;
       }
 
@@ -496,14 +529,68 @@
     }
 
     /* =======================================================
-       NATIVE IQ TEST & AUTHENTIC CERTIFICATE (FIXED DOM)
+       DYNAMIC GEMINI-POWERED IQ TEST & RESET FIX
        ======================================================= */
-    const iqData = [
+    let iqData = [];
+
+    const fallbackQuestionsPool = [
       { q: "What completes the sequence? 3, 6, 12, 24, __?", opts: ["30", "36", "48", "60"], ans: 2 },
       { q: "If NO dogs are cats, and ALL cats are animals. Are ALL animals NOT dogs?", opts: ["True", "False", "Uncertain"], ans: 1 },
       { q: "Find the odd one out.", opts: ["Circle", "Sphere", "Square", "Triangle"], ans: 1 },
-      { q: "A bat and ball cost $1.10. The bat costs $1.00 more than the ball. How much is the ball?", opts: ["$0.10", "$0.05", "$1.00", "$0.15"], ans: 1 }
+      { q: "A bat and ball cost $1.10. The bat costs $1.00 more than the ball. How much is the ball?", opts: ["$0.10", "$0.05", "$1.00", "$0.15"], ans: 1 },
+      { q: "Which number comes next: 1, 1, 2, 3, 5, 8, __?", opts: ["11", "12", "13", "15"], ans: 2 },
+      { q: "Light is to Eye as Sound is to __?", opts: ["Ear", "Voice", "Music", "Hear"], ans: 0 },
+      { q: "If 5 machines take 5 minutes to make 5 widgets, how long for 100 machines to make 100 widgets?", opts: ["100 mins", "5 mins", "50 mins", "1 min"], ans: 1 },
+      { q: "Which word does not belong with the others?", opts: ["Parsley", "Basil", "Dill", "Mayonnaise"], ans: 3 },
+      { q: "Which shape has 6 sides?", opts: ["Pentagon", "Hexagon", "Octagon", "Heptagon"], ans: 1 },
+      { q: "Water is to Ice as Milk is to __?", opts: ["Butter", "Cheese", "Liquid", "Glass"], ans: 1 }
     ];
+
+    function getFallbackQuestions(count) {
+      let shuffled = [...fallbackQuestionsPool].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, count);
+    }
+
+    async function generateDynamicIQTest() {
+      const container = document.getElementById('iq-questions-container');
+      const qCount = parseInt(document.getElementById('iq-q-count').value) || 5;
+
+      // Reset Previous Results
+      document.getElementById('iq-result').innerText = '';
+      document.getElementById('certificate-canvas').style.display = 'none';
+      document.getElementById('download-cert-btn').style.display = 'none';
+      container.innerHTML = `<p style="color:var(--accent); font-size:1.1rem; padding:1rem; text-align:center;">⚡ Generating ${qCount} Fresh Questions via Gemini AGI...</p>`;
+
+      if (API_KEY) {
+        try {
+          const prompt = `Generate exactly ${qCount} unique multiple-choice IQ, logic, pattern, or spatial reasoning questions. Output strictly as a valid JSON array of objects with keys "q" (string), "opts" (array of 4 option strings), and "ans" (0-based integer index of correct option). Do not use markdown backticks or extra text.`;
+          
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }]
+            })
+          });
+
+          const data = await response.json();
+          if (data.candidates && data.candidates[0].content.parts[0].text) {
+            let rawText = data.candidates[0].content.parts[0].text.trim();
+            rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+            iqData = JSON.parse(rawText);
+          } else {
+            throw new Error("API response parse error");
+          }
+        } catch (e) {
+          console.warn("Gemini IQ Generation fallback triggered:", e);
+          iqData = getFallbackQuestions(qCount);
+        }
+      } else {
+        iqData = getFallbackQuestions(qCount);
+      }
+
+      renderIQQuestions();
+    }
 
     function renderIQQuestions() {
       const container = document.getElementById('iq-questions-container');
@@ -541,9 +628,9 @@
         if(selected && parseInt(selected.value) === qObj.ans) correct++;
       });
 
-      let baseIQ = 100 + (correct * 12);
+      let baseIQ = Math.round(100 + (correct / (iqData.length || 1)) * 40);
       drawAuthenticCertificate(nameInput, baseIQ);
-      speakJARVIS(`Test evaluated. ${nameInput}, your performance IQ is ${baseIQ}. Authentic certificate generated.`);
+      speakJARVIS(`Test evaluated. ${nameInput}, your performance IQ is ${baseIQ}. Authentic certificate rendered.`);
     }
 
     function drawAuthenticCertificate(name, iqScore) {
@@ -629,7 +716,7 @@
     }
 
     /* =======================================================
-       NEW FEATURE: CODE LAB
+       CODE LAB & ZEN MODE
        ======================================================= */
     function runCode() {
       const code = document.getElementById('code-editor').value;
@@ -638,9 +725,6 @@
       speakJARVIS("Code executed in sandbox.");
     }
 
-    /* =======================================================
-       NEW FEATURE: MATRIX ZEN MODE
-       ======================================================= */
     let matrixInterval;
     function initMatrix() {
       const c = document.getElementById("zen-canvas");
