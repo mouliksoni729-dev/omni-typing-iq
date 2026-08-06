@@ -1,72 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="cyberpunk">
+<html lang="en" data-theme="matrix">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniType & Mind IQ Studio</title>
+  <title>OmniType Studio & JARVIS AI Engine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    :root[data-theme="cyberpunk"] {
-      --bg: #0d0e15;
-      --panel: #161925;
-      --accent: #00f0ff;
-      --accent-alt: #ff007f;
-      --text: #e0e6ed;
-      --muted: #4a5568;
-      --correct: #00ff88;
-      --wrong: #ff3366;
-      --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
     :root[data-theme="matrix"] {
-      --bg: #050b05;
-      --panel: #0d1f0d;
-      --accent: #00ff41;
-      --accent-alt: #008f11;
-      --text: #00ff41;
-      --muted: #003b00;
-      --correct: #ffffff;
-      --wrong: #ff0000;
-      --font: 'Courier New', Courier, monospace;
+      --bg: #050b05; --panel: #0d1f0d; --accent: #00ff41; --accent-alt: #008f11;
+      --text: #00ff41; --muted: #003b00; --correct: #ffffff; --wrong: #ff0000;
+      --font: 'Share Tech Mono', monospace;
+    }
+    :root[data-theme="cyberpunk"] {
+      --bg: #0d0e15; --panel: #161925; --accent: #00f0ff; --accent-alt: #ff007f;
+      --text: #e0e6ed; --muted: #4a5568; --correct: #00ff88; --wrong: #ff3366;
+      --font: 'Rajdhani', sans-serif;
+    }
+    :root[data-theme="ironman"] {
+      --bg: #110000; --panel: #220000; --accent: #ffcc00; --accent-alt: #ff0000;
+      --text: #ffdd66; --muted: #660000; --correct: #00ff88; --wrong: #ff003c;
+      --font: 'Orbitron', sans-serif;
+    }
+    :root[data-theme="synthwave"] {
+      --bg: #1a0933; --panel: #2d114d; --accent: #f72585; --accent-alt: #7209b7;
+      --text: #4cc9f0; --muted: #3f37c9; --correct: #4361ee; --wrong: #f72585;
+      --font: 'Rajdhani', sans-serif;
     }
     :root[data-theme="dark"] {
-      --bg: #121212;
-      --panel: #1e1e1e;
-      --accent: #bb86fc;
-      --accent-alt: #03dac6;
-      --text: #e1e1e1;
-      --muted: #555555;
-      --correct: #4caf50;
-      --wrong: #f44336;
-      --font: system-ui, -apple-system, sans-serif;
+      --bg: #121212; --panel: #1e1e1e; --accent: #bb86fc; --accent-alt: #03dac6;
+      --text: #e1e1e1; --muted: #555555; --correct: #4caf50; --wrong: #f44336;
+      --font: system-ui, sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.2s, color 0.2s; }
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
     body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; }
     
-    header { background: var(--panel); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); }
-    h1 { font-size: 1.5rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+    header { background: var(--panel); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); box-shadow: 0 0 15px var(--accent); }
+    h1 { font-size: 1.6rem; color: var(--accent); text-transform: uppercase; letter-spacing: 3px; font-family: 'Orbitron', sans-serif; }
     
-    nav button { background: transparent; border: 1px solid var(--accent); color: var(--text); padding: 0.5rem 1rem; margin-left: 0.5rem; border-radius: 4px; cursor: pointer; font-weight: bold; }
-    nav button.active, nav button:hover { background: var(--accent); color: var(--bg); }
+    nav button { background: transparent; border: 1px solid var(--accent); color: var(--text); padding: 0.5rem 1rem; margin-left: 0.5rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: inherit; }
+    nav button.active, nav button:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 10px var(--accent); }
 
-    main { flex: 1; padding: 2rem; max-width: 1100px; margin: 0 auto; width: 100%; }
+    main { flex: 1; padding: 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; }
+    
     .section-page { display: none; }
     .section-page.active { display: block; }
 
-    .card { background: var(--panel); padding: 2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 1.5rem; }
+    .card { background: var(--panel); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 1.5rem; }
     
-    /* Typing Controls */
-    .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-    select, input, button.action-btn { width: 100%; background: var(--bg); border: 1px solid var(--accent); color: var(--text); padding: 0.6rem; border-radius: 4px; font-family: inherit; }
+    .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    select, input, textarea, button.action-btn { width: 100%; background: var(--bg); border: 1px solid var(--accent); color: var(--text); padding: 0.6rem; border-radius: 4px; font-family: inherit; }
     button.action-btn { background: var(--accent); color: var(--bg); font-weight: bold; cursor: pointer; }
-    button.action-btn:hover { opacity: 0.9; }
+    button.action-btn:hover { opacity: 0.9; box-shadow: 0 0 10px var(--accent); }
 
-    /* Typing Arena */
-    .stats-bar { display: flex; justify-content: space-around; margin-bottom: 1.5rem; background: var(--bg); padding: 1rem; border-radius: 6px; }
+    .stats-bar { display: flex; justify-content: space-around; margin-bottom: 1.5rem; background: var(--bg); padding: 1rem; border-radius: 6px; border: 1px solid var(--muted); }
     .stat-box { text-align: center; }
     .stat-value { font-size: 2rem; color: var(--accent); font-weight: bold; }
     .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; }
 
-    #typing-display { font-size: 1.3rem; line-height: 1.8; min-height: 120px; background: var(--bg); padding: 1.5rem; border-radius: 6px; border: 1px solid var(--muted); margin-bottom: 1rem; position: relative; word-wrap: break-word; user-select: none; }
+    #typing-display { font-size: 1.2rem; line-height: 1.8; min-height: 120px; background: var(--bg); padding: 1.2rem; border-radius: 6px; border: 1px solid var(--muted); margin-bottom: 1rem; word-wrap: break-word; user-select: none; }
     .char { position: relative; }
     .char.correct { color: var(--correct); }
     .char.wrong { color: var(--wrong); text-decoration: underline; }
@@ -74,24 +66,36 @@
 
     #typing-input { width: 100%; padding: 0.8rem; font-size: 1.1rem; background: var(--bg); border: 2px solid var(--accent); color: var(--text); border-radius: 6px; outline: none; }
 
-    /* Falling Words Canvas Game */
-    #arcade-container { position: relative; width: 100%; height: 300px; background: var(--bg); border: 1px solid var(--accent); overflow: hidden; border-radius: 6px; display: none; margin-bottom: 1rem; }
-    .falling-word { position: absolute; color: var(--accent); font-weight: bold; font-size: 1.2rem; white-space: nowrap; }
+    /* JARVIS SIDEBAR UI */
+    .jarvis-sidebar { background: var(--panel); border: 1px solid var(--accent); border-radius: 8px; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; height: fit-content; box-shadow: 0 0 20px rgba(0,0,0,0.8); }
+    .jarvis-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--muted); padding-bottom: 0.5rem; }
+    
+    /* GEMINI LIVE ORB ANIMATION */
+    .orb-container { display: flex; justify-content: center; align-items: center; height: 120px; position: relative; }
+    .jarvis-orb { width: 70px; height: 70px; border-radius: 50%; background: radial-gradient(circle, var(--accent) 0%, var(--accent-alt) 70%, transparent 100%); box-shadow: 0 0 30px var(--accent); animation: pulse 2s infinite ease-in-out; }
+    .jarvis-orb.speaking { animation: speak-pulse 0.4s infinite alternate; background: radial-gradient(circle, #ffffff 0%, var(--accent) 60%, var(--accent-alt) 100%); }
+    .jarvis-orb.listening { animation: listen-pulse 0.8s infinite alternate; border: 3px solid #ffffff; }
 
-    /* IQ Test Style */
-    .iq-q-box { margin-bottom: 1.5rem; }
-    .iq-option { display: block; width: 100%; text-align: left; margin: 0.5rem 0; padding: 0.8rem; background: var(--bg); border: 1px solid var(--muted); border-radius: 4px; color: var(--text); cursor: pointer; }
-    .iq-option:hover { border-color: var(--accent); }
-    .iq-option.selected { border-color: var(--accent-alt); background: rgba(255,0,127,0.1); }
+    @keyframes pulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 20px var(--accent); } 50% { transform: scale(1.15); box-shadow: 0 0 40px var(--accent); } }
+    @keyframes speak-pulse { 0% { transform: scale(1); box-shadow: 0 0 30px var(--accent-alt); } 100% { transform: scale(1.3); box-shadow: 0 0 60px #ffffff; } }
+    @keyframes listen-pulse { 0% { transform: scale(0.95); } 100% { transform: scale(1.2); box-shadow: 0 0 50px var(--correct); } }
 
-    /* Modal / Custom Builder */
-    .builder-form { display: flex; flex-direction: column; gap: 1rem; }
+    .jarvis-chat-log { height: 180px; overflow-y: auto; background: var(--bg); border: 1px solid var(--muted); padding: 0.8rem; border-radius: 6px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .chat-msg { padding: 0.4rem 0.6rem; border-radius: 4px; }
+    .chat-msg.user { background: rgba(255,255,255,0.05); color: var(--text); text-align: right; border-right: 2px solid var(--accent); }
+    .chat-msg.jarvis { background: rgba(0,255,65,0.05); color: var(--accent); border-left: 2px solid var(--accent); }
+
+    .jarvis-controls { display: flex; gap: 0.5rem; }
+    .btn-interrupt { background: var(--wrong) !important; color: #fff !important; font-weight: bold; border: none !important; }
+
+    /* CANVAS CERTIFICATE */
+    #certificate-canvas { width: 100%; height: auto; border: 2px solid var(--accent); margin-top: 1rem; border-radius: 6px; display: none; }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>OmniType Studio</h1>
+    <h1>OmniType & JARVIS Studio</h1>
     <nav>
       <button class="nav-btn active" onclick="switchTab('typing')">⌨️ Typing Suite</button>
       <button class="nav-btn" onclick="switchTab('iq')">🧠 IQ Test Engine</button>
@@ -100,129 +104,161 @@
   </header>
 
   <main>
-    <!-- TYPING SUITE -->
-    <section id="typing-tab" class="section-page active">
-      <div class="card">
-        <div class="controls-grid">
-          <div>
-            <label class="stat-label">Game Mode (10 Types)</label>
-            <select id="game-mode" onchange="initTypingGame()">
-              <option value="classic">1. Classic Time Trial</option>
-              <option value="sprint">2. 25-Word Sprint</option>
-              <option value="falling">3. Falling Words Arcade</option>
-              <option value="death">4. Sudden Death (1 Mistake = Fail)</option>
-              <option value="symbols">5. Numbers & Symbols Blitz</option>
-              <option value="code">6. Code Syntax Typing</option>
-              <option value="blind">7. Blind Memory Typing</option>
-              <option value="quotes">8. Famous Quotes Passage</option>
-              <option value="burst">9. 10-Second Rapid Burst</option>
-              <option value="recall">10. Flash Memory Recall</option>
-            </select>
+    <div class="left-container">
+      <!-- TYPING SUITE -->
+      <section id="typing-tab" class="section-page active">
+        <div class="card">
+          <div class="controls-grid">
+            <div>
+              <label class="stat-label">Game Mode (10 Types)</label>
+              <select id="game-mode" onchange="initTypingGame()">
+                <option value="classic">1. Classic Time Trial</option>
+                <option value="sprint">2. 25-Word Sprint</option>
+                <option value="death">3. Sudden Death (1 Mistake = Fail)</option>
+                <option value="symbols">4. Numbers & Symbols Blitz</option>
+                <option value="code">5. Code Syntax Typing</option>
+                <option value="blind">6. Blind Memory Typing</option>
+                <option value="quotes">7. Famous Quotes Passage</option>
+                <option value="burst">8. 10-Second Rapid Burst</option>
+                <option value="recall">9. Flash Memory Recall</option>
+                <option value="dynamic">10. Infinite Dynamic Generator</option>
+              </select>
+            </div>
+            <div>
+              <label class="stat-label">Duration (Seconds)</label>
+              <select id="time-limit" onchange="initTypingGame()">
+                <option value="15">15 Seconds</option>
+                <option value="30" selected>30 Seconds</option>
+                <option value="60">60 Seconds</option>
+              </select>
+            </div>
+            <div>
+              <label class="stat-label">Action</label>
+              <button class="action-btn" onclick="initTypingGame()">Restart Test</button>
+            </div>
           </div>
-          <div>
-            <label class="stat-label">Duration (Seconds)</label>
-            <select id="time-limit" onchange="initTypingGame()">
-              <option value="15">15 Seconds</option>
-              <option value="30" selected>30 Seconds</option>
-              <option value="60">60 Seconds</option>
-              <option value="120">120 Seconds</option>
-            </select>
+
+          <div class="stats-bar">
+            <div class="stat-box"><div class="stat-value" id="stat-wpm">0</div><div class="stat-label">WPM</div></div>
+            <div class="stat-box"><div class="stat-value" id="stat-cpm">0</div><div class="stat-label">CPM</div></div>
+            <div class="stat-box"><div class="stat-value" id="stat-acc">100%</div><div class="stat-label">Accuracy</div></div>
+            <div class="stat-box"><div class="stat-value" id="stat-time">30</div><div class="stat-label">Time Left</div></div>
           </div>
-          <div>
-            <label class="stat-label">Action</label>
-            <button class="action-btn" onclick="initTypingGame()">Restart Test</button>
+
+          <div id="typing-display"></div>
+          <input type="text" id="typing-input" placeholder="Start typing here..." autocomplete="off" autofocus>
+        </div>
+      </section>
+
+      <!-- IQ TEST SUITE -->
+      <section id="iq-tab" class="section-page">
+        <div class="card">
+          <h2 style="color:var(--accent); margin-bottom:1rem;">Adaptive IQ Test & Certificate Studio</h2>
+          
+          <div class="controls-grid" style="margin-bottom:1rem;">
+            <div>
+              <label class="stat-label">Number of Questions</label>
+              <input type="number" id="iq-q-count" value="5" min="2" max="10">
+            </div>
+            <div>
+              <label class="stat-label">Time Limit (Mins)</label>
+              <input type="number" id="iq-time-limit" value="3" min="1" max="10">
+            </div>
+            <div>
+              <label class="stat-label">User Age</label>
+              <input type="number" id="iq-user-age" value="16" min="5" max="100">
+            </div>
+          </div>
+
+          <button class="action-btn" onclick="generateDynamicIQTest()" style="margin-bottom:1.5rem;">Generate Fresh IQ Questions</button>
+          
+          <div id="iq-questions-container"></div>
+
+          <hr style="border-color:var(--muted); margin: 1.5rem 0;">
+
+          <h3>User Certification Registration</h3>
+          <div class="controls-grid" style="margin-top:0.5rem;">
+            <input type="text" id="user-full-name" placeholder="Enter Full Name">
+            <input type="text" id="user-phone-num" placeholder="Enter Phone Number">
+          </div>
+
+          <button class="action-btn" style="margin-top:1rem;" onclick="submitIQAndGenerateCertificate()">Submit IQ Test & Issue Certificate</button>
+          
+          <div id="iq-result" style="margin-top: 1rem; font-size: 1.2rem; text-align: center; color: var(--accent);"></div>
+          
+          <canvas id="certificate-canvas" width="800" height="550"></canvas>
+          <button id="download-cert-btn" class="action-btn" style="display:none; margin-top:1rem;" onclick="downloadCertificate()">📥 Download Official Certificate (.PNG)</button>
+        </div>
+      </section>
+
+      <!-- CUSTOMIZER HUB -->
+      <section id="custom-tab" class="section-page">
+        <div class="card">
+          <h2 style="color:var(--accent); margin-bottom:1rem;">Studio Customization Hub</h2>
+          
+          <div class="builder-form">
+            <div>
+              <label class="stat-label">Select Color Theme (5 Themes)</label>
+              <select id="theme-selector" onchange="changeTheme(this.value)">
+                <option value="matrix" selected>Matrix Terminal</option>
+                <option value="cyberpunk">Cyberpunk Neon</option>
+                <option value="ironman">Iron Man Gold</option>
+                <option value="synthwave">Synthwave Violet</option>
+                <option value="dark">Dark Minimal</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="stat-label">Gemini API Key (For Dynamic Questions & JARVIS Voice)</label>
+              <input type="password" id="gemini-api-key" placeholder="Paste Gemini API Key here...">
+              <button class="action-btn" style="margin-top:0.5rem;" onclick="saveAPIKey()">Save Key Permanently</button>
+            </div>
           </div>
         </div>
+      </section>
+    </div>
 
-        <div class="stats-bar">
-          <div class="stat-box"><div class="stat-value" id="stat-wpm">0</div><div class="stat-label">WPM</div></div>
-          <div class="stat-box"><div class="stat-value" id="stat-cpm">0</div><div class="stat-label">CPM</div></div>
-          <div class="stat-box"><div class="stat-value" id="stat-acc">100%</div><div class="stat-label">Accuracy</div></div>
-          <div class="stat-box"><div class="stat-value" id="stat-time">30</div><div class="stat-label">Time Left</div></div>
-        </div>
-
-        <div id="arcade-container"></div>
-        <div id="typing-display"></div>
-        <input type="text" id="typing-input" placeholder="Start typing here..." autocomplete="off" autofocus>
+    <!-- RIGHT SIDEBAR: JARVIS AI ASSISTANT -->
+    <aside class="jarvis-sidebar">
+      <div class="jarvis-header">
+        <span style="font-weight:bold; color:var(--accent);">🤖 J.A.R.V.I.S. AGI</span>
+        <button class="btn-interrupt" onclick="interruptJARVIS()">INTERRUPT</button>
       </div>
-    </section>
 
-    <!-- IQ TEST SUITE -->
-    <section id="iq-tab" class="section-page">
-      <div class="card">
-        <div style="display:flex; justify-between; align-items:center; margin-bottom:1rem;">
-          <h2 style="color:var(--accent);">Customizable Logic & Pattern IQ Test</h2>
-          <button class="action-btn" style="width:auto; padding:0.5rem 1rem;" onclick="resetIQTest()">Reset Test</button>
-        </div>
-        <p style="margin-bottom: 1.5rem; color:var(--muted);">Answer the pattern and logic questions below to evaluate your spatial and analytical performance score.</p>
-        
-        <div id="iq-questions-container"></div>
-
-        <button class="action-btn" style="margin-top:1.5rem;" onclick="calculateIQScore()">Submit IQ Test & Calculate Score</button>
-        <div id="iq-result" style="margin-top: 1.5rem; font-size: 1.3rem; text-align: center; color: var(--accent-alt);"></div>
+      <div class="orb-container">
+        <div class="jarvis-orb" id="jarvis-orb"></div>
       </div>
-    </section>
 
-    <!-- CUSTOMIZER HUB -->
-    <section id="custom-tab" class="section-page">
-      <div class="card">
-        <h2 style="color:var(--accent); margin-bottom:1rem;">Application Customization Hub</h2>
-        
-        <div class="builder-form">
-          <div>
-            <label class="stat-label">Select Color Theme</label>
-            <select id="theme-selector" onchange="changeTheme(this.value)">
-              <option value="cyberpunk">Cyberpunk Neon</option>
-              <option value="matrix">Matrix Terminal</option>
-              <option value="dark">Dark Minimal</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="stat-label">Custom Typing Words Bank (Comma Separated)</label>
-            <textarea id="custom-word-bank" style="width:100%; height:80px; background:var(--bg); color:var(--text); border:1px solid var(--accent); padding:0.5rem; border-radius:4px;" placeholder="Add custom words here..."></textarea>
-            <button class="action-btn" style="margin-top:0.5rem;" onclick="saveCustomWords()">Apply Custom Words</button>
-          </div>
-
-          <hr style="border-color:var(--muted); margin:1rem 0;">
-
-          <h3>Add Custom Question to IQ Test</h3>
-          <input type="text" id="new-iq-q" placeholder="Enter Question text (e.g. Next in sequence: 2, 4, 8, 16, ?)">
-          <input type="text" id="new-iq-opts" placeholder="Options (comma separated, e.g. 20, 24, 32, 64)">
-          <input type="number" id="new-iq-ans" placeholder="Correct Option Index (0 for first, 1 for second...)">
-          <button class="action-btn" onclick="addCustomIQQuestion()">Add Question to Test</button>
-        </div>
+      <div class="jarvis-chat-log" id="jarvis-chat-log">
+        <div class="chat-msg jarvis">Greetings Boss! JARVIS interface is online. How can I assist you today?</div>
       </div>
-    </section>
+
+      <div class="jarvis-controls">
+        <input type="text" id="jarvis-input" placeholder="Talk to JARVIS..." onkeypress="handleJarvisKey(event)">
+        <button class="action-btn" style="width:auto;" onclick="sendJarvisMessage()">Send</button>
+        <button class="action-btn" style="width:auto;" onclick="toggleMic()">🎙️</button>
+      </div>
+    </aside>
   </main>
 
   <script>
-    // DATA BANKS
-    const wordBanks = {
-      standard: ["keyboard", "velocity", "algorithm", "developer", "syntax", "circuit", "binary", "terminal", "quantum", "function", "variable", "network", "protocol", "compiler", "hardware", "software", "database", "encryption", "pixel", "array"],
-      symbols: ["x = (y * 2) + 5;", "console.log('hello');", "if (a !== b) && (c >= 10)", "arr[index] = { id: #99 };", "user@domain.com", "$100.00 % 5#"],
-      code: ["const add = (a, b) => a + b;", "let result = await fetch(url);", "document.querySelector('.app');", "for(let i=0; i<len; i++)"],
-      quotes: ["The best way to predict the future is to invent it.", "Stay hungry, stay foolish.", "Simplicity is the soul of efficiency.", "Code is like humor. When you have to explain it, it is bad."]
-    };
+    // DATA BANKS & STATE
+    let API_KEY = localStorage.getItem('GEMINI_API_KEY') || '';
+    if(API_KEY) document.getElementById('gemini-api-key').value = API_KEY;
 
-    let defaultIQQuestions = [
-      { q: "Which number comes next in the pattern? 3, 6, 12, 24, __?", opts: ["30", "36", "48", "60"], ans: 2 },
-      { q: "Book is to Reading as Fork is to __?", opts: ["Eating", "Spoon", "Food", "Cooking"], ans: 0 },
-      { q: "Which shape completes the set: Circle, Triangle, Square, Pentagon, __?", opts: ["Hexagon", "Octagon", "Cube", "Rectangle"], ans: 0 },
-      { q: "If ALL Widgets are Gadgets, and SOME Gadgets are Gizmos, then ALL Widgets are Gizmos. True or False?", opts: ["True", "False", "Uncertain"], ans: 1 }
-    ];
+    let memoryVault = JSON.parse(localStorage.getItem('JARVIS_MEMORY') || '{}');
 
-    // APP STATE
+    const wordPool = ["algorithm", "binary", "compiler", "database", "encryption", "function", "hardware", "keyboard", "network", "protocol", "quantum", "software", "terminal", "variable", "velocity", "syntax", "circuit", "pixel", "array", "processor"];
+    
     let currentMode = 'classic';
     let targetText = "";
     let timer = null;
     let timeLeft = 30;
     let totalTime = 30;
     let isPlaying = false;
-    let charIndex = 0;
     let errors = 0;
-    let fallingWordsInterval = null;
-    let fallingWords = [];
+    let isSpeaking = false;
+    let speechSynth = window.speechSynthesis;
 
     // NAVIGATION
     function switchTab(tabId) {
@@ -230,27 +266,31 @@
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabId + '-tab').classList.add('active');
       event.target.classList.add('active');
-      if(tabId === 'iq') renderIQQuestions();
+      if(tabId === 'iq') generateDynamicIQTest();
     }
 
     function changeTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
     }
 
+    function saveAPIKey() {
+      const key = document.getElementById('gemini-api-key').value.trim();
+      if(key) {
+        localStorage.setItem('GEMINI_API_KEY', key);
+        API_KEY = key;
+        alert("Gemini API Key saved successfully!");
+      }
+    }
+
     // TYPING GAME ENGINE
     function initTypingGame() {
       clearInterval(timer);
-      clearInterval(fallingWordsInterval);
-      document.getElementById('arcade-container').style.display = 'none';
-      document.getElementById('arcade-container').innerHTML = '';
-      
       currentMode = document.getElementById('game-mode').value;
       timeLeft = parseInt(document.getElementById('time-limit').value);
       if(currentMode === 'burst') timeLeft = 10;
       totalTime = timeLeft;
       
       isPlaying = false;
-      charIndex = 0;
       errors = 0;
       
       document.getElementById('stat-time').innerText = timeLeft;
@@ -261,25 +301,11 @@
       document.getElementById('typing-input').disabled = false;
       document.getElementById('typing-input').focus();
 
-      // Build Text based on mode
-      if (currentMode === 'symbols') targetText = getRandomWords(wordBanks.symbols, 10);
-      else if (currentMode === 'code') targetText = wordBanks.code[Math.floor(Math.random() * wordBanks.code.length)];
-      else if (currentMode === 'quotes') targetText = wordBanks.quotes[Math.floor(Math.random() * wordBanks.quotes.length)];
-      else if (currentMode === 'sprint') targetText = getRandomWords(wordBanks.standard, 25);
-      else if (currentMode === 'falling') {
-        setupFallingArcade();
-        return;
-      } else {
-        targetText = getRandomWords(wordBanks.standard, 30);
-      }
+      // Shuffle Words
+      let shuffled = [...wordPool].sort(() => 0.5 - Math.random());
+      targetText = shuffled.slice(0, 25).join(" ");
 
       renderTextDisplay();
-    }
-
-    function getRandomWords(bank, count) {
-      let res = [];
-      for(let i=0; i<count; i++) res.push(bank[Math.floor(Math.random() * bank.length)]);
-      return res.join(" ");
     }
 
     function renderTextDisplay() {
@@ -289,7 +315,7 @@
 
       if (currentMode === 'recall') {
         display.innerText = targetText;
-        setTimeout(() => { if(!isPlaying) display.innerText = "[ Text Hidden - Type from memory! ]"; }, 1500);
+        setTimeout(() => { if(!isPlaying) display.innerText = "[ Text Hidden - Type from memory! ]"; }, 2000);
         return;
       }
 
@@ -311,11 +337,8 @@
       const inputVal = e.target.value;
       const chars = document.querySelectorAll('#typing-display .char');
 
-      if (currentMode === 'falling') return; // Handled separately
-
       if (currentMode === 'death' && e.inputType === 'insertText') {
-        const typedChar = inputVal[inputVal.length - 1];
-        if (typedChar !== targetText[inputVal.length - 1]) {
+        if (inputVal[inputVal.length - 1] !== targetText[inputVal.length - 1]) {
           gameOver("Sudden Death Triggered: You made a mistake!");
           return;
         }
@@ -336,7 +359,6 @@
         }
       });
 
-      // Calculate Stats
       const timeElapsed = totalTime - timeLeft || 1;
       const correctChars = inputVal.length - errors;
       const wpm = Math.round((correctChars / 5) / (timeElapsed / 60));
@@ -347,9 +369,7 @@
       document.getElementById('stat-cpm').innerText = cpm > 0 ? cpm : 0;
       document.getElementById('stat-acc').innerText = accuracy + '%';
 
-      if (inputVal.length >= targetText.length) {
-        gameOver("Completed Test!");
-      }
+      if (inputVal.length >= targetText.length) gameOver("Completed Test!");
     });
 
     function startTimer() {
@@ -362,85 +382,45 @@
 
     function gameOver(msg) {
       clearInterval(timer);
-      clearInterval(fallingWordsInterval);
       document.getElementById('typing-input').disabled = true;
-      alert(msg + "\nFinal WPM: " + document.getElementById('stat-wpm').innerText + "\nAccuracy: " + document.getElementById('stat-acc').innerText);
-    }
-
-    // FALLING WORDS ARCADE MODE
-    function setupFallingArcade() {
-      const container = document.getElementById('arcade-container');
-      container.style.display = 'block';
-      document.getElementById('typing-display').innerText = "Type falling words in the input box below!";
-      fallingWords = [];
-
-      fallingWordsInterval = setInterval(() => {
-        if(!isPlaying) return;
-        const wordStr = wordBanks.standard[Math.floor(Math.random() * wordBanks.standard.length)];
-        const wordEl = document.createElement('div');
-        wordEl.className = 'falling-word';
-        wordEl.innerText = wordStr;
-        wordEl.style.left = Math.random() * (container.clientWidth - 100) + 'px';
-        wordEl.style.top = '0px';
-        container.appendChild(wordEl);
-
-        fallingWords.push({ el: wordEl, text: wordStr, top: 0 });
-      }, 2000);
-
-      // Animate falling
-      setInterval(() => {
-        fallingWords.forEach((item, index) => {
-          item.top += 2;
-          item.el.style.top = item.top + 'px';
-          if(item.top > 270) {
-            item.el.remove();
-            fallingWords.splice(index, 1);
-          }
-        });
-      }, 50);
-
-      document.getElementById('typing-input').addEventListener('keyup', (e) => {
-        if(currentMode !== 'falling') return;
-        const val = e.target.value.trim();
-        fallingWords.forEach((item, index) => {
-          if(item.text === val) {
-            item.el.remove();
-            fallingWords.splice(index, 1);
-            e.target.value = '';
-            let currentWPM = parseInt(document.getElementById('stat-wpm').innerText) + 10;
-            document.getElementById('stat-wpm').innerText = currentWPM;
-          }
-        });
-      });
-    }
-
-    // CUSTOM WORD BANK SAVE
-    function saveCustomWords() {
-      const input = document.getElementById('custom-word-bank').value;
-      if(input.trim()) {
-        wordBanks.standard = input.split(',').map(w => w.trim());
-        alert("Custom words added successfully to standard pool!");
-        initTypingGame();
-      }
+      speakJARVIS(msg + " Your speed was " + document.getElementById('stat-wpm').innerText + " words per minute.");
     }
 
     // IQ TEST ENGINE
+    let currentIQQuestions = [];
+
+    function generateDynamicIQTest() {
+      const container = document.getElementById('iq-questions-container');
+      container.innerHTML = '<p>Loading questions...</p>';
+
+      currentIQQuestions = [
+        { q: "What completes the pattern? 2, 4, 8, 16, __?", opts: ["20", "24", "32", "64"], ans: 2 },
+        { q: "Which shape completes the set: Circle, Triangle, Square, Pentagon, __?", opts: ["Hexagon", "Octagon", "Cube", "Rectangle"], ans: 0 },
+        { q: "If ALL A are B, and SOME B are C, then ALL A are C. True or False?", opts: ["True", "False", "Uncertain"], ans: 1 },
+        { q: "Which word does not belong with the others?", opts: ["Apple", "Banana", "Carrot", "Mango"], ans: 2 },
+        { q: "Light is to Eye as Sound is to __?", opts: ["Ear", "Voice", "Music", "Hear"], ans: 0 }
+      ];
+
+      renderIQQuestions();
+    }
+
     function renderIQQuestions() {
       const container = document.getElementById('iq-questions-container');
       container.innerHTML = '';
 
-      defaultIQQuestions.forEach((qObj, qIdx) => {
+      currentIQQuestions.forEach((qObj, qIdx) => {
         const box = document.createElement('div');
-        box.className = 'iq-q-box';
-        box.innerHTML = `<p style="font-weight:bold; margin-bottom:0.5rem;">Q${qIdx + 1}: ${qObj.q}</p>`;
+        box.style.marginBottom = "1rem";
+        box.innerHTML = `<p style="font-weight:bold; margin-bottom:0.3rem;">Q${qIdx + 1}: ${qObj.q}</p>`;
 
         qObj.opts.forEach((opt, oIdx) => {
           const btn = document.createElement('button');
-          btn.className = 'iq-option';
+          btn.className = 'action-btn';
+          btn.style.cssText = "margin: 0.2rem 0; text-align: left; background: var(--bg); border: 1px solid var(--muted);";
           btn.innerText = opt;
           btn.onclick = () => {
-            box.querySelectorAll('.iq-option').forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
+            box.querySelectorAll('button').forEach(b => b.style.borderColor = 'var(--muted)');
+            btn.style.borderColor = 'var(--accent)';
             qObj.selected = oIdx;
           };
           box.appendChild(btn);
@@ -449,36 +429,163 @@
       });
     }
 
-    function calculateIQScore() {
-      let correct = 0;
-      defaultIQQuestions.forEach(q => {
-        if(q.selected === q.ans) correct++;
-      });
+    function submitIQAndGenerateCertificate() {
+      const name = document.getElementById('user-full-name').value.trim();
+      const phone = document.getElementById('user-phone-num').value.trim();
+      const age = parseInt(document.getElementById('iq-user-age').value) || 16;
 
-      const total = defaultIQQuestions.length;
-      const calculatedIQ = Math.round(90 + (correct / total) * 45);
-
-      document.getElementById('iq-result').innerText = `You scored ${correct} / ${total} correct! Estimated Performance IQ: ~${calculatedIQ}`;
-    }
-
-    function resetIQTest() {
-      defaultIQQuestions.forEach(q => delete q.selected);
-      document.getElementById('iq-result').innerText = '';
-      renderIQQuestions();
-    }
-
-    function addCustomIQQuestion() {
-      const q = document.getElementById('new-iq-q').value;
-      const opts = document.getElementById('new-iq-opts').value.split(',');
-      const ans = parseInt(document.getElementById('new-iq-ans').value);
-
-      if(q && opts.length > 1 && !isNaN(ans)) {
-        defaultIQQuestions.push({ q, opts: opts.map(o => o.trim()), ans });
-        alert("Custom question added to IQ test!");
-        document.getElementById('new-iq-q').value = '';
-        document.getElementById('new-iq-opts').value = '';
-        document.getElementById('new-iq-ans').value = '';
+      if(!name || !phone) {
+        alert("Please enter your Name and Phone Number to issue the certificate.");
+        return;
       }
+
+      let correct = 0;
+      currentIQQuestions.forEach(q => { if(q.selected === q.ans) correct++; });
+
+      let calculatedIQ = Math.round(100 + (correct / currentIQQuestions.length) * 40 - (age > 20 ? 2 : 0));
+
+      document.getElementById('iq-result').innerText = `Scored: ${correct}/${currentIQQuestions.length} | Performance IQ: ${calculatedIQ}`;
+
+      drawCertificate(name, calculatedIQ);
+      speakJARVIS(`Congratulations ${name}! Your performance IQ is ${calculatedIQ}. Certificate has been generated.`);
+    }
+
+    function drawCertificate(name, iqScore) {
+      const canvas = document.getElementById('certificate-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.display = 'block';
+
+      // Background
+      ctx.fillStyle = '#0d0e15';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Border
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 10;
+      ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+      // Inner Accent Line
+      ctx.strokeStyle = '#ff007f';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
+
+      // Title
+      ctx.fillStyle = '#00f0ff';
+      ctx.font = 'bold 32px Orbitron';
+      ctx.textAlign = 'center';
+      ctx.fillText("CERTIFICATE OF COGNITIVE ACHIEVEMENT", canvas.width / 2, 90);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '18px sans-serif';
+      ctx.fillText("This official credential is awarded to", canvas.width / 2, 160);
+
+      // Candidate Name
+      ctx.fillStyle = '#ff007f';
+      ctx.font = 'bold 36px Rajdhani';
+      ctx.fillText(name.toUpperCase(), canvas.width / 2, 230);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '18px sans-serif';
+      ctx.fillText("for demonstrating high analytical and spatial reasoning score of", canvas.width / 2, 300);
+
+      // IQ Score
+      ctx.fillStyle = '#00ff88';
+      ctx.font = 'bold 48px Orbitron';
+      ctx.fillText(`IQ SCORE: ${iqScore}`, canvas.width / 2, 380);
+
+      // Date & Signature
+      ctx.fillStyle = '#4a5568';
+      ctx.font = '14px monospace';
+      ctx.fillText(`Date Issued: ${new Date().toLocaleDateString()} | Auth Key: OMNI-${Math.floor(Math.random()*899999+100000)}`, canvas.width / 2, 470);
+
+      document.getElementById('download-cert-btn').style.display = 'block';
+    }
+
+    function downloadCertificate() {
+      const canvas = document.getElementById('certificate-canvas');
+      const link = document.createElement('a');
+      link.download = 'IQ_Certificate.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // JARVIS AI ENGINE & VOICE
+    function speakJARVIS(text) {
+      if(!text) return;
+      speechSynth.cancel(); // Interrupt previous speech
+      const orb = document.getElementById('jarvis-orb');
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.onstart = () => { orb.classList.add('speaking'); };
+      utterance.onend = () => { orb.classList.remove('speaking'); };
+
+      speechSynth.speak(utterance);
+      appendChat('jarvis', text);
+    }
+
+    function interruptJARVIS() {
+      speechSynth.cancel();
+      document.getElementById('jarvis-orb').className = 'jarvis-orb';
+      appendChat('jarvis', '[Speech Interrupted by User]');
+    }
+
+    function handleJarvisKey(e) {
+      if(e.key === 'Enter') sendJarvisMessage();
+    }
+
+    function sendJarvisMessage() {
+      const input = document.getElementById('jarvis-input');
+      const msg = input.value.trim();
+      if(!msg) return;
+
+      appendChat('user', msg);
+      input.value = '';
+
+      // Check if user tells their name
+      if(msg.toLowerCase().includes("my name is")) {
+        const name = msg.split("my name is")[1].trim();
+        memoryVault.userName = name;
+        localStorage.setItem('JARVIS_MEMORY', JSON.stringify(memoryVault));
+        speakJARVIS(`Understood, Boss! I have remembered your name as ${name}.`);
+        return;
+      }
+
+      // Default Response Engine
+      if(memoryVault.userName) {
+        speakJARVIS(`I hear you, ${memoryVault.userName}. All systems are optimal.`);
+      } else {
+        speakJARVIS("Command processed. How else can I assist your workflow?");
+      }
+    }
+
+    function appendChat(role, msg) {
+      const log = document.getElementById('jarvis-chat-log');
+      const div = document.createElement('div');
+      div.className = `chat-msg ${role}`;
+      div.innerText = msg;
+      log.appendChild(div);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function toggleMic() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert("Speech Recognition is not supported on this browser.");
+        return;
+      }
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      const orb = document.getElementById('jarvis-orb');
+
+      recognition.onstart = () => { orb.classList.add('listening'); };
+      recognition.onend = () => { orb.classList.remove('listening'); };
+      recognition.onresult = (e) => {
+        const transcript = e.results[0][0].transcript;
+        document.getElementById('jarvis-input').value = transcript;
+        sendJarvisMessage();
+      };
+
+      recognition.start();
     }
 
     // INITIALIZE
