@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OmniType & JARVIS AGI</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <!-- 3D & GESTURE LIBRARIES -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+
   <style>
     /* 7 UNIQUE THEMES */
     :root[data-theme="stark"] { --bg: #050a0f; --panel: rgba(10, 15, 25, 0.8); --accent: #00e5ff; --accent-alt: #0077ff; --text: #e0ffff; --muted: #005577; --correct: #00ff88; --wrong: #ff003c; --font: 'Rajdhani', sans-serif; }
@@ -33,14 +39,12 @@
 
     .card { background: var(--panel); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 1.5rem; }
     
-    /* INPUTS & BUTTONS */
     .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
     select, input, textarea { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--accent); color: var(--text); padding: 0.8rem; border-radius: 6px; font-family: inherit; font-size: 1rem; outline: none; }
     select:focus, input:focus, textarea:focus { box-shadow: 0 0 10px var(--accent); }
     button.action-btn { width: 100%; background: var(--accent); color: #000; padding: 0.8rem; border: none; border-radius: 6px; font-weight: 900; font-family: 'Orbitron', sans-serif; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
     button.action-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px var(--accent); }
 
-    /* TYPING STATS */
     .stats-bar { display: flex; justify-content: space-around; margin-bottom: 1.5rem; background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 8px; border: 1px solid var(--muted); }
     .stat-box { text-align: center; }
     .stat-value { font-size: 2.2rem; color: var(--accent); font-weight: 900; text-shadow: 0 0 10px var(--accent); font-family: 'Orbitron', sans-serif; }
@@ -53,17 +57,14 @@
     .char.current { background: var(--accent); color: #000; border-radius: 2px; }
     #typing-input { font-size: 1.2rem; font-family: 'Share Tech Mono', monospace; }
 
-    /* IQ TEST STYLES */
     .iq-question-block { margin-bottom: 1.5rem; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent); }
     .iq-question-block p { font-size: 1.1rem; font-weight: bold; margin-bottom: 0.8rem; }
     .iq-options label { display: block; padding: 0.6rem; margin-bottom: 0.4rem; background: rgba(0,0,0,0.5); border: 1px solid var(--muted); border-radius: 4px; cursor: pointer; font-size: 1rem; }
     .iq-options label:hover { border-color: var(--accent); }
     .iq-options input[type="radio"] { margin-right: 10px; accent-color: var(--accent); width: auto; }
 
-    /* AUTHENTIC CERTIFICATE CANVAS */
     #certificate-canvas { width: 100%; max-width: 800px; height: auto; margin-top: 1.5rem; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border-radius: 2px; }
 
-    /* JARVIS UI */
     .jarvis-sidebar { background: var(--panel); backdrop-filter: blur(10px); border: 1px solid var(--accent); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; height: 85vh; position: sticky; top: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); }
     .jarvis-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--muted); padding-bottom: 0.8rem; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--accent); }
     
@@ -82,11 +83,19 @@
     .chat-msg.jarvis { background: rgba(0, 229, 255, 0.1); color: var(--accent); align-self: flex-start; border-left: 3px solid var(--accent); max-width: 95%; text-shadow: 0 0 2px var(--accent); }
     .jarvis-controls { display: flex; gap: 0.5rem; }
 
-    /* CODE LAB & ZEN MODE */
     #code-preview { width: 100%; height: 300px; background: #fff; border: 2px solid var(--accent); border-radius: 8px; margin-top: 1rem; }
     #zen-canvas { width: 100%; height: 400px; background: #000; border: 1px solid var(--accent); border-radius: 8px; margin-top: 1rem; display: block; }
 
-    /* TECH TICKER */
+    /* ARCADE GAMES STYLES */
+    #arcade-viewport { width:100%; height:400px; background:#111; border:2px solid var(--accent); border-radius:8px; position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center;}
+    #game-canvas { display:none; background:#000; }
+    .tic-tac-grid { display:none; grid-template-columns: repeat(3, 1fr); gap:5px; width:300px; height:300px; }
+    .tic-tac-cell { background:#222; display:flex; justify-content:center; align-items:center; font-size:3rem; font-weight:bold; color:var(--accent); cursor:pointer; }
+    .memory-grid { display:none; grid-template-columns: repeat(4, 1fr); gap:10px; width:100%; height:100%; padding:10px; }
+    .mem-card { background:var(--accent); color:transparent; display:flex; justify-content:center; align-items:center; font-size:2rem; cursor:pointer; border-radius:6px; transition:0.3s; }
+    .mem-card.flipped { background:#fff; color:#000; }
+    .reaction-box { display:none; width:100%; height:100%; background:#880000; cursor:pointer; justify-content:center; align-items:center; font-size:2rem; color:#fff; font-weight:bold; }
+
     .ticker-wrap { width: 100%; background: var(--accent); color: #000; padding: 5px 0; font-family: 'Share Tech Mono', monospace; font-weight: bold; overflow: hidden; position: fixed; bottom: 0; left: 0; z-index: 100; font-size: 0.9rem; }
     .ticker { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 25s linear infinite; }
     @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
@@ -99,6 +108,8 @@
     <nav>
       <button class="nav-btn active" onclick="switchTab('typing')">⌨️ Typing</button>
       <button class="nav-btn" onclick="switchTab('iq')">🧠 IQ Test</button>
+      <button class="nav-btn" onclick="switchTab('hologram')">⚛️ 3D AR</button>
+      <button class="nav-btn" onclick="switchTab('arcade')">🎮 Arcade</button>
       <button class="nav-btn" onclick="switchTab('codelab')">💻 Code Lab</button>
       <button class="nav-btn" onclick="switchTab('zen')">🧘 Zen Mode</button>
       <button class="nav-btn" onclick="switchTab('custom')">⚙️ Settings</button>
@@ -182,7 +193,48 @@
         </div>
       </section>
 
-      <!-- 3. CODE LAB -->
+      <!-- 3. 3D HOLOGRAM AR ELEMENTS 1-30 -->
+      <section id="hologram-tab" class="section-page">
+        <div class="card">
+          <h2 style="color:var(--accent); margin-bottom:1rem;">⚛️ 3D AR Quantum Elements (1-30)</h2>
+          <div class="controls-grid">
+            <select id="element-selector" onchange="loadElementHologram()"></select>
+            <button class="action-btn" onclick="toggleARCamera()" id="ar-cam-btn">Turn ON AR Gestures</button>
+          </div>
+          <p style="text-align:center; color:var(--correct); margin-bottom:10px; font-size:0.9rem;">Gestures: 🤚 Open Palm to Rotate | 🤏 Pinch to Scale</p>
+          <div id="ar-container" style="position:relative; height: 400px; background:#000; border-radius:8px; overflow:hidden;">
+            <video id="ar-video" style="position:absolute; width:100%; height:100%; object-fit:cover; opacity:0.4; display:none;" autoplay muted playsinline></video>
+            <div id="three-canvas-container" style="position:absolute; width:100%; height:100%;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. JARVIS ARCADE (5 GAMES) -->
+      <section id="arcade-tab" class="section-page">
+        <div class="card">
+          <h2 style="color:var(--accent); margin-bottom:1rem;">🎮 Jarvis Arcade</h2>
+          <div class="controls-grid">
+            <select id="arcade-selector" onchange="startArcadeGame()">
+              <option value="snake">1. Classic Snake</option>
+              <option value="pong">2. AI Pong</option>
+              <option value="tictactoe">3. Tic-Tac-Toe</option>
+              <option value="memory">4. Memory Match</option>
+              <option value="reaction">5. Reaction Speed Tester</option>
+            </select>
+            <button class="action-btn" onclick="startArcadeGame()">Restart Game</button>
+          </div>
+          
+          <div id="arcade-viewport">
+            <!-- Game Canvases / Containers -->
+            <canvas id="game-canvas" width="600" height="400"></canvas>
+            <div id="tictactoe-grid" class="tic-tac-grid"></div>
+            <div id="memory-grid" class="memory-grid"></div>
+            <div id="reaction-box" class="reaction-box">WAIT FOR GREEN...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. CODE LAB -->
       <section id="codelab-tab" class="section-page">
         <div class="card">
           <h2 style="color:var(--accent); margin-bottom:1rem;">💻 Dev Sandbox (HTML/JS/CSS)</h2>
@@ -192,7 +244,7 @@
         </div>
       </section>
 
-      <!-- 4. ZEN MODE -->
+      <!-- 6. ZEN MODE -->
       <section id="zen-tab" class="section-page">
         <div class="card" style="text-align:center;">
           <h2 style="color:var(--accent);">🧘 Matrix Zen Mode</h2>
@@ -202,7 +254,7 @@
         </div>
       </section>
 
-      <!-- 5. SETTINGS & MEMORY VAULT -->
+      <!-- 7. SETTINGS & MEMORY VAULT -->
       <section id="custom-tab" class="section-page">
         <div class="card">
           <h2 style="color:var(--accent); margin-bottom:1rem;">⚙️ Configuration & Memory Vault</h2>
@@ -247,7 +299,7 @@
       </div>
 
       <div class="jarvis-chat-log" id="jarvis-chat-log">
-        <div class="chat-msg jarvis">System Rebooted. Indian Voice Engine Online. Hello, how can I assist you today?</div>
+        <div class="chat-msg jarvis">System Rebooted. Microsoft Voice Engine Online. Hello, how can I assist you today?</div>
       </div>
 
       <div class="jarvis-controls">
@@ -284,7 +336,6 @@
       speakJARVIS("Memory vault wiped clean.");
     }
 
-    // Navigation
     function switchTab(tabId) {
       document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -292,6 +343,8 @@
       document.querySelector(`nav button[onclick="switchTab('${tabId}')"]`).classList.add('active');
       if(tabId === 'zen') initMatrix();
       if(tabId === 'iq' && iqData.length === 0) generateDynamicIQTest();
+      if(tabId === 'hologram' && !atomRenderer) initHologramSystem();
+      if(tabId === 'arcade') startArcadeGame();
     }
 
     function changeTheme(theme) {
@@ -311,7 +364,7 @@
     /* =======================================================
        TYPING TEST ENGINE
        ======================================================= */
-    const wordBanks = {
+    const typePools = {
       classic: "algorithm binary compiler database encryption function hardware keyboard network protocol quantum software terminal variable velocity syntax circuit pixel array processor matrix server cloud logic cyber".split(" "),
       code: ["const obj = { id: 1 };", "def solve(x): return x*2", "SELECT * FROM users;", "document.getElementById('app')", "for(let i=0; i<n; i++)", "import numpy as np"],
     };
@@ -330,7 +383,7 @@
       document.getElementById('typing-input').value = '';
       document.getElementById('typing-input').disabled = false;
 
-      let pool = wordBanks[mode === 'death' ? 'classic' : mode] || wordBanks.classic;
+      let pool = typePools[mode === 'death' ? 'classic' : mode] || typePools.classic;
       let shuffled = [];
       for(let i=0; i<30; i++) shuffled.push(pool[Math.floor(Math.random() * pool.length)]);
       targetText = shuffled.join(" ");
@@ -383,13 +436,15 @@
     }
 
     /* =======================================================
-       TTS VOICE ENGINE (ENHANCED PRONUNCIATION & CLEANING)
+       TTS VOICE ENGINE (FIXED PRONUNCIATION & MICROSOFT VOICES)
        ======================================================= */
     let speechQueue = [];
 
     function sanitizeForSpeech(text) {
+      // .toLowerCase() prevents spelling out ALL CAPS words like J-A-R-V-I-S
       return text
-        .replace(/[*_~#`@$%^&()=+[\]{}|\\<>/]/g, ' ') // Clean symbols/markdown
+        .replace(/[*_~#`@$%^&()=+[\]{}|\\<>/]/g, ' ') 
+        .toLowerCase() 
         .replace(/\s+/g, ' ')
         .trim();
     }
@@ -414,13 +469,16 @@
       let u = new SpeechSynthesisUtterance(chunk);
       let voices = window.speechSynthesis.getVoices();
       
-      // Preferred Indian voices for clean Hinglish pronunciation
-      let hiVoice = voices.find(v => v.lang === 'hi-IN') || 
-                    voices.find(v => v.lang === 'en-IN') || 
-                    voices.find(v => v.lang.includes('hi') || v.lang.includes('IN'));
-      if(hiVoice) u.voice = hiVoice;
+      // Force pick Microsoft Voice for excellent Hindi/Hinglish reading
+      let bestVoice = voices.find(v => v.name.includes('Microsoft') && v.lang === 'hi-IN') || 
+                      voices.find(v => v.name.includes('Microsoft') && v.lang.includes('hi')) ||
+                      voices.find(v => v.lang === 'hi-IN') || 
+                      voices.find(v => v.lang.includes('IN')) ||
+                      voices[0];
+                      
+      if(bestVoice) u.voice = bestVoice;
       
-      u.rate = 1.0;  // Standard natural speed to prevent stuttering
+      u.rate = 0.95; // Slightly slower makes Hindi pronunciation perfect
       u.pitch = 1.0;
       
       u.onstart = () => { document.getElementById('jarvis-orb').classList.add('speaking'); };
@@ -456,7 +514,6 @@
       appendChat('user', msg);
       input.value = '';
 
-      // Voice Navigation Check
       let lowerMsg = msg.toLowerCase();
       if(lowerMsg.includes("open typing")) { switchTab('typing'); speakJARVIS("Opening Typing Suite."); return; }
       if(lowerMsg.includes("open settings")) { switchTab('custom'); speakJARVIS("Opening Settings."); return; }
@@ -546,16 +603,10 @@
       { q: "Water is to Ice as Milk is to __?", opts: ["Butter", "Cheese", "Liquid", "Glass"], ans: 1 }
     ];
 
-    function getFallbackQuestions(count) {
-      let shuffled = [...fallbackQuestionsPool].sort(() => 0.5 - Math.random());
-      return shuffled.slice(0, count);
-    }
-
     async function generateDynamicIQTest() {
       const container = document.getElementById('iq-questions-container');
       const qCount = parseInt(document.getElementById('iq-q-count').value) || 5;
 
-      // Reset Previous Results
       document.getElementById('iq-result').innerText = '';
       document.getElementById('certificate-canvas').style.display = 'none';
       document.getElementById('download-cert-btn').style.display = 'none';
@@ -568,9 +619,7 @@
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }]
-            })
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
           });
 
           const data = await response.json();
@@ -578,15 +627,15 @@
             let rawText = data.candidates[0].content.parts[0].text.trim();
             rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
             iqData = JSON.parse(rawText);
-          } else {
-            throw new Error("API response parse error");
-          }
+          } else throw new Error("API response parse error");
         } catch (e) {
-          console.warn("Gemini IQ Generation fallback triggered:", e);
-          iqData = getFallbackQuestions(qCount);
+          console.warn("Gemini IQ fallback triggered:", e);
+          let shuffled = [...fallbackQuestionsPool].sort(() => 0.5 - Math.random());
+          iqData = shuffled.slice(0, qCount);
         }
       } else {
-        iqData = getFallbackQuestions(qCount);
+        let shuffled = [...fallbackQuestionsPool].sort(() => 0.5 - Math.random());
+        iqData = shuffled.slice(0, qCount);
       }
 
       renderIQQuestions();
@@ -638,71 +687,40 @@
       const ctx = canvas.getContext('2d');
       canvas.style.display = 'block';
 
-      // Authentic Parchment Background
-      ctx.fillStyle = '#f9f6f0';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#f9f6f0'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 6; ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
+      ctx.strokeStyle = '#b89947'; ctx.lineWidth = 2; ctx.strokeRect(38, 38, canvas.width - 76, canvas.height - 76);
 
-      // Thick Dark Outer Border
-      ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 6;
-      ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
-
-      // Inner Gold Border
-      ctx.strokeStyle = '#b89947'; ctx.lineWidth = 2;
-      ctx.strokeRect(38, 38, canvas.width - 76, canvas.height - 76);
-
-      // Header Text
-      ctx.fillStyle = '#1a1a1a';
-      ctx.font = 'bold 36px "Times New Roman", serif';
-      ctx.textAlign = 'center';
+      ctx.fillStyle = '#1a1a1a'; ctx.font = 'bold 36px "Times New Roman", serif'; ctx.textAlign = 'center';
       ctx.fillText("CERTIFICATE OF EXCELLENCE", canvas.width / 2, 110);
-
-      // Subtitle
-      ctx.fillStyle = '#444';
-      ctx.font = 'italic 20px "Times New Roman", serif';
+      ctx.fillStyle = '#444'; ctx.font = 'italic 20px "Times New Roman", serif';
       ctx.fillText("This official document certifies that", canvas.width / 2, 160);
 
-      // User Name (Strictly from Input)
-      ctx.fillStyle = '#000';
-      ctx.font = 'bold 50px "Courier New", monospace';
+      ctx.fillStyle = '#000'; ctx.font = 'bold 50px "Courier New", monospace';
       ctx.fillText(name.toUpperCase(), canvas.width / 2, 240);
 
-      // Body Text
-      ctx.fillStyle = '#444';
-      ctx.font = '20px "Times New Roman", serif';
+      ctx.fillStyle = '#444'; ctx.font = '20px "Times New Roman", serif';
       ctx.fillText("has successfully completed the Advanced Cognitive & Logic Assessment,", canvas.width / 2, 310);
       ctx.fillText("achieving an evaluated Performance IQ Score of:", canvas.width / 2, 340);
 
-      // Score
-      ctx.fillStyle = '#b89947';
-      ctx.font = 'bold 70px "Times New Roman", serif';
+      ctx.fillStyle = '#b89947'; ctx.font = 'bold 70px "Times New Roman", serif';
       ctx.fillText(iqScore, canvas.width / 2, 430);
 
-      // Signatures
-      ctx.fillStyle = '#1a1a1a';
-      ctx.font = 'italic 28px "Times New Roman", serif';
+      ctx.fillStyle = '#1a1a1a'; ctx.font = 'italic 28px "Times New Roman", serif';
       ctx.fillText("J.A.R.V.I.S.", canvas.width / 4, 520);
       ctx.fillText("Moulik Soni", (canvas.width / 4) * 3, 520);
 
-      // Signature Lines
-      ctx.beginPath();
-      ctx.moveTo(100, 530); ctx.lineTo(300, 530);
-      ctx.moveTo(500, 530); ctx.lineTo(700, 530);
+      ctx.beginPath(); ctx.moveTo(100, 530); ctx.lineTo(300, 530); ctx.moveTo(500, 530); ctx.lineTo(700, 530);
       ctx.lineWidth = 1; ctx.stroke();
 
-      ctx.fillStyle = '#666';
-      ctx.font = '14px "Times New Roman", serif';
+      ctx.fillStyle = '#666'; ctx.font = '14px "Times New Roman", serif';
       ctx.fillText("AI Evaluator System", canvas.width / 4, 550);
       ctx.fillText("Chief Architect & Creator", (canvas.width / 4) * 3, 550);
 
-      // Draw Gold Seal
-      ctx.beginPath();
-      ctx.arc(canvas.width / 2, 510, 45, 0, Math.PI * 2);
-      ctx.fillStyle = '#b89947';
-      ctx.fill();
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 12px sans-serif';
-      ctx.fillText("OFFICIAL", canvas.width / 2, 505);
-      ctx.fillText("SEAL", canvas.width / 2, 525);
+      ctx.beginPath(); ctx.arc(canvas.width / 2, 510, 45, 0, Math.PI * 2);
+      ctx.fillStyle = '#b89947'; ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif';
+      ctx.fillText("OFFICIAL", canvas.width / 2, 505); ctx.fillText("SEAL", canvas.width / 2, 525);
 
       document.getElementById('download-cert-btn').style.display = 'block';
     }
@@ -713,6 +731,298 @@
       link.download = 'Official_IQ_Certificate.png';
       link.href = canvas.toDataURL();
       link.click();
+    }
+
+    /* =======================================================
+       3D AR HOLOGRAM (Elements 1-30) + HAND GESTURES
+       ======================================================= */
+    const elementsData = [
+      {z: 1, name: 'Hydrogen'}, {z: 2, name: 'Helium'}, {z: 3, name: 'Lithium'}, {z: 4, name: 'Beryllium'}, {z: 5, name: 'Boron'},
+      {z: 6, name: 'Carbon'}, {z: 7, name: 'Nitrogen'}, {z: 8, name: 'Oxygen'}, {z: 9, name: 'Fluorine'}, {z: 10, name: 'Neon'},
+      {z: 11, name: 'Sodium'}, {z: 12, name: 'Magnesium'}, {z: 13, name: 'Aluminium'}, {z: 14, name: 'Silicon'}, {z: 15, name: 'Phosphorus'},
+      {z: 16, name: 'Sulfur'}, {z: 17, name: 'Chlorine'}, {z: 18, name: 'Argon'}, {z: 19, name: 'Potassium'}, {z: 20, name: 'Calcium'},
+      {z: 21, name: 'Scandium'}, {z: 22, name: 'Titanium'}, {z: 23, name: 'Vanadium'}, {z: 24, name: 'Chromium'}, {z: 25, name: 'Manganese'},
+      {z: 26, name: 'Iron'}, {z: 27, name: 'Cobalt'}, {z: 28, name: 'Nickel'}, {z: 29, name: 'Copper'}, {z: 30, name: 'Zinc'}
+    ];
+
+    let atomScene, atomCamera, atomRenderer, atomGroup;
+    let handTracker, isArCameraOn = false;
+
+    function initHologramSystem() {
+      const sel = document.getElementById('element-selector');
+      elementsData.forEach(el => {
+        let opt = document.createElement('option');
+        opt.value = el.z; opt.innerText = `${el.z}. ${el.name}`;
+        sel.appendChild(opt);
+      });
+
+      const container = document.getElementById('three-canvas-container');
+      atomScene = new THREE.Scene();
+      atomCamera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+      atomCamera.position.z = 15;
+
+      atomRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      atomRenderer.setSize(container.clientWidth, container.clientHeight);
+      container.appendChild(atomRenderer.domElement);
+
+      let light = new THREE.PointLight(0xffffff, 1, 100);
+      light.position.set(10, 10, 10);
+      atomScene.add(light);
+      atomScene.add(new THREE.AmbientLight(0x404040));
+
+      loadElementHologram();
+      animateHologram();
+    }
+
+    function loadElementHologram() {
+      if(atomGroup) atomScene.remove(atomGroup);
+      atomGroup = new THREE.Group();
+      
+      let Z = parseInt(document.getElementById('element-selector').value) || 1;
+      
+      // Nucleus
+      let nucGeo = new THREE.SphereGeometry(0.8, 16, 16);
+      let nucMat = new THREE.MeshPhongMaterial({ color: 0xff003c, emissive: 0x440000 });
+      for(let i=0; i < Z*2; i++) {
+        let mesh = new THREE.Mesh(nucGeo, nucMat);
+        mesh.position.set((Math.random()-0.5)*2, (Math.random()-0.5)*2, (Math.random()-0.5)*2);
+        atomGroup.add(mesh);
+      }
+
+      // Electrons
+      let eGeo = new THREE.SphereGeometry(0.3, 16, 16);
+      let eMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
+      let shells = [2, 8, 18, 2];
+      let eCount = Z;
+      
+      for(let s=0; s<4; s++) {
+        if(eCount <= 0) break;
+        let shellMax = shells[s];
+        let shellE = Math.min(eCount, shellMax);
+        eCount -= shellE;
+        
+        let radius = 3 + (s * 2.5);
+        let ringGroup = new THREE.Group();
+        ringGroup.rotation.x = Math.random() * Math.PI;
+        ringGroup.rotation.y = Math.random() * Math.PI;
+
+        for(let e=0; e<shellE; e++) {
+          let angle = (e / shellE) * Math.PI * 2;
+          let mesh = new THREE.Mesh(eGeo, eMat);
+          mesh.position.set(Math.cos(angle)*radius, Math.sin(angle)*radius, 0);
+          ringGroup.add(mesh);
+        }
+        // userData for animation rotation speed
+        ringGroup.userData = { speed: 0.02 / (s+1) };
+        atomGroup.add(ringGroup);
+      }
+
+      atomScene.add(atomGroup);
+    }
+
+    function animateHologram() {
+      requestAnimationFrame(animateHologram);
+      if(atomGroup) {
+        // Auto rotate if not controlled
+        atomGroup.rotation.y += 0.005;
+        atomGroup.children.forEach(child => {
+          if(child.userData && child.userData.speed) {
+            child.rotation.z += child.userData.speed;
+          }
+        });
+      }
+      atomRenderer.render(atomScene, atomCamera);
+    }
+
+    function toggleARCamera() {
+      const video = document.getElementById('ar-video');
+      const btn = document.getElementById('ar-cam-btn');
+      
+      if(isArCameraOn) {
+        isArCameraOn = false; video.style.display = 'none'; btn.innerText = "Turn ON AR Gestures";
+        let tracks = video.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+        video.srcObject = null;
+      } else {
+        isArCameraOn = true; video.style.display = 'block'; btn.innerText = "Turn OFF AR Gestures";
+        if(!handTracker) {
+          handTracker = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`});
+          handTracker.setOptions({maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.7});
+          handTracker.onResults((results) => {
+            if(results.multiHandLandmarks && results.multiHandLandmarks.length > 0 && atomGroup) {
+              let lm = results.multiHandLandmarks[0];
+              let thumb = lm[4], index = lm[8], palm = lm[9];
+              let dist = Math.hypot(thumb.x - index.x, thumb.y - index.y);
+              
+              if(dist < 0.08) { // Pinch to Scale
+                let scale = Math.max(0.5, Math.min(3, 1 + (0.5 - palm.y)*3));
+                atomGroup.scale.set(scale, scale, scale);
+              } else { // Open Palm to Rotate
+                atomGroup.rotation.y = (palm.x - 0.5) * 5;
+                atomGroup.rotation.x = (palm.y - 0.5) * 5;
+              }
+            }
+          });
+        }
+        navigator.mediaDevices.getUserMedia({video: true}).then((stream) => {
+          video.srcObject = stream;
+          let camera = new Camera(video, {
+            onFrame: async () => { if(isArCameraOn) await handTracker.send({image: video}); },
+            width: 640, height: 480
+          });
+          camera.start();
+        });
+      }
+    }
+
+    /* =======================================================
+       ARCADE GAMES (5 MINI GAMES)
+       ======================================================= */
+    let arcadeTimer;
+
+    function startArcadeGame() {
+      clearInterval(arcadeTimer);
+      const game = document.getElementById('arcade-selector').value;
+      document.getElementById('game-canvas').style.display = 'none';
+      document.getElementById('tictactoe-grid').style.display = 'none';
+      document.getElementById('memory-grid').style.display = 'none';
+      document.getElementById('reaction-box').style.display = 'none';
+
+      if(game === 'snake') initSnake();
+      else if(game === 'pong') initPong();
+      else if(game === 'tictactoe') initTicTacToe();
+      else if(game === 'memory') initMemory();
+      else if(game === 'reaction') initReaction();
+    }
+
+    // 1. SNAKE
+    function initSnake() {
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.display = 'block';
+      let snake = [{x: 10, y: 10}], dir = {x: 0, y: 0}, food = {x: 5, y: 5};
+      
+      document.onkeydown = (e) => {
+        if(e.key==='ArrowUp' && dir.y!==1) dir={x:0, y:-1};
+        if(e.key==='ArrowDown' && dir.y!==-1) dir={x:0, y:1};
+        if(e.key==='ArrowLeft' && dir.x!==1) dir={x:-1, y:0};
+        if(e.key==='ArrowRight' && dir.x!==-1) dir={x:1, y:0};
+      };
+
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,400);
+        let head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+        
+        // Walls & Self Collision
+        if(head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 20 || snake.some(s => s.x===head.x && s.y===head.y)) {
+           dir = {x:0, y:0}; head = {x:10, y:10}; snake = [head]; // Dead
+        }
+        snake.unshift(head);
+        if(head.x === food.x && head.y === food.y) {
+          food = {x: Math.floor(Math.random()*30), y: Math.floor(Math.random()*20)};
+        } else { snake.pop(); }
+
+        ctx.fillStyle = '#00e5ff'; snake.forEach(s => ctx.fillRect(s.x*20, s.y*20, 18, 18));
+        ctx.fillStyle = '#ff003c'; ctx.fillRect(food.x*20, food.y*20, 18, 18);
+      }, 100);
+    }
+
+    // 2. PONG
+    function initPong() {
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.display = 'block';
+      let pY = 150, aiY = 150, bX = 300, bY = 200, bdX = 5, bdY = 5;
+
+      canvas.onmousemove = (e) => { let rect = canvas.getBoundingClientRect(); pY = e.clientY - rect.top - 40; };
+
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,400);
+        ctx.fillStyle = '#00e5ff';
+        ctx.fillRect(20, pY, 10, 80); // Player
+        ctx.fillRect(570, aiY, 10, 80); // AI
+        ctx.fillRect(bX, bY, 10, 10); // Ball
+
+        bX += bdX; bY += bdY;
+        aiY += (bY - (aiY + 40)) * 0.1; // AI movement
+
+        if(bY <= 0 || bY >= 390) bdY = -bdY;
+        if(bX <= 30 && bY > pY && bY < pY+80) bdX = -bdX;
+        if(bX >= 560 && bY > aiY && bY < aiY+80) bdX = -bdX;
+        
+        if(bX < 0 || bX > 600) { bX = 300; bY = 200; bdX = -bdX; } // Reset
+      }, 30);
+    }
+
+    // 3. TIC TAC TOE
+    function initTicTacToe() {
+      const grid = document.getElementById('tictactoe-grid');
+      grid.style.display = 'grid'; grid.innerHTML = '';
+      let board = Array(9).fill(null), turn = 'X';
+      
+      for(let i=0; i<9; i++) {
+        let cell = document.createElement('div');
+        cell.className = 'tic-tac-cell';
+        cell.onclick = () => {
+          if(!board[i]) {
+            board[i] = turn; cell.innerText = turn;
+            turn = turn === 'X' ? 'O' : 'X';
+          }
+        };
+        grid.appendChild(cell);
+      }
+    }
+
+    // 4. MEMORY MATCH
+    function initMemory() {
+      const grid = document.getElementById('memory-grid');
+      grid.style.display = 'grid'; grid.innerHTML = '';
+      let icons = ['🚀','👽','💥','🔥','⚡','🧠','👁️','🤖'];
+      let cards = [...icons, ...icons].sort(() => 0.5 - Math.random());
+      let flipped = [];
+
+      cards.forEach((icon, i) => {
+        let card = document.createElement('div');
+        card.className = 'mem-card';
+        card.dataset.val = icon;
+        card.innerText = icon;
+        card.onclick = () => {
+          if(flipped.length < 2 && !card.classList.contains('flipped')) {
+            card.classList.add('flipped'); flipped.push(card);
+            if(flipped.length === 2) {
+              setTimeout(() => {
+                if(flipped[0].dataset.val !== flipped[1].dataset.val) {
+                  flipped[0].classList.remove('flipped'); flipped[1].classList.remove('flipped');
+                }
+                flipped = [];
+              }, 800);
+            }
+          }
+        };
+        grid.appendChild(card);
+      });
+    }
+
+    // 5. REACTION TESTER
+    function initReaction() {
+      const box = document.getElementById('reaction-box');
+      box.style.display = 'flex'; box.style.background = '#880000'; box.innerText = "WAIT FOR GREEN...";
+      
+      let state = 'wait', startTime;
+      
+      let timeout = setTimeout(() => {
+        state = 'go'; box.style.background = '#008800'; box.innerText = "CLICK NOW!";
+        startTime = Date.now();
+      }, 1000 + Math.random() * 3000);
+
+      box.onclick = () => {
+        if(state === 'wait') { clearTimeout(timeout); box.innerText = "TOO EARLY! RESTART."; }
+        else if(state === 'go') {
+          state = 'done';
+          box.style.background = '#000';
+          box.innerText = `YOUR TIME: ${Date.now() - startTime} ms!`;
+        }
+      };
     }
 
     /* =======================================================
