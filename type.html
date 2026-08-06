@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyberpunk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniType & Mind IQ Studio</title>
+  <style>
+    :root[data-theme="cyberpunk"] {
+      --bg: #0d0e15;
+      --panel: #161925;
+      --accent: #00f0ff;
+      --accent-alt: #ff007f;
+      --text: #e0e6ed;
+      --muted: #4a5568;
+      --correct: #00ff88;
+      --wrong: #ff3366;
+      --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    :root[data-theme="matrix"] {
+      --bg: #050b05;
+      --panel: #0d1f0d;
+      --accent: #00ff41;
+      --accent-alt: #008f11;
+      --text: #00ff41;
+      --muted: #003b00;
+      --correct: #ffffff;
+      --wrong: #ff0000;
+      --font: 'Courier New', Courier, monospace;
+    }
+    :root[data-theme="dark"] {
+      --bg: #121212;
+      --panel: #1e1e1e;
+      --accent: #bb86fc;
+      --accent-alt: #03dac6;
+      --text: #e1e1e1;
+      --muted: #555555;
+      --correct: #4caf50;
+      --wrong: #f44336;
+      --font: system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.2s, color 0.2s; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; }
+    
+    header { background: var(--panel); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); }
+    h1 { font-size: 1.5rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; }
+    
+    nav button { background: transparent; border: 1px solid var(--accent); color: var(--text); padding: 0.5rem 1rem; margin-left: 0.5rem; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    nav button.active, nav button:hover { background: var(--accent); color: var(--bg); }
+
+    main { flex: 1; padding: 2rem; max-width: 1100px; margin: 0 auto; width: 100%; }
+    .section-page { display: none; }
+    .section-page.active { display: block; }
+
+    .card { background: var(--panel); padding: 2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 1.5rem; }
+    
+    /* Typing Controls */
+    .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    select, input, button.action-btn { width: 100%; background: var(--bg); border: 1px solid var(--accent); color: var(--text); padding: 0.6rem; border-radius: 4px; font-family: inherit; }
+    button.action-btn { background: var(--accent); color: var(--bg); font-weight: bold; cursor: pointer; }
+    button.action-btn:hover { opacity: 0.9; }
+
+    /* Typing Arena */
+    .stats-bar { display: flex; justify-content: space-around; margin-bottom: 1.5rem; background: var(--bg); padding: 1rem; border-radius: 6px; }
+    .stat-box { text-align: center; }
+    .stat-value { font-size: 2rem; color: var(--accent); font-weight: bold; }
+    .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; }
+
+    #typing-display { font-size: 1.3rem; line-height: 1.8; min-height: 120px; background: var(--bg); padding: 1.5rem; border-radius: 6px; border: 1px solid var(--muted); margin-bottom: 1rem; position: relative; word-wrap: break-word; user-select: none; }
+    .char { position: relative; }
+    .char.correct { color: var(--correct); }
+    .char.wrong { color: var(--wrong); text-decoration: underline; }
+    .char.current { background: var(--accent); color: var(--bg); border-radius: 2px; }
+
+    #typing-input { width: 100%; padding: 0.8rem; font-size: 1.1rem; background: var(--bg); border: 2px solid var(--accent); color: var(--text); border-radius: 6px; outline: none; }
+
+    /* Falling Words Canvas Game */
+    #arcade-container { position: relative; width: 100%; height: 300px; background: var(--bg); border: 1px solid var(--accent); overflow: hidden; border-radius: 6px; display: none; margin-bottom: 1rem; }
+    .falling-word { position: absolute; color: var(--accent); font-weight: bold; font-size: 1.2rem; white-space: nowrap; }
+
+    /* IQ Test Style */
+    .iq-q-box { margin-bottom: 1.5rem; }
+    .iq-option { display: block; width: 100%; text-align: left; margin: 0.5rem 0; padding: 0.8rem; background: var(--bg); border: 1px solid var(--muted); border-radius: 4px; color: var(--text); cursor: pointer; }
+    .iq-option:hover { border-color: var(--accent); }
+    .iq-option.selected { border-color: var(--accent-alt); background: rgba(255,0,127,0.1); }
+
+    /* Modal / Custom Builder */
+    .builder-form { display: flex; flex-direction: column; gap: 1rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>OmniType Studio</h1>
+    <nav>
+      <button class="nav-btn active" onclick="switchTab('typing')">⌨️ Typing Suite</button>
+      <button class="nav-btn" onclick="switchTab('iq')">🧠 IQ Test Engine</button>
+      <button class="nav-btn" onclick="switchTab('custom')">⚙️ Customizer Hub</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- TYPING SUITE -->
+    <section id="typing-tab" class="section-page active">
+      <div class="card">
+        <div class="controls-grid">
+          <div>
+            <label class="stat-label">Game Mode (10 Types)</label>
+            <select id="game-mode" onchange="initTypingGame()">
+              <option value="classic">1. Classic Time Trial</option>
+              <option value="sprint">2. 25-Word Sprint</option>
+              <option value="falling">3. Falling Words Arcade</option>
+              <option value="death">4. Sudden Death (1 Mistake = Fail)</option>
+              <option value="symbols">5. Numbers & Symbols Blitz</option>
+              <option value="code">6. Code Syntax Typing</option>
+              <option value="blind">7. Blind Memory Typing</option>
+              <option value="quotes">8. Famous Quotes Passage</option>
+              <option value="burst">9. 10-Second Rapid Burst</option>
+              <option value="recall">10. Flash Memory Recall</option>
+            </select>
+          </div>
+          <div>
+            <label class="stat-label">Duration (Seconds)</label>
+            <select id="time-limit" onchange="initTypingGame()">
+              <option value="15">15 Seconds</option>
+              <option value="30" selected>30 Seconds</option>
+              <option value="60">60 Seconds</option>
+              <option value="120">120 Seconds</option>
+            </select>
+          </div>
+          <div>
+            <label class="stat-label">Action</label>
+            <button class="action-btn" onclick="initTypingGame()">Restart Test</button>
+          </div>
+        </div>
+
+        <div class="stats-bar">
+          <div class="stat-box"><div class="stat-value" id="stat-wpm">0</div><div class="stat-label">WPM</div></div>
+          <div class="stat-box"><div class="stat-value" id="stat-cpm">0</div><div class="stat-label">CPM</div></div>
+          <div class="stat-box"><div class="stat-value" id="stat-acc">100%</div><div class="stat-label">Accuracy</div></div>
+          <div class="stat-box"><div class="stat-value" id="stat-time">30</div><div class="stat-label">Time Left</div></div>
+        </div>
+
+        <div id="arcade-container"></div>
+        <div id="typing-display"></div>
+        <input type="text" id="typing-input" placeholder="Start typing here..." autocomplete="off" autofocus>
+      </div>
+    </section>
+
+    <!-- IQ TEST SUITE -->
+    <section id="iq-tab" class="section-page">
+      <div class="card">
+        <div style="display:flex; justify-between; align-items:center; margin-bottom:1rem;">
+          <h2 style="color:var(--accent);">Customizable Logic & Pattern IQ Test</h2>
+          <button class="action-btn" style="width:auto; padding:0.5rem 1rem;" onclick="resetIQTest()">Reset Test</button>
+        </div>
+        <p style="margin-bottom: 1.5rem; color:var(--muted);">Answer the pattern and logic questions below to evaluate your spatial and analytical performance score.</p>
+        
+        <div id="iq-questions-container"></div>
+
+        <button class="action-btn" style="margin-top:1.5rem;" onclick="calculateIQScore()">Submit IQ Test & Calculate Score</button>
+        <div id="iq-result" style="margin-top: 1.5rem; font-size: 1.3rem; text-align: center; color: var(--accent-alt);"></div>
+      </div>
+    </section>
+
+    <!-- CUSTOMIZER HUB -->
+    <section id="custom-tab" class="section-page">
+      <div class="card">
+        <h2 style="color:var(--accent); margin-bottom:1rem;">Application Customization Hub</h2>
+        
+        <div class="builder-form">
+          <div>
+            <label class="stat-label">Select Color Theme</label>
+            <select id="theme-selector" onchange="changeTheme(this.value)">
+              <option value="cyberpunk">Cyberpunk Neon</option>
+              <option value="matrix">Matrix Terminal</option>
+              <option value="dark">Dark Minimal</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="stat-label">Custom Typing Words Bank (Comma Separated)</label>
+            <textarea id="custom-word-bank" style="width:100%; height:80px; background:var(--bg); color:var(--text); border:1px solid var(--accent); padding:0.5rem; border-radius:4px;" placeholder="Add custom words here..."></textarea>
+            <button class="action-btn" style="margin-top:0.5rem;" onclick="saveCustomWords()">Apply Custom Words</button>
+          </div>
+
+          <hr style="border-color:var(--muted); margin:1rem 0;">
+
+          <h3>Add Custom Question to IQ Test</h3>
+          <input type="text" id="new-iq-q" placeholder="Enter Question text (e.g. Next in sequence: 2, 4, 8, 16, ?)">
+          <input type="text" id="new-iq-opts" placeholder="Options (comma separated, e.g. 20, 24, 32, 64)">
+          <input type="number" id="new-iq-ans" placeholder="Correct Option Index (0 for first, 1 for second...)">
+          <button class="action-btn" onclick="addCustomIQQuestion()">Add Question to Test</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // DATA BANKS
+    const wordBanks = {
+      standard: ["keyboard", "velocity", "algorithm", "developer", "syntax", "circuit", "binary", "terminal", "quantum", "function", "variable", "network", "protocol", "compiler", "hardware", "software", "database", "encryption", "pixel", "array"],
+      symbols: ["x = (y * 2) + 5;", "console.log('hello');", "if (a !== b) && (c >= 10)", "arr[index] = { id: #99 };", "user@domain.com", "$100.00 % 5#"],
+      code: ["const add = (a, b) => a + b;", "let result = await fetch(url);", "document.querySelector('.app');", "for(let i=0; i<len; i++)"],
+      quotes: ["The best way to predict the future is to invent it.", "Stay hungry, stay foolish.", "Simplicity is the soul of efficiency.", "Code is like humor. When you have to explain it, it is bad."]
+    };
+
+    let defaultIQQuestions = [
+      { q: "Which number comes next in the pattern? 3, 6, 12, 24, __?", opts: ["30", "36", "48", "60"], ans: 2 },
+      { q: "Book is to Reading as Fork is to __?", opts: ["Eating", "Spoon", "Food", "Cooking"], ans: 0 },
+      { q: "Which shape completes the set: Circle, Triangle, Square, Pentagon, __?", opts: ["Hexagon", "Octagon", "Cube", "Rectangle"], ans: 0 },
+      { q: "If ALL Widgets are Gadgets, and SOME Gadgets are Gizmos, then ALL Widgets are Gizmos. True or False?", opts: ["True", "False", "Uncertain"], ans: 1 }
+    ];
+
+    // APP STATE
+    let currentMode = 'classic';
+    let targetText = "";
+    let timer = null;
+    let timeLeft = 30;
+    let totalTime = 30;
+    let isPlaying = false;
+    let charIndex = 0;
+    let errors = 0;
+    let fallingWordsInterval = null;
+    let fallingWords = [];
+
+    // NAVIGATION
+    function switchTab(tabId) {
+      document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId + '-tab').classList.add('active');
+      event.target.classList.add('active');
+      if(tabId === 'iq') renderIQQuestions();
+    }
+
+    function changeTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+
+    // TYPING GAME ENGINE
+    function initTypingGame() {
+      clearInterval(timer);
+      clearInterval(fallingWordsInterval);
+      document.getElementById('arcade-container').style.display = 'none';
+      document.getElementById('arcade-container').innerHTML = '';
+      
+      currentMode = document.getElementById('game-mode').value;
+      timeLeft = parseInt(document.getElementById('time-limit').value);
+      if(currentMode === 'burst') timeLeft = 10;
+      totalTime = timeLeft;
+      
+      isPlaying = false;
+      charIndex = 0;
+      errors = 0;
+      
+      document.getElementById('stat-time').innerText = timeLeft;
+      document.getElementById('stat-wpm').innerText = '0';
+      document.getElementById('stat-cpm').innerText = '0';
+      document.getElementById('stat-acc').innerText = '100%';
+      document.getElementById('typing-input').value = '';
+      document.getElementById('typing-input').disabled = false;
+      document.getElementById('typing-input').focus();
+
+      // Build Text based on mode
+      if (currentMode === 'symbols') targetText = getRandomWords(wordBanks.symbols, 10);
+      else if (currentMode === 'code') targetText = wordBanks.code[Math.floor(Math.random() * wordBanks.code.length)];
+      else if (currentMode === 'quotes') targetText = wordBanks.quotes[Math.floor(Math.random() * wordBanks.quotes.length)];
+      else if (currentMode === 'sprint') targetText = getRandomWords(wordBanks.standard, 25);
+      else if (currentMode === 'falling') {
+        setupFallingArcade();
+        return;
+      } else {
+        targetText = getRandomWords(wordBanks.standard, 30);
+      }
+
+      renderTextDisplay();
+    }
+
+    function getRandomWords(bank, count) {
+      let res = [];
+      for(let i=0; i<count; i++) res.push(bank[Math.floor(Math.random() * bank.length)]);
+      return res.join(" ");
+    }
+
+    function renderTextDisplay() {
+      const display = document.getElementById('typing-display');
+      display.style.filter = (currentMode === 'blind') ? 'blur(8px)' : 'none';
+      display.innerHTML = '';
+
+      if (currentMode === 'recall') {
+        display.innerText = targetText;
+        setTimeout(() => { if(!isPlaying) display.innerText = "[ Text Hidden - Type from memory! ]"; }, 1500);
+        return;
+      }
+
+      targetText.split('').forEach((char, idx) => {
+        const span = document.createElement('span');
+        span.classList.add('char');
+        if(idx === 0) span.classList.add('current');
+        span.innerText = char;
+        display.appendChild(span);
+      });
+    }
+
+    document.getElementById('typing-input').addEventListener('input', (e) => {
+      if(!isPlaying) {
+        isPlaying = true;
+        startTimer();
+      }
+
+      const inputVal = e.target.value;
+      const chars = document.querySelectorAll('#typing-display .char');
+
+      if (currentMode === 'falling') return; // Handled separately
+
+      if (currentMode === 'death' && e.inputType === 'insertText') {
+        const typedChar = inputVal[inputVal.length - 1];
+        if (typedChar !== targetText[inputVal.length - 1]) {
+          gameOver("Sudden Death Triggered: You made a mistake!");
+          return;
+        }
+      }
+
+      errors = 0;
+      chars.forEach((span, idx) => {
+        const typedChar = inputVal[idx];
+        span.className = 'char';
+
+        if (typedChar == null) {
+          if (idx === inputVal.length) span.classList.add('current');
+        } else if (typedChar === span.innerText) {
+          span.classList.add('correct');
+        } else {
+          span.classList.add('wrong');
+          errors++;
+        }
+      });
+
+      // Calculate Stats
+      const timeElapsed = totalTime - timeLeft || 1;
+      const correctChars = inputVal.length - errors;
+      const wpm = Math.round((correctChars / 5) / (timeElapsed / 60));
+      const cpm = Math.round(correctChars / (timeElapsed / 60));
+      const accuracy = inputVal.length > 0 ? Math.round((correctChars / inputVal.length) * 100) : 100;
+
+      document.getElementById('stat-wpm').innerText = wpm > 0 ? wpm : 0;
+      document.getElementById('stat-cpm').innerText = cpm > 0 ? cpm : 0;
+      document.getElementById('stat-acc').innerText = accuracy + '%';
+
+      if (inputVal.length >= targetText.length) {
+        gameOver("Completed Test!");
+      }
+    });
+
+    function startTimer() {
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('stat-time').innerText = timeLeft;
+        if(timeLeft <= 0) gameOver("Time's Up!");
+      }, 1000);
+    }
+
+    function gameOver(msg) {
+      clearInterval(timer);
+      clearInterval(fallingWordsInterval);
+      document.getElementById('typing-input').disabled = true;
+      alert(msg + "\nFinal WPM: " + document.getElementById('stat-wpm').innerText + "\nAccuracy: " + document.getElementById('stat-acc').innerText);
+    }
+
+    // FALLING WORDS ARCADE MODE
+    function setupFallingArcade() {
+      const container = document.getElementById('arcade-container');
+      container.style.display = 'block';
+      document.getElementById('typing-display').innerText = "Type falling words in the input box below!";
+      fallingWords = [];
+
+      fallingWordsInterval = setInterval(() => {
+        if(!isPlaying) return;
+        const wordStr = wordBanks.standard[Math.floor(Math.random() * wordBanks.standard.length)];
+        const wordEl = document.createElement('div');
+        wordEl.className = 'falling-word';
+        wordEl.innerText = wordStr;
+        wordEl.style.left = Math.random() * (container.clientWidth - 100) + 'px';
+        wordEl.style.top = '0px';
+        container.appendChild(wordEl);
+
+        fallingWords.push({ el: wordEl, text: wordStr, top: 0 });
+      }, 2000);
+
+      // Animate falling
+      setInterval(() => {
+        fallingWords.forEach((item, index) => {
+          item.top += 2;
+          item.el.style.top = item.top + 'px';
+          if(item.top > 270) {
+            item.el.remove();
+            fallingWords.splice(index, 1);
+          }
+        });
+      }, 50);
+
+      document.getElementById('typing-input').addEventListener('keyup', (e) => {
+        if(currentMode !== 'falling') return;
+        const val = e.target.value.trim();
+        fallingWords.forEach((item, index) => {
+          if(item.text === val) {
+            item.el.remove();
+            fallingWords.splice(index, 1);
+            e.target.value = '';
+            let currentWPM = parseInt(document.getElementById('stat-wpm').innerText) + 10;
+            document.getElementById('stat-wpm').innerText = currentWPM;
+          }
+        });
+      });
+    }
+
+    // CUSTOM WORD BANK SAVE
+    function saveCustomWords() {
+      const input = document.getElementById('custom-word-bank').value;
+      if(input.trim()) {
+        wordBanks.standard = input.split(',').map(w => w.trim());
+        alert("Custom words added successfully to standard pool!");
+        initTypingGame();
+      }
+    }
+
+    // IQ TEST ENGINE
+    function renderIQQuestions() {
+      const container = document.getElementById('iq-questions-container');
+      container.innerHTML = '';
+
+      defaultIQQuestions.forEach((qObj, qIdx) => {
+        const box = document.createElement('div');
+        box.className = 'iq-q-box';
+        box.innerHTML = `<p style="font-weight:bold; margin-bottom:0.5rem;">Q${qIdx + 1}: ${qObj.q}</p>`;
+
+        qObj.opts.forEach((opt, oIdx) => {
+          const btn = document.createElement('button');
+          btn.className = 'iq-option';
+          btn.innerText = opt;
+          btn.onclick = () => {
+            box.querySelectorAll('.iq-option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            qObj.selected = oIdx;
+          };
+          box.appendChild(btn);
+        });
+        container.appendChild(box);
+      });
+    }
+
+    function calculateIQScore() {
+      let correct = 0;
+      defaultIQQuestions.forEach(q => {
+        if(q.selected === q.ans) correct++;
+      });
+
+      const total = defaultIQQuestions.length;
+      const calculatedIQ = Math.round(90 + (correct / total) * 45);
+
+      document.getElementById('iq-result').innerText = `You scored ${correct} / ${total} correct! Estimated Performance IQ: ~${calculatedIQ}`;
+    }
+
+    function resetIQTest() {
+      defaultIQQuestions.forEach(q => delete q.selected);
+      document.getElementById('iq-result').innerText = '';
+      renderIQQuestions();
+    }
+
+    function addCustomIQQuestion() {
+      const q = document.getElementById('new-iq-q').value;
+      const opts = document.getElementById('new-iq-opts').value.split(',');
+      const ans = parseInt(document.getElementById('new-iq-ans').value);
+
+      if(q && opts.length > 1 && !isNaN(ans)) {
+        defaultIQQuestions.push({ q, opts: opts.map(o => o.trim()), ans });
+        alert("Custom question added to IQ test!");
+        document.getElementById('new-iq-q').value = '';
+        document.getElementById('new-iq-opts').value = '';
+        document.getElementById('new-iq-ans').value = '';
+      }
+    }
+
+    // INITIALIZE
+    initTypingGame();
+  </script>
+</body>
+</html>
