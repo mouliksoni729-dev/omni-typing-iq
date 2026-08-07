@@ -95,15 +95,17 @@
     .mem-card { background:var(--accent); color:transparent; display:flex; justify-content:center; align-items:center; font-size:2rem; cursor:pointer; border-radius:6px; transition:0.3s; }
     .mem-card.flipped { background:#fff; color:#000; }
     .reaction-box { display:none; width:100%; height:100%; background:#880000; cursor:pointer; justify-content:center; align-items:center; font-size:2rem; color:#fff; font-weight:bold; }
+    
+    /* FPS SHOOTER STYLES */
     #fps-container { display:none; width:100%; height:100%; position:relative; }
     #fps-crosshair { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#00ff00; font-size:24px; pointer-events:none; z-index:10; font-weight:bold; }
+
+    /* UTILITIES STYLES */
+    .util-box { background:rgba(0,0,0,0.4); padding:1rem; border:1px solid var(--muted); border-radius:8px; }
 
     .ticker-wrap { width: 100%; background: var(--accent); color: #000; padding: 5px 0; font-family: 'Share Tech Mono', monospace; font-weight: bold; overflow: hidden; position: fixed; bottom: 0; left: 0; z-index: 100; font-size: 0.9rem; }
     .ticker { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 25s linear infinite; }
     @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-    
-    /* UTILITIES */
-    .util-box { background:rgba(0,0,0,0.4); padding:1rem; border:1px solid var(--muted); border-radius:8px; }
   </style>
 </head>
 <body>
@@ -162,7 +164,7 @@
         </div>
       </section>
 
-      <!-- 2. IQ TEST SUITE (STRICTLY GEMINI API) -->
+      <!-- 2. IQ TEST SUITE -->
       <section id="iq-tab" class="section-page">
         <div class="card">
           <h2 style="color:var(--accent); margin-bottom:1rem;">Advanced Cognitive Evaluation</h2>
@@ -215,7 +217,7 @@
         </div>
       </section>
 
-      <!-- 4. JARVIS ARCADE (10 GAMES INCLUDING FPS) -->
+      <!-- 4. JARVIS ARCADE (10 GAMES) -->
       <section id="arcade-tab" class="section-page">
         <div class="card">
           <h2 style="color:var(--accent); margin-bottom:1rem;">🎮 Jarvis Arcade (10 Games)</h2>
@@ -247,7 +249,7 @@
         </div>
       </section>
 
-      <!-- 5. UTILITIES (5 NEW TOOLS) -->
+      <!-- 5. UTILITIES (5 TOOLS) -->
       <section id="utilities-tab" class="section-page">
         <div class="card">
           <h2 style="color:var(--accent); margin-bottom:1rem;">🛠️ System Utilities</h2>
@@ -321,9 +323,10 @@
               <option value="dark">Dark Minimal</option>
             </select>
 
-            <label>Gemini API Key (Required for JARVIS Brain & Dynamic IQ)</label>
+            <!-- LABEL CHANGED FOR GROQ API -->
+            <label>Groq API Key (Required for JARVIS Brain & Dynamic IQ)</label>
             <div style="display:flex; gap:10px; margin-bottom:1rem;">
-              <input type="password" id="gemini-api-key" placeholder="Paste Gemini API Key here...">
+              <input type="password" id="gemini-api-key" placeholder="Paste Groq API Key here (starts with gsk_)...">
               <button class="action-btn" style="width:auto;" onclick="saveAPIKey()">Save</button>
             </div>
 
@@ -337,7 +340,7 @@
       </section>
     </div>
 
-    <!-- RIGHT SIDEBAR: REAL GEMINI JARVIS AI -->
+    <!-- RIGHT SIDEBAR: REAL GROQ JARVIS AI -->
     <aside class="jarvis-sidebar">
       <div class="jarvis-header">
         <span>J.A.R.V.I.S. AGI</span>
@@ -413,7 +416,7 @@
       if(key) {
         localStorage.setItem('GEMINI_API_KEY', key);
         API_KEY = key;
-        speakJARVIS("Gemini API Key locked in secure vault.");
+        speakJARVIS("Groq API Key locked in secure vault.");
       }
     }
 
@@ -551,7 +554,7 @@
     }
 
     /* =======================================================
-       GEMINI AGI ENGINE (STRICTLY UNTOUCHED PROMPT & MODEL)
+       GROQ AGI ENGINE (EXACT UNTOUCHED SYSTEM PROMPT & MODEL)
        ======================================================= */
     const PUBLIC_PERSONA = `You are jarvis, an advanced AI assistant. 
     Crucial Context: You were created by the genius developer, Moulik Soni. You are currently interacting with a PUBLIC USER on the web.
@@ -587,19 +590,29 @@
       }
 
       if (!API_KEY) {
-        speakJARVIS("Bhai, Gemini API Key missing hai. Settings mein jaakar key daalo.");
-        appendChat('jarvis', "Gemini API Key missing. Please add in Settings."); return;
+        speakJARVIS("Bhai, Groq API Key missing hai. Settings mein jaakar key daalo.");
+        appendChat('jarvis', "Groq API Key missing. Please add in Settings."); return;
       }
 
       document.getElementById('jarvis-orb').style.filter = "hue-rotate(180deg)";
       try {
         let memContext = memoryVault.userName ? ` The user's name is ${memoryVault.userName}.` : "";
-        // UNTOUCHED MODEL NAME EXACTLY AS IN UPLOADED CODE
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${API_KEY}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
+        
+        // 🔥 USING GROQ REST API WITH THE EXACT MODEL YOU REQUESTED
+        const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
+          method: 'POST', 
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY}`
+          },
           body: JSON.stringify({
-            systemInstruction: { parts: [{ text: PUBLIC_PERSONA + memContext }] },
-            contents: [{ parts: [{ text: msg }] }]
+            model: "llama-3.3-70b-versatile",
+            messages: [
+              { role: "system", content: PUBLIC_PERSONA + memContext },
+              { role: "user", content: msg }
+            ],
+            temperature: 0.6,
+            max_tokens: 2000
           })
         });
 
@@ -607,15 +620,22 @@
         document.getElementById('jarvis-orb').style.filter = "none";
 
         if(data.error) throw new Error(data.error.message);
-        let reply = data.candidates[0].content.parts[0].text.trim();
         
-        appendChat('jarvis', reply);
-        speakJARVIS(reply);
+        let raw_response = data.choices[0].message.content;
+        
+        // YOUR EXACT LOGIC FOR CLEANING <THINK> TAGS
+        let final_answer = raw_response.replace(/<think>[\s\S]*?(<\/think>|$)/g, '').trim();
+        if (final_answer.includes("Thinking Process:")) {
+            final_answer = final_answer.split("Thinking Process:").pop().trim();
+        }
+        
+        appendChat('jarvis', final_answer);
+        speakJARVIS(final_answer);
 
       } catch (error) {
         document.getElementById('jarvis-orb').style.filter = "none";
-        appendChat('jarvis', "API Error: 'gemini-3-flash' model might not exist yet, or API key is invalid.");
-        speakJARVIS("Network error aa gaya bhai. Model name ya API key check karo.");
+        appendChat('jarvis', "API Error: Model might not be active, or API key is invalid.");
+        speakJARVIS("Network error aa gaya bhai. Groq API key check karo.");
       }
     }
 
@@ -643,7 +663,7 @@
     }
 
     /* =======================================================
-       STRICT GEMINI-POWERED IQ TEST (NO FALLBACKS)
+       STRICT GROQ AI-POWERED IQ TEST (NO FALLBACKS)
        ======================================================= */
     let iqData = [];
 
@@ -654,36 +674,51 @@
       document.getElementById('iq-result').innerText = '';
       document.getElementById('certificate-canvas').style.display = 'none';
       document.getElementById('download-cert-btn').style.display = 'none';
-      container.innerHTML = `<p style="color:var(--accent); font-size:1.1rem; padding:1rem; text-align:center;">⚡ Generating ${qCount} Fresh Questions strictly via Gemini AGI...</p>`;
+      container.innerHTML = `<p style="color:var(--accent); font-size:1.1rem; padding:1rem; text-align:center;">⚡ Generating ${qCount} Fresh Questions strictly via Groq AI...</p>`;
 
       if (!API_KEY) {
-        container.innerHTML = `<p style="color:var(--wrong); text-align:center;">API KEY IS REQUIRED TO GENERATE QUESTIONS!</p>`;
+        container.innerHTML = `<p style="color:var(--wrong); text-align:center;">GROQ API KEY IS REQUIRED TO GENERATE QUESTIONS!</p>`;
         return;
       }
 
       try {
-        const prompt = `Generate exactly ${qCount} unique multiple-choice IQ, logic, pattern, or spatial reasoning questions. Output strictly as a valid JSON array of objects with keys "q" (string), "opts" (array of 4 option strings), and "ans" (0-based integer index of correct option). Do not use markdown backticks or extra text.`;
+        const prompt = `Generate exactly ${qCount} unique multiple-choice IQ, logic, pattern, or spatial reasoning questions. Output strictly as a valid JSON array of objects with keys "q" (string), "opts" (array of 4 option strings), and "ans" (0-based integer index of correct option). Do not use markdown backticks or extra text. Only return the JSON array.`;
         
-        // UNTOUCHED MODEL NAME AS IN UPLOADED CODE
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+        // USING GROQ API TO GENERATE IQ QUESTIONS
+        const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY}`
+          },
+          body: JSON.stringify({ 
+            model: "llama-3.3-70b-versatile",
+            messages: [{ role: "user", content: prompt }],
+            temperature: 0.7
+          })
         });
 
         const data = await response.json();
         if (data.error) throw new Error(data.error.message);
 
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
-          let rawText = data.candidates[0].content.parts[0].text.trim();
+        if (data.choices && data.choices[0].message.content) {
+          let rawText = data.choices[0].message.content.trim();
+          rawText = rawText.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
           rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+          
+          let startIndex = rawText.indexOf('[');
+          let endIndex = rawText.lastIndexOf(']') + 1;
+          if(startIndex !== -1 && endIndex !== 0) {
+             rawText = rawText.substring(startIndex, endIndex);
+          }
+          
           iqData = JSON.parse(rawText);
           renderIQQuestions();
         } else throw new Error("API response parse error");
 
       } catch (e) {
-        console.warn("Gemini IQ Error:", e);
-        container.innerHTML = `<p style="color:var(--wrong); text-align:center;">API ERROR: The model 'gemini-2.5-flash' might not be available or the API key is incorrect. <br>System strictly locked to Gemini API.</p>`;
+        console.warn("Groq IQ Error:", e);
+        container.innerHTML = `<p style="color:var(--wrong); text-align:center;">API ERROR: The model 'llama-3.3-70b-versatile' might not be responding properly or the API key is incorrect. <br>System strictly locked to Groq API.</p>`;
       }
     }
 
@@ -831,6 +866,7 @@
       
       let Z = parseInt(document.getElementById('element-selector').value) || 1;
       
+      // Nucleus
       let nucGeo = new THREE.SphereGeometry(0.8, 16, 16);
       let nucMat = new THREE.MeshPhongMaterial({ color: 0xff003c, emissive: 0x440000 });
       for(let i=0; i < Z*2; i++) {
@@ -839,6 +875,7 @@
         atomGroup.add(mesh);
       }
 
+      // Electrons
       let eGeo = new THREE.SphereGeometry(0.3, 16, 16);
       let eMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
       let shells = [2, 8, 18, 2];
@@ -952,12 +989,11 @@
     function initFPS() {
       const container = document.getElementById('fps-container');
       container.style.display = 'block';
-      // clear prev
       let existingCanvas = container.querySelector('canvas');
       if(existingCanvas) container.removeChild(existingCanvas);
 
       fpsScene = new THREE.Scene();
-      fpsScene.background = new THREE.Color(0x87CEEB); // Sky blue
+      fpsScene.background = new THREE.Color(0x87CEEB); 
       fpsCamera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
       fpsCamera.position.y = 1.5;
 
@@ -965,9 +1001,8 @@
       fpsRenderer.setSize(container.clientWidth, container.clientHeight);
       container.appendChild(fpsRenderer.domElement);
 
-      // Floor
       const floorGeo = new THREE.PlaneGeometry(100, 100);
-      const floorMat = new THREE.MeshBasicMaterial({color: 0x228B22}); // Green grass
+      const floorMat = new THREE.MeshBasicMaterial({color: 0x228B22});
       const floor = new THREE.Mesh(floorGeo, floorMat);
       floor.rotation.x = -Math.PI / 2;
       fpsScene.add(floor);
@@ -977,13 +1012,11 @@
       const boxMat = new THREE.MeshBasicMaterial({color: 0xff0000});
       for(let i=0; i<5; i++) spawnTarget(boxGeo, boxMat);
 
-      // Mouse Look
       let euler = new THREE.Euler(0, 0, 0, 'YXZ');
       container.onmousemove = (e) => {
-        let rect = container.getBoundingClientRect();
         let movementX = e.movementX || e.mozMovementX || 0;
         let movementY = e.movementY || e.mozMovementY || 0;
-        if(e.buttons === 1) { // Click and drag to look around
+        if(e.buttons === 1) { 
           euler.setFromQuaternion(fpsCamera.quaternion);
           euler.y -= movementX * 0.005;
           euler.x -= movementY * 0.005;
@@ -992,9 +1025,8 @@
         }
       };
 
-      // Shooting
       let raycaster = new THREE.Raycaster();
-      let center = new THREE.Vector2(0, 0); // crosshair center
+      let center = new THREE.Vector2(0, 0); 
       container.onclick = () => {
         raycaster.setFromCamera(center, fpsCamera);
         let intersects = raycaster.intersectObjects(fpsTargets);
@@ -1183,12 +1215,11 @@
         ctx.fillStyle = '#008000';
         pipes.forEach((p, i) => {
           p.x -= 4;
-          ctx.fillRect(p.x, 0, 50, p.y); // Top pipe
-          ctx.fillRect(p.x, p.y + 120, 50, 400); // Bottom pipe
+          ctx.fillRect(p.x, 0, 50, p.y); 
+          ctx.fillRect(p.x, p.y + 120, 50, 400); 
           if(p.x === 300) pipes.push({x: 600, y: Math.random()*200 + 50});
           if(p.x < -50) pipes.splice(i, 1);
 
-          // Collision
           if((100 > p.x && 100 < p.x+50) && (birdY < p.y || birdY > p.y+120) || birdY > 400 || birdY < 0) {
             birdY = 200; vel = 0; pipes = [{x: 600, y: 150}];
           }
@@ -1216,7 +1247,7 @@
         if(bx < 0 || bx > 600) bdx = -bdx;
         if(by < 0) bdy = -bdy;
         if(by > 360 && bx > px && bx < px + 100) bdy = -bdy;
-        if(by > 400) { bx = 300; by = 200; bdy = -4; } // dead
+        if(by > 400) { bx = 300; by = 200; bdy = -4; } 
 
         ctx.fillStyle = '#ff007f';
         bricks.forEach(br => {
@@ -1230,7 +1261,7 @@
 
     // 10. WHACK A MOLE
     function initWhackAMole() {
-      const grid = document.getElementById('tictactoe-grid'); // reuse grid
+      const grid = document.getElementById('tictactoe-grid'); 
       grid.style.display = 'grid'; grid.innerHTML = '';
       let score = 0;
       
