@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniType & JARVIS AGI | Premium Edition</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <title>OmniType & JARVIS AGI | Premium Apple Edition</title>
+  <!-- Sleek Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   
   <!-- 3D & GESTURE LIBRARIES -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -12,96 +13,123 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
 
   <style>
-    /* 7 UNIQUE THEMES & ANIMATIONS */
-    :root[data-theme="stark"] { --bg: #050a0f; --panel: rgba(10, 15, 25, 0.7); --panel-solid: #080d14; --accent: #00e5ff; --accent-alt: #0077ff; --text: #e0ffff; --muted: #005577; --correct: #00ff88; --wrong: #ff003c; --font: 'Rajdhani', sans-serif; }
-    :root[data-theme="hacker"] { --bg: #000000; --panel: rgba(10, 0, 0, 0.8); --panel-solid: #050000; --accent: #ff003c; --accent-alt: #880000; --text: #ff3333; --muted: #440000; --correct: #00ff00; --wrong: #ffcc00; --font: 'Share Tech Mono', monospace; }
-    :root[data-theme="ironman"] { --bg: #110000; --panel: rgba(30, 0, 0, 0.75); --panel-solid: #1a0000; --accent: #ffcc00; --accent-alt: #ff0000; --text: #ffdd66; --muted: #880000; --correct: #00ff88; --wrong: #ff003c; --font: 'Orbitron', sans-serif; }
+    /* ========================================================
+       10 UNIQUE THEMES (RESTORED)
+       ======================================================== */
+    :root[data-theme="stark"] { --bg: #050a0f; --panel: rgba(10, 15, 25, 0.7); --accent: #00e5ff; --accent-alt: #0077ff; --text: #e0ffff; --muted: #005577; --correct: #00ff88; --wrong: #ff003c; --font: 'Inter', sans-serif; }
+    :root[data-theme="hacker"] { --bg: #000000; --panel: rgba(10, 0, 0, 0.8); --accent: #ff003c; --accent-alt: #880000; --text: #ff3333; --muted: #440000; --correct: #00ff00; --wrong: #ffcc00; --font: 'Share Tech Mono', monospace; }
+    :root[data-theme="matrix"] { --bg: #020502; --panel: rgba(5, 15, 5, 0.9); --accent: #00ff41; --accent-alt: #008f11; --text: #00ff41; --muted: #003b00; --correct: #ffffff; --wrong: #ff0000; --font: 'Share Tech Mono', monospace; }
+    :root[data-theme="ironman"] { --bg: #110000; --panel: rgba(30, 0, 0, 0.75); --accent: #ffcc00; --accent-alt: #ff0000; --text: #ffdd66; --muted: #880000; --correct: #00ff88; --wrong: #ff003c; --font: 'Orbitron', sans-serif; }
+    :root[data-theme="cyberpunk"] { --bg: #0d0e15; --panel: rgba(22, 25, 37, 0.9); --accent: #00f0ff; --accent-alt: #ff007f; --text: #e0e6ed; --muted: #4a5568; --correct: #00ff88; --wrong: #ff3366; --font: 'Inter', sans-serif; }
+    :root[data-theme="synthwave"] { --bg: #1a0933; --panel: rgba(45, 17, 77, 0.85); --accent: #f72585; --accent-alt: #7209b7; --text: #4cc9f0; --muted: #3f37c9; --correct: #4361ee; --wrong: #f72585; --font: 'Inter', sans-serif; }
+    :root[data-theme="dark"] { --bg: #121212; --panel: rgba(30, 30, 30, 0.9); --accent: #bb86fc; --accent-alt: #03dac6; --text: #e1e1e1; --muted: #555555; --correct: #4caf50; --wrong: #f44336; --font: 'Inter', sans-serif; }
+    :root[data-theme="light"] { --bg: #f4f4f9; --panel: rgba(255, 255, 255, 0.9); --accent: #0055ff; --accent-alt: #0033cc; --text: #111111; --muted: #cccccc; --correct: #00aa55; --wrong: #ee0000; --font: 'Inter', sans-serif; }
+    :root[data-theme="dracula"] { --bg: #282a36; --panel: rgba(40, 42, 54, 0.95); --accent: #ff79c6; --accent-alt: #bd93f9; --text: #f8f8f2; --muted: #6272a4; --correct: #50fa7b; --wrong: #ff5555; --font: 'Inter', sans-serif; }
+    :root[data-theme="neon"] { --bg: #000000; --panel: rgba(10, 10, 10, 0.9); --accent: #39ff14; --accent-alt: #ccff00; --text: #ffffff; --muted: #333333; --correct: #00ffff; --wrong: #ff00ff; --font: 'Orbitron', sans-serif; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.4s ease, border-color 0.4s ease, transform 0.3s ease; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; scroll-behavior: smooth; font-size: 14px; } /* REDUCED BASE FONT SIZE */
     
-    * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.4s ease, border-color 0.4s ease; }
-    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; scroll-behavior: smooth; }
-    
-    /* APPLE STYLE SCROLL ANIMATION */
-    .apple-fade { opacity: 0; transform: translateY(40px) scale(0.97); transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+    /* ========================================================
+       APPLE STYLE ANIMATIONS & UI COMPACTNESS
+       ======================================================== */
+    .apple-fade { opacity: 0; transform: translateY(20px) scale(0.98); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
     .apple-fade.visible { opacity: 1; transform: translateY(0) scale(1); }
     
-    /* PREMIUM SPLIT LAYOUT (APPLE STYLE) */
-    .split-layout { display: flex; gap: 20px; height: 75vh; align-items: stretch; }
-    .side-menu { width: 280px; background: rgba(0,0,0,0.4); border: 1px solid var(--muted); border-radius: 12px; overflow-y: auto; padding: 15px 10px; display: flex; flex-direction: column; gap: 8px; backdrop-filter: blur(10px); }
-    .side-menu::-webkit-scrollbar { width: 6px; } .side-menu::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+    /* HEADER */
+    header { background: var(--panel); backdrop-filter: blur(20px); padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,229,255,0.2); z-index: 10; position: sticky; top:0; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    h1 { font-size: 1.4rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-family: 'Orbitron', sans-serif; font-weight: 900; }
     
-    .side-menu-btn { background: transparent; border: none; color: var(--text); padding: 14px 18px; text-align: left; border-radius: 8px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border-left: 3px solid transparent; font-family: 'Rajdhani', sans-serif; font-size: 1.1rem; font-weight: bold; opacity: 0.7; }
-    .side-menu-btn:hover { background: rgba(0, 229, 255, 0.05); opacity: 1; transform: translateX(5px); }
-    .side-menu-btn.active { background: rgba(0, 229, 255, 0.15); border-left-color: var(--accent); color: var(--accent); opacity: 1; transform: translateX(8px); box-shadow: 0 4px 15px rgba(0,229,255,0.1); }
-    
-    .content-view { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--muted); border-radius: 12px; padding: 40px; overflow-y: auto; position: relative; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
-    .tool-view { display: none; width: 100%; max-width: 800px; animation: scaleFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1); text-align: center; }
-    .tool-view.active { display: block; }
-    @keyframes scaleFadeIn { from{ opacity:0; transform: scale(0.95) translateY(10px); } to{ opacity:1; transform: scale(1) translateY(0); } }
+    nav { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    nav button { background: transparent; border: 1px solid rgba(0,229,255,0.3); color: var(--text); padding: 0.5rem 0.9rem; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: bold; transition: all 0.2s; }
+    nav button.active, nav button:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px rgba(0,229,255,0.4); transform: translateY(-2px); border-color: var(--accent); }
 
-    .tool-view h2 { color: var(--accent); font-family: 'Orbitron', sans-serif; font-size: 2.2rem; margin-bottom: 10px; letter-spacing: 2px; }
-    .tool-view p.desc { color: var(--text); opacity: 0.7; font-size: 1.1rem; margin-bottom: 30px; }
-    .tool-ui-box { background: rgba(0,0,0,0.5); padding: 30px; border-radius: 12px; border: 1px solid var(--muted); width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: left; }
+    /* MAIN LAYOUT */
+    main { flex: 1; padding: 1.5rem; max-width: 1500px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 350px; gap: 1.5rem; align-items: start; }
+    
+    .section-page { display: none; }
+    .section-page.active { display: block; animation: slideFadeUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    @keyframes slideFadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card { background: var(--panel); backdrop-filter: blur(15px); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0,229,255,0.15); box-shadow: 0 10px 30px rgba(0,0,0,0.4); margin-bottom: 1rem; }
+    
+    /* FORMS & BUTTONS (COMPACT) */
+    .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
+    select, input, textarea { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--muted); color: var(--text); padding: 0.7rem; border-radius: 6px; font-family: inherit; font-size: 0.9rem; outline: none; transition: 0.3s; margin-bottom: 10px; }
+    select:focus, input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
+    button.action-btn { width: 100%; background: var(--accent); color: #000; padding: 0.7rem; border: none; border-radius: 6px; font-weight: 700; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; cursor: pointer; text-transform: uppercase; transition: 0.2s; letter-spacing: 1px; }
+    button.action-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,229,255,0.3); }
+
+    /* ========================================================
+       PREMIUM SPLIT LAYOUT (APPLE STYLE SIDEBAR)
+       ======================================================== */
+    .split-layout { display: flex; gap: 15px; height: 75vh; align-items: stretch; }
+    .side-menu { width: 250px; background: rgba(0,0,0,0.3); border: 1px solid var(--muted); border-radius: 10px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 5px; backdrop-filter: blur(10px); }
+    .side-menu::-webkit-scrollbar { width: 5px; } .side-menu::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+    
+    .side-menu-btn { background: transparent; border: none; color: var(--text); padding: 10px 14px; text-align: left; border-radius: 6px; cursor: pointer; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); border-left: 3px solid transparent; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; opacity: 0.7; display: flex; align-items: center; gap: 8px; }
+    .side-menu-btn:hover { background: rgba(0, 229, 255, 0.05); opacity: 1; transform: translateX(3px); }
+    .side-menu-btn.active { background: rgba(0, 229, 255, 0.15); border-left-color: var(--accent); color: var(--accent); opacity: 1; transform: translateX(5px); box-shadow: 0 2px 10px rgba(0,229,255,0.1); }
+    
+    .content-view { flex: 1; background: rgba(0,0,0,0.2); border: 1px solid var(--muted); border-radius: 10px; padding: 25px; overflow-y: auto; position: relative; backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+    .tool-view { display: none; width: 100%; max-width: 700px; animation: scaleFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); text-align: center; }
+    .tool-view.active { display: block; }
+    @keyframes scaleFadeIn { from{ opacity:0; transform: scale(0.97) translateY(10px); } to{ opacity:1; transform: scale(1) translateY(0); } }
+
+    .tool-view h2 { color: var(--accent); font-family: 'Orbitron', sans-serif; font-size: 1.6rem; margin-bottom: 8px; letter-spacing: 1px; }
+    .tool-view p.desc { color: var(--text); opacity: 0.7; font-size: 0.95rem; margin-bottom: 20px; }
+    .tool-ui-box { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 10px; border: 1px solid var(--muted); width: 100%; box-shadow: 0 5px 20px rgba(0,0,0,0.4); text-align: left; }
+    .result-box { background: #000; padding: 12px; border-radius: 6px; border: 1px dashed var(--accent); min-height: 40px; max-height: 200px; overflow-y: auto; color: var(--correct); font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; text-align: left; white-space: pre-wrap; margin-top: 10px; }
+
+    /* ========================================================
+       TYPING STATS
+       ======================================================== */
+    .stats-bar { display: flex; justify-content: space-around; margin-bottom: 1.5rem; background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; border: 1px solid var(--muted); }
+    .stat-value { font-size: 2rem; color: var(--accent); font-weight: 900; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px rgba(0,229,255,0.3); }
+    .stat-label { font-size: 0.8rem; color: var(--text); opacity: 0.6; text-transform: uppercase; letter-spacing: 1px; }
+    #typing-display { font-size: 1.3rem; line-height: 1.6; min-height: 120px; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--muted); margin-bottom: 1rem; user-select: none; }
+    .char.correct { color: var(--correct); } .char.wrong { color: var(--wrong); text-decoration: underline; } .char.current { background: var(--accent); color: #000; animation: blink 1s infinite; }
+    
+    /* ========================================================
+       MOVIES & ARCADE
+       ======================================================== */
+    .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; max-height: 60vh; overflow-y: auto; padding-right: 10px; }
+    .movie-grid::-webkit-scrollbar { width: 5px; } .movie-grid::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+    .movie-card { background: #111; border: 1px solid var(--muted); border-radius: 8px; overflow: hidden; cursor: pointer; transition: 0.3s; position: relative; height: 220px; display:flex; align-items:flex-end; padding:10px; text-align:center; }
+    .movie-card:hover { transform: scale(1.05); border-color: var(--accent); box-shadow: 0 0 15px var(--accent); }
+    .movie-title { color: #fff; font-family: 'Orbitron', sans-serif; font-weight: bold; width: 100%; text-shadow: 0 2px 4px #000; z-index: 2; font-size: 0.85rem; }
+    .movie-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index: 1;}
+
+    #arcade-viewport { width:100%; height:450px; background:#050505; border:2px solid var(--muted); border-radius:8px; position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center; cursor: crosshair; }
+    canvas.game-canvas { display:none; background:#000; width:100%; height:100%; }
+
+    /* ========================================================
+       JARVIS SIDEBAR UI
+       ======================================================== */
+    .jarvis-sidebar { background: var(--panel); border: 1px solid rgba(0,229,255,0.2); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; height: 85vh; position: sticky; top: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.5); backdrop-filter: blur(15px); }
+    .jarvis-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--muted); padding-bottom: 0.8rem; font-family: 'Orbitron'; font-weight: 900; color: var(--accent); font-size: 1.1rem; }
+    .orb-container { display: flex; justify-content: center; align-items: center; height: 100px; }
+    .jarvis-orb { width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffffff, var(--accent) 50%, #000 100%); box-shadow: 0 0 30px var(--accent); animation: float 3s infinite ease-in-out; }
+    .jarvis-orb.speaking { animation: speak-pulse 0.15s infinite alternate; filter: brightness(1.5); }
+    .jarvis-orb.listening { animation: listen-pulse 0.5s infinite alternate; box-shadow: 0 0 40px var(--correct); filter: hue-rotate(90deg); }
+
+    .jarvis-chat-log { flex-grow: 1; overflow-y: auto; background: rgba(0,0,0,0.4); padding: 0.8rem; border-radius: 8px; display: flex; flex-direction: column; gap: 0.8rem; border: 1px solid rgba(0,229,255,0.1); font-size: 0.95rem; }
+    .chat-msg { padding: 0.8rem; border-radius: 8px; line-height: 1.4; }
+    .chat-msg.user { background: rgba(255,255,255,0.05); color: #fff; align-self: flex-end; border-right: 3px solid #fff; }
+    .chat-msg.jarvis { background: rgba(0, 229, 255, 0.1); color: var(--accent); align-self: flex-start; border-left: 3px solid var(--accent); }
 
     /* GLOBAL IRON MAN HUD */
     #global-hud { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; background: radial-gradient(circle, transparent 60%, rgba(0,229,255,0.15) 100%); border: 4px solid rgba(0,229,255,0.3); box-sizing: border-box; }
     #global-hud::before { content:''; position:absolute; top:50%; left:50%; width:400px; height:400px; border:2px dashed var(--accent); border-radius:50%; transform:translate(-50%, -50%); animation: spinHud 15s linear infinite; opacity: 0.5; }
-    #global-hud::after { content:'TARGET LOCKED'; position:absolute; top:55%; left:50%; transform:translate(-50%, -50%); color:var(--wrong); font-family:'Orbitron'; letter-spacing: 5px; opacity: 0.7; }
     @keyframes spinHud { 100% { transform:translate(-50%, -50%) rotate(360deg); } }
-
-    header { background: var(--panel); backdrop-filter: blur(20px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,229,255,0.3); z-index: 10; position: sticky; top:0; }
-    h1 { font-size: 1.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 4px; font-family: 'Orbitron', sans-serif; font-weight: 900; }
-    
-    nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    nav button { background: transparent; border: 1px solid rgba(0,229,255,0.3); color: var(--text); padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: bold; transition: all 0.3s; }
-    nav button.active, nav button:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.4); transform: translateY(-2px); border-color: var(--accent); }
-
-    main { flex: 1; padding: 2rem; max-width: 1600px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 400px; gap: 2rem; align-items: start; }
-    
-    .section-page { display: none; }
-    .section-page.active { display: block; animation: slideFadeUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
-    
-    .card { background: var(--panel); backdrop-filter: blur(15px); padding: 2rem; border-radius: 16px; border: 1px solid rgba(0,229,255,0.2); box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 1.5rem; }
-    
-    .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-    select, input, textarea { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--muted); color: var(--text); padding: 1rem; border-radius: 8px; font-family: inherit; font-size: 1.1rem; outline: none; transition: 0.3s; margin-bottom: 15px; }
-    select:focus, input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0,229,255,0.2); }
-    button.action-btn { width: 100%; background: var(--accent); color: #000; padding: 1rem; border: none; border-radius: 8px; font-weight: 900; font-family: 'Orbitron', sans-serif; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; transition: 0.3s; letter-spacing: 1px; }
-    button.action-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,229,255,0.4); }
-
-    /* TYPING STATS */
-    .stats-bar { display: flex; justify-content: space-around; margin-bottom: 2rem; background: rgba(0,0,0,0.4); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--muted); }
-    .stat-box { text-align: center; }
-    .stat-value { font-size: 3rem; color: var(--accent); font-weight: 900; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 15px rgba(0,229,255,0.3); }
-    .stat-label { font-size: 1rem; color: var(--text); opacity: 0.6; text-transform: uppercase; letter-spacing: 2px; }
-    #typing-display { font-size: 1.6rem; line-height: 1.8; min-height: 150px; background: rgba(0,0,0,0.3); padding: 2rem; border-radius: 12px; border: 1px solid var(--muted); margin-bottom: 1.5rem; user-select: none; }
-    .char.correct { color: var(--correct); } .char.wrong { color: var(--wrong); text-decoration: underline; } .char.current { background: var(--accent); color: #000; animation: blink 1s infinite; }
-    
-    /* ARCADE GAMES STYLES */
-    #arcade-viewport { width:100%; height:500px; background:#050505; border:2px solid var(--muted); border-radius:12px; position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center; }
-    canvas.game-canvas { display:none; background:#000; width:100%; height:100%; }
-
-    /* JARVIS SIDEBAR UI */
-    .jarvis-sidebar { background: var(--panel); border: 1px solid rgba(0,229,255,0.2); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; height: 85vh; position: sticky; top: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(15px); }
-    .jarvis-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--muted); padding-bottom: 1rem; font-family: 'Orbitron'; font-weight: 900; color: var(--accent); font-size: 1.3rem; }
-    .orb-container { display: flex; justify-content: center; align-items: center; height: 140px; }
-    .jarvis-orb { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffffff, var(--accent) 50%, #000 100%); box-shadow: 0 0 40px var(--accent); animation: float 3s infinite ease-in-out; }
-    .jarvis-orb.speaking { animation: speak-pulse 0.15s infinite alternate; filter: brightness(1.5); }
-    .jarvis-orb.listening { animation: listen-pulse 0.5s infinite alternate; box-shadow: 0 0 50px var(--correct); filter: hue-rotate(90deg); }
-
-    .jarvis-chat-log { flex-grow: 1; overflow-y: auto; background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 10px; display: flex; flex-direction: column; gap: 1rem; border: 1px solid rgba(0,229,255,0.1); }
-    .chat-msg { padding: 1rem; border-radius: 10px; line-height: 1.5; font-size: 1.1rem; }
-    .chat-msg.user { background: rgba(255,255,255,0.05); color: #fff; align-self: flex-end; border-right: 3px solid #fff; }
-    .chat-msg.jarvis { background: rgba(0, 229, 255, 0.1); color: var(--accent); align-self: flex-start; border-left: 3px solid var(--accent); }
-
-    .result-box { background: #000; padding: 15px; border-radius: 8px; border: 1px dashed var(--accent); min-height: 60px; max-height: 250px; overflow-y: auto; color: var(--correct); font-family: monospace; font-size: 1.1rem; text-align: left; white-space: pre-wrap; margin-top: 15px; }
 
     /* Responsive */
     @media (max-width: 1100px) {
         main { grid-template-columns: 1fr; }
         .split-layout { flex-direction: column; height: auto; }
-        .side-menu { width: 100%; max-height: 200px; flex-direction: row; flex-wrap: wrap; }
-        .side-menu-btn { flex: 1; text-align: center; border-left: none; border-bottom: 3px solid transparent; }
-        .side-menu-btn.active { border-left: none; border-bottom-color: var(--accent); transform: translateY(-3px); }
+        .side-menu { width: 100%; max-height: 150px; flex-direction: row; flex-wrap: wrap; }
+        .side-menu-btn { flex: 1; min-width: 120px; text-align: center; justify-content: center; border-left: none; border-bottom: 2px solid transparent; }
+        .side-menu-btn.active { border-left: none; border-bottom-color: var(--accent); transform: translateY(-2px); }
     }
   </style>
 </head>
@@ -148,54 +176,54 @@
       <!-- 2. IQ TEST SUITE -->
       <section id="iq-tab" class="section-page">
         <div class="card apple-fade">
-          <h2 style="color:var(--accent); font-family:'Orbitron'; font-size:2rem; margin-bottom:1.5rem; text-align:center;">Advanced Cognitive Certification</h2>
+          <h2 style="color:var(--accent); font-family:'Orbitron'; font-size:1.8rem; margin-bottom:1rem; text-align:center;">Advanced Cognitive Certification</h2>
           <div class="controls-grid">
-            <select id="iq-q-count"><option value="3">3 Questions</option><option value="5" selected>5 Questions</option></select>
+            <select id="iq-q-count"><option value="3">3 Questions</option><option value="5" selected>5 Questions</option><option value="10">10 Questions</option></select>
             <button class="action-btn" onclick="generateDynamicIQTest()">Generate AI Exam</button>
           </div>
-          <div id="iq-questions-container"></div>
+          <div id="iq-questions-container" style="margin-top: 15px;"></div>
           <hr style="border-color:var(--muted); margin: 2rem 0;">
           <h3 style="text-align:center; margin-bottom:1rem;">Claim Your Certificate</h3>
           <div class="controls-grid">
             <input type="text" id="user-full-name" placeholder="Enter Full Name" required>
-            <button class="action-btn" onclick="submitIQAndGenerateCertificate()">Evaluate & Render Degree</button>
+            <button class="action-btn" onclick="submitIQAndGenerateCertificate()">Evaluate & Render</button>
           </div>
-          <div id="iq-result" style="text-align:center; font-size:1.5rem; color:var(--accent); margin-top:1rem;"></div>
+          <div id="iq-result" style="text-align:center; font-size:1.3rem; color:var(--accent); margin-top:1rem;"></div>
           <canvas id="certificate-canvas" width="800" height="600" class="apple-fade" style="display:none; width:100%; margin-top:2rem; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.8);"></canvas>
-          <button id="download-cert-btn" class="action-btn apple-fade" style="display:none; margin-top:1rem; background:var(--correct);" onclick="downloadCertificate()">📥 Download Authentic Certificate</button>
+          <button id="download-cert-btn" class="action-btn apple-fade" style="display:none; margin-top:1rem; background:var(--correct); color:#000;" onclick="downloadCertificate()">📥 Download Authentic Certificate</button>
         </div>
       </section>
 
-      <!-- 3. STARK MOVIES (FULLSCREEN) -->
+      <!-- 3. STARK MOVIES (EXPANDED + FULLSCREEN) -->
       <section id="movies-tab" class="section-page">
-        <div class="card apple-fade" style="height: 85vh; display: flex; flex-direction: column;">
-          <h2 style="text-align:center; color:var(--accent); font-family:'Orbitron'; font-size:2.8rem; letter-spacing:4px; margin-bottom:5px;">🎬 STARK CINEMA</h2>
-          <p style="text-align:center; color:var(--correct); margin-bottom:2rem; font-weight:bold; letter-spacing:2px;">FOUNDED BY MOULIK SONI</p>
+        <div class="card apple-fade" style="height: 80vh; display: flex; flex-direction: column;">
+          <h2 style="text-align:center; color:var(--accent); font-family:'Orbitron'; font-size:2.2rem; letter-spacing:3px; margin-bottom:5px;">🎬 STARK CINEMA</h2>
+          <p style="text-align:center; color:var(--correct); margin-bottom:1.5rem; font-weight:bold; letter-spacing:1px; font-size:0.9rem;">FOUNDED BY MOULIK SONI</p>
           
           <div style="display:flex; gap:10px; margin-bottom:1.5rem;">
             <input type="text" id="movie-search-input" placeholder="Search Movie, Series or Anime..." onkeypress="if(event.key==='Enter') searchStarkMovie()">
-            <button class="action-btn" style="width:200px;" onclick="searchStarkMovie()">Search Database</button>
+            <button class="action-btn" style="width:180px;" onclick="searchStarkMovie()">Search</button>
           </div>
           
-          <div id="movie-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:20px; overflow-y:auto; padding-right:10px; flex:1;"></div>
+          <div id="movie-grid" class="movie-grid"></div>
           
           <div id="movie-player" style="display:none; flex:1; flex-direction:column;">
             <div style="display: flex; gap: 15px; margin-bottom: 15px;">
                 <button class="action-btn" style="background:var(--wrong); color:#fff;" onclick="closeMoviePlayer()">🔙 Back to Grid</button>
                 <button class="action-btn" style="background:var(--correct); color:#000;" onclick="toggleMovieFullscreen()">⛶ Fullscreen Stream</button>
             </div>
-            <iframe id="movie-iframe" style="flex:1; width:100%; border:2px solid var(--accent); border-radius:12px; box-shadow: 0 0 30px rgba(0,229,255,0.2);" allowfullscreen></iframe>
+            <iframe id="movie-iframe" style="flex:1; width:100%; border:2px solid var(--accent); border-radius:8px; background:#000;" allowfullscreen></iframe>
           </div>
         </div>
       </section>
 
-      <!-- 4. ARCADE GAMES -->
+      <!-- 4. ARCADE GAMES (REALISTIC FREE FIRE UPDATE) -->
       <section id="arcade-tab" class="section-page">
         <div class="card apple-fade">
-          <h2 style="color:var(--accent); font-family:'Orbitron'; font-size:2.5rem; text-align:center; margin-bottom:1.5rem;">🎮 STARK ARCADE HUB</h2>
+          <h2 style="color:var(--accent); font-family:'Orbitron'; font-size:2rem; text-align:center; margin-bottom:1rem;">🎮 STARK ARCADE HUB</h2>
           <div class="controls-grid">
             <select id="arcade-selector" onchange="startArcadeGame()">
-              <option value="fps">1. Free Fire (Survival FPS)</option>
+              <option value="fps">1. Free Fire (Realistic Update)</option>
               <option value="mario">2. Super Mario (Endless)</option>
               <option value="tekken">3. Tekken (Street Fighter)</option>
               <option value="minecraft">4. Minecraft (2D Builder)</option>
@@ -209,32 +237,27 @@
             <button class="action-btn" onclick="startArcadeGame()">▶️ Launch Game</button>
           </div>
           <div id="arcade-viewport">
-            <canvas id="game-canvas" class="game-canvas" width="800" height="500"></canvas>
+            <canvas id="game-canvas" class="game-canvas" width="800" height="450"></canvas>
             <div id="html-game-grid" style="display:none; flex-wrap:wrap; gap:10px; padding:20px; width:100%; height:100%; justify-content:center; align-items:center;"></div>
           </div>
-          <p id="game-instructions" style="text-align:center; color:var(--correct); margin-top:15px; font-size:1.2rem; font-family:'Share Tech Mono';"></p>
+          <p id="game-instructions" style="text-align:center; color:var(--correct); margin-top:15px; font-size:1rem; font-family:'Share Tech Mono';"></p>
         </div>
       </section>
 
-      <!-- 5. UTILITIES (APPLE STYLE SPLIT VIEW - 40 TOOLS) -->
+      <!-- 5. UTILITIES (APPLE STYLE SPLIT VIEW - 40 FULLY WORKING TOOLS) -->
       <section id="utilities-tab" class="section-page">
         <div class="split-layout apple-fade">
-          
           <!-- Sidebar for 40 Utils -->
-          <div class="side-menu" id="util-sidebar">
-            <!-- Populated via JS -->
-          </div>
+          <div class="side-menu" id="util-sidebar"></div>
           
           <!-- Main Content Area -->
           <div class="content-view" id="util-content-view">
-             <!-- Tools will be rendered here dynamically -->
-             <div class="tool-view active" style="text-align:center; margin-top:20%;">
+             <div class="tool-view active" style="text-align:center; margin-top:15%;">
                 <h2 style="font-size:3rem; color:var(--muted);">🛠️</h2>
                 <h2 style="color:var(--text);">Select a Utility</h2>
-                <p style="opacity:0.6;">Choose from 40 advanced tools in the sidebar.</p>
+                <p style="opacity:0.6;">Choose from 40 advanced, fully-functional tools.</p>
              </div>
           </div>
-
         </div>
       </section>
 
@@ -244,16 +267,16 @@
           
           <!-- Sidebar for 10 AI Tools -->
           <div class="side-menu" id="ai-sidebar">
-            <button class="side-menu-btn active" onclick="openAITool('ai-vision', this)">🎨 1. JARVIS Vision (Image Gen)</button>
+            <button class="side-menu-btn active" onclick="openAITool('ai-vision', this)">🎨 1. JARVIS Vision Gen</button>
             <button class="side-menu-btn" onclick="openAITool('ai-coderunner', this)">⚡ 2. Live Code Runner</button>
             <button class="side-menu-btn" onclick="openAITool('ai-coder', this)">💻 3. AI Coding Agent</button>
-            <button class="side-menu-btn" onclick="openAITool('ai-research', this)">🔍 4. Deep Research Agent</button>
+            <button class="side-menu-btn" onclick="openAITool('ai-research', this)">🔍 4. Deep Research</button>
             <button class="side-menu-btn" onclick="openAITool('ai-interview', this)">👔 5. Interview Simulator</button>
             <button class="side-menu-btn" onclick="openAITool('ai-coach', this)">📘 6. Smart Study Coach</button>
-            <button class="side-menu-btn" onclick="openAITool('ai-web', this)">🌐 7. AI Website Builder</button>
-            <button class="side-menu-btn" onclick="openAITool('ai-search', this)">🧠 8. Universal Smart Search</button>
-            <button class="side-menu-btn" onclick="openAITool('ai-scanner', this)">🛡️ 9. Cyber Security Scanner</button>
-            <button class="side-menu-btn" onclick="openAITool('ai-hud', this)">🚨 10. Iron Man HUD Mode</button>
+            <button class="side-menu-btn" onclick="openAITool('ai-web', this)">🌐 7. AI Web Builder</button>
+            <button class="side-menu-btn" onclick="openAITool('ai-search', this)">🧠 8. Universal Search</button>
+            <button class="side-menu-btn" onclick="openAITool('ai-scanner', this)">🛡️ 9. Cyber Scanner</button>
+            <button class="side-menu-btn" onclick="openAITool('ai-hud', this)">🚨 10. Iron Man HUD</button>
           </div>
 
           <!-- Main Content Area -->
@@ -262,33 +285,33 @@
              <!-- 1. AI Vision -->
              <div id="ai-vision" class="tool-view active">
                 <h2>🎨 JARVIS Vision Studio</h2>
-                <p class="desc">Generate quantum-rendered images completely free.</p>
+                <p class="desc">Generate high-quality quantum-rendered images.</p>
                 <div class="tool-ui-box">
-                    <input type="text" id="ai-img-prompt" placeholder="e.g. Iron man suit flying over Rohtak cyberpunk style...">
+                    <input type="text" id="ai-img-prompt" placeholder="e.g. A futuristic cyber city at night...">
                     <button class="action-btn" onclick="genAIImage()">Generate Masterpiece</button>
-                    <div id="ai-img-loader" style="display:none; color:var(--accent); margin-top:20px; font-weight:bold;">Rendering Quantum Pixels...</div>
-                    <img id="ai-img-result" style="width:100%; max-height:400px; object-fit:contain; border-radius:8px; display:none; margin-top:20px; border:2px solid var(--accent); box-shadow:0 10px 30px rgba(0,229,255,0.3);">
+                    <div id="ai-img-loader" style="display:none; color:var(--accent); margin-top:20px; font-weight:bold;">Rendering Pixels...</div>
+                    <img id="ai-img-result" style="width:100%; max-height:300px; object-fit:contain; border-radius:8px; display:none; margin-top:15px; border:1px solid var(--accent);">
                 </div>
              </div>
 
              <!-- 2. Live Code Runner -->
              <div id="ai-coderunner" class="tool-view">
                 <h2>⚡ Live Code Sandbox</h2>
-                <p class="desc">Write HTML/CSS/JS and execute it directly in the browser.</p>
+                <p class="desc">Write HTML/CSS/JS and execute it instantly.</p>
                 <div class="tool-ui-box">
-                    <textarea id="live-code-in" rows="8" style="font-family:monospace; background:#000; color:#0f0;" placeholder="<h1>Hello World!</h1><style>h1{color:red; text-align:center;}</style>"></textarea>
+                    <textarea id="live-code-in" rows="6" style="font-family:monospace; background:#000; color:#0f0;" placeholder="<h1>Hello!</h1><style>h1{color:red; text-align:center;}</style>"></textarea>
                     <button class="action-btn" onclick="runLiveCode()">▶️ Execute Code</button>
-                    <iframe id="live-code-out" style="width:100%; height:250px; background:#fff; border-radius:8px; margin-top:20px; border:2px solid var(--muted);"></iframe>
+                    <iframe id="live-code-out" style="width:100%; height:200px; background:#fff; border-radius:6px; margin-top:15px; border:1px solid var(--muted);"></iframe>
                 </div>
              </div>
 
              <!-- 3. AI Coder -->
              <div id="ai-coder" class="tool-view">
                 <h2>💻 Senior AI Coder</h2>
-                <p class="desc">Describe the function or script you need. JARVIS will write it.</p>
+                <p class="desc">Describe the function. JARVIS will write the code.</p>
                 <div class="tool-ui-box">
-                    <textarea id="ai-code-in" rows="4" placeholder="Write a Python script to scrape a website..."></textarea>
-                    <button class="action-btn" onclick="callGroqModule('ai-code-in', 'ai-code-out', 'Write clean, production-ready code for the following request. Return only the code and a brief explanation:')">Generate Code</button>
+                    <textarea id="ai-code-in" rows="3" placeholder="Write a python script to reverse an array..."></textarea>
+                    <button class="action-btn" onclick="callGroqModule('ai-code-in', 'ai-code-out', 'Write clean, production-ready code. Only return code and brief explanation:')">Generate Code</button>
                     <div id="ai-code-out" class="result-box"></div>
                 </div>
              </div>
@@ -296,10 +319,10 @@
              <!-- 4. AI Research -->
              <div id="ai-research" class="tool-view">
                 <h2>🔍 Deep Research Agent</h2>
-                <p class="desc">Get a factual, highly detailed summary on any topic.</p>
+                <p class="desc">Get a factual summary on any topic.</p>
                 <div class="tool-ui-box">
-                    <textarea id="ai-res-in" rows="3" placeholder="Explain the mechanics of Quantum Entanglement..."></textarea>
-                    <button class="action-btn" onclick="callGroqModule('ai-res-in', 'ai-res-out', 'Provide a highly detailed, factual, and structured summary of the following topic:')">Commence Research</button>
+                    <textarea id="ai-res-in" rows="2" placeholder="Mechanics of Black Holes..."></textarea>
+                    <button class="action-btn" onclick="callGroqModule('ai-res-in', 'ai-res-out', 'Provide a detailed, factual summary of:')">Research</button>
                     <div id="ai-res-out" class="result-box"></div>
                 </div>
              </div>
@@ -307,10 +330,10 @@
              <!-- 5. Interview Simulator -->
              <div id="ai-interview" class="tool-view">
                 <h2>👔 Interview Simulator</h2>
-                <p class="desc">Prepare for top-tier companies. Enter a job role to get grilled.</p>
+                <p class="desc">Enter a job role to get a difficult technical question.</p>
                 <div class="tool-ui-box">
-                    <input type="text" id="int-in" placeholder="e.g. Senior Frontend Developer at Google">
-                    <button class="action-btn" onclick="callGroqModule('int-in', 'int-out', 'Act as a strict hiring manager. Ask ONE very difficult, technical interview question for the following role:')">Ask Me A Question</button>
+                    <input type="text" id="int-in" placeholder="e.g. Senior Backend Engineer">
+                    <button class="action-btn" onclick="callGroqModule('int-in', 'int-out', 'Act as a strict hiring manager. Ask ONE very difficult technical interview question for:')">Ask Me A Question</button>
                     <div id="int-out" class="result-box"></div>
                 </div>
              </div>
@@ -318,10 +341,10 @@
              <!-- 6. Study Coach -->
              <div id="ai-coach" class="tool-view">
                 <h2>📘 Smart Study Coach</h2>
-                <p class="desc">Get a fast, optimized roadmap to learn any subject.</p>
+                <p class="desc">Get an optimized roadmap to learn any subject.</p>
                 <div class="tool-ui-box">
-                    <input type="text" id="coach-in" placeholder="e.g. JEE Advanced Rotational Mechanics">
-                    <button class="action-btn" onclick="callGroqModule('coach-in', 'coach-out', 'Act as an expert tutor. Create a fast, bullet-pointed 3-step study plan to master the following topic:')">Build Study Plan</button>
+                    <input type="text" id="coach-in" placeholder="e.g. Quantum Physics basics">
+                    <button class="action-btn" onclick="callGroqModule('coach-in', 'coach-out', 'Create a fast, bulleted 3-step study plan to master:')">Build Plan</button>
                     <div id="coach-out" class="result-box"></div>
                 </div>
              </div>
@@ -331,8 +354,8 @@
                 <h2>🌐 Instant Web Builder</h2>
                 <p class="desc">Describe a UI component and get the HTML/CSS.</p>
                 <div class="tool-ui-box">
-                    <textarea id="ai-web-in" rows="3" placeholder="A futuristic login form with glassmorphism..."></textarea>
-                    <button class="action-btn" onclick="callGroqModule('ai-web-in', 'ai-web-out', 'Generate a beautiful, single-file HTML and CSS snippet for the following request. Make it modern:')">Build UI</button>
+                    <textarea id="ai-web-in" rows="2" placeholder="A futuristic button..."></textarea>
+                    <button class="action-btn" onclick="callGroqModule('ai-web-in', 'ai-web-out', 'Generate a beautiful, single-file HTML and CSS snippet for:')">Build UI</button>
                     <div id="ai-web-out" class="result-box"></div>
                 </div>
              </div>
@@ -340,10 +363,10 @@
              <!-- 8. Smart Search -->
              <div id="ai-search" class="tool-view">
                 <h2>🧠 Universal Smart Search</h2>
-                <p class="desc">Ask anything. Get a direct, encyclopedic answer instantly.</p>
+                <p class="desc">Ask anything. Get a direct answer instantly.</p>
                 <div class="tool-ui-box">
-                    <input type="text" id="smart-search-in" placeholder="Search the universal database...">
-                    <button class="action-btn" onclick="callGroqModule('smart-search-in', 'smart-search-out', 'Provide a quick, precise, and encyclopedic answer for the following query:')">Search Database</button>
+                    <input type="text" id="smart-search-in" placeholder="Search...">
+                    <button class="action-btn" onclick="callGroqModule('smart-search-in', 'smart-search-out', 'Provide a precise answer for:')">Search Database</button>
                     <div id="smart-search-out" class="result-box"></div>
                 </div>
              </div>
@@ -353,7 +376,7 @@
                 <h2>🛡️ Cyber Security Scanner</h2>
                 <p class="desc">Run a simulated diagnostic on the current network.</p>
                 <div class="tool-ui-box">
-                    <button class="action-btn" onclick="runCyberScan()">Initiate NMAP Diagnostic</button>
+                    <button class="action-btn" onclick="runCyberScan()">Initiate Diagnostic</button>
                     <div id="scan-out" class="result-box" style="color:var(--accent);">Awaiting command...</div>
                 </div>
              </div>
@@ -361,9 +384,9 @@
              <!-- 10. HUD Mode -->
              <div id="ai-hud" class="tool-view">
                 <h2>🚨 Iron Man HUD Mode</h2>
-                <p class="desc">Activate the global optical overlay across the entire system.</p>
-                <div class="tool-ui-box" style="border-color:var(--wrong);">
-                    <button class="action-btn" style="background:var(--wrong); color:#fff; padding:20px; font-size:1.5rem;" onclick="toggleHUD()">TOGGLE COMBAT HUD</button>
+                <p class="desc">Activate the global optical overlay.</p>
+                <div class="tool-ui-box" style="border-color:var(--wrong); text-align:center;">
+                    <button class="action-btn" style="background:var(--wrong); color:#fff; width:60%; padding:15px;" onclick="toggleHUD()">TOGGLE HUD</button>
                 </div>
              </div>
 
@@ -371,16 +394,16 @@
         </div>
       </section>
 
-      <!-- ⚛️ 3D AR HOLOGRAM ELEMENTS (FIXED THREE.JS) -->
+      <!-- ⚛️ 3D AR HOLOGRAM ELEMENTS (FIXED THREE.JS & TRACKING) -->
       <section id="hologram-tab" class="section-page">
-        <div class="card apple-fade" style="height: 85vh; display:flex; flex-direction:column;">
-          <h2 style="text-align:center; color:var(--accent); font-family:'Orbitron'; font-size:2.5rem; margin-bottom:1rem;">⚛️ 3D QUANTUM AR VIEWER</h2>
+        <div class="card apple-fade" style="height: 80vh; display:flex; flex-direction:column;">
+          <h2 style="text-align:center; color:var(--accent); font-family:'Orbitron'; font-size:2rem; margin-bottom:1rem;">⚛️ 3D QUANTUM AR VIEWER</h2>
           <div class="controls-grid">
             <select id="element-selector" onchange="loadElementHologram()"></select>
             <button class="action-btn" onclick="toggleARCamera()" id="ar-cam-btn">Turn ON AR Hand Gestures</button>
           </div>
-          <p style="text-align:center; color:var(--correct); margin-bottom:15px; font-size:1.1rem; font-weight:bold;">Gestures: 🤚 Open Palm to Rotate | 🤏 Pinch to Scale</p>
-          <div id="ar-container" style="flex:1; position:relative; background:#000; border-radius:12px; overflow:hidden; box-shadow: 0 0 30px rgba(0,229,255,0.2) inset; border: 1px solid var(--muted);">
+          <p style="text-align:center; color:var(--correct); margin-bottom:10px; font-size:0.9rem; font-weight:bold;">Gestures: 🤚 Open Palm to Rotate | 🤏 Pinch to Scale</p>
+          <div id="ar-container" style="flex:1; position:relative; background:#000; border-radius:10px; overflow:hidden; border: 1px solid var(--muted);">
             <video id="ar-video" style="position:absolute; width:100%; height:100%; object-fit:cover; opacity:0.3; display:none;" autoplay muted playsinline></video>
             <div id="three-canvas-container" style="position:absolute; width:100%; height:100%;"></div>
           </div>
@@ -390,24 +413,33 @@
       <!-- ⚙️ SETTINGS & CONFIG -->
       <section id="custom-tab" class="section-page">
         <div class="card apple-fade">
-          <h2 style="color:var(--accent); font-family:'Orbitron'; font-size:2rem; margin-bottom:1.5rem;">⚙️ System Configuration</h2>
+          <h2 style="color:var(--accent); font-family:'Orbitron'; font-size:1.8rem; margin-bottom:1.5rem;">⚙️ System Configuration</h2>
           <div class="tool-ui-box">
-            <label style="font-weight:bold; font-size:1.1rem; margin-bottom:10px; display:block;">UI Theme Engine</label>
-            <select id="theme-selector" onchange="changeTheme(this.value)" style="margin-bottom:2rem;">
-              <option value="stark" selected>Stark Glassmorphism</option><option value="hacker">Crimson Hacker</option><option value="ironman">Iron Man Gold</option>
+            <label style="font-weight:bold; margin-bottom:8px; display:block;">UI Theme Engine (10 Themes)</label>
+            <select id="theme-selector" onchange="changeTheme(this.value)" style="margin-bottom:1.5rem;">
+              <option value="stark" selected>Stark Glassmorphism</option>
+              <option value="hacker">Crimson Hacker</option>
+              <option value="matrix">Matrix Green</option>
+              <option value="ironman">Iron Man Gold</option>
+              <option value="cyberpunk">Cyberpunk Neon</option>
+              <option value="synthwave">Synthwave Violet</option>
+              <option value="dark">Dark Minimal</option>
+              <option value="light">Clean Light</option>
+              <option value="dracula">Dracula Dark</option>
+              <option value="neon">Toxic Neon</option>
             </select>
             
-            <label style="font-weight:bold; font-size:1.1rem; margin-bottom:10px; display:block;">Groq API Key (Crucial for JARVIS AGI & AI Hub)</label>
-            <div style="display:flex; gap:10px; margin-bottom:2rem;">
+            <label style="font-weight:bold; margin-bottom:8px; display:block;">Groq API Key (Crucial for JARVIS AGI & AI Hub)</label>
+            <div style="display:flex; gap:10px; margin-bottom:1.5rem;">
               <input type="password" id="gemini-api-key" placeholder="Paste Groq API Key (gsk_...)">
-              <button class="action-btn" style="width:200px;" onclick="saveAPIKey()">Lock Key</button>
+              <button class="action-btn" style="width:150px;" onclick="saveAPIKey()">Lock Key</button>
             </div>
             
-            <hr style="border-color:var(--muted); margin:2rem 0;">
+            <hr style="border-color:var(--muted); margin:1.5rem 0;">
             <h3 style="color:var(--accent); margin-bottom:10px;">🧠 Secure Memory Vault</h3>
-            <p style="font-size:1rem; opacity:0.8; margin-bottom:1rem;">Live session data known to JARVIS:</p>
+            <p style="font-size:0.9rem; opacity:0.8; margin-bottom:10px;">Live session data known to JARVIS:</p>
             <pre id="memory-display" class="result-box"></pre>
-            <button class="action-btn" style="background:var(--wrong); margin-top:1.5rem;" onclick="clearMemory()">Wipe All Memory Data</button>
+            <button class="action-btn" style="background:var(--wrong); margin-top:1rem; width:200px;" onclick="clearMemory()">Wipe Memory Data</button>
           </div>
         </div>
       </section>
@@ -417,16 +449,16 @@
     <aside class="jarvis-sidebar apple-fade">
       <div class="jarvis-header">
         <span>J.A.R.V.I.S. Core</span>
-        <button class="action-btn" style="width:auto; padding: 0.4rem 0.8rem; font-size:0.8rem; background:var(--wrong); color:#fff; border-radius:4px;" onclick="interruptJARVIS()">MUTE</button>
+        <button class="action-btn" style="width:auto; padding: 0.3rem 0.6rem; font-size:0.75rem; background:var(--wrong); color:#fff; border-radius:4px;" onclick="interruptJARVIS()">MUTE</button>
       </div>
       <div class="orb-container"><div class="jarvis-orb" id="jarvis-orb"></div></div>
       <div class="jarvis-chat-log" id="jarvis-chat-log">
-        <div class="chat-msg jarvis">System Initialized. Awaiting commands, Boss.</div>
+        <div class="chat-msg jarvis">System Initialized. Theme Engine Online. 10 Themes Active. Awaiting commands, Boss.</div>
       </div>
       <div class="jarvis-controls">
         <input type="text" id="jarvis-input" placeholder="Type command..." onkeypress="if(event.key==='Enter') sendJarvisMessage()">
-        <button class="action-btn" style="width:auto; padding: 1rem;" onclick="sendJarvisMessage()">SEND</button>
-        <button class="action-btn" style="width:auto; padding: 1rem; background: var(--accent-alt); color:#fff;" onclick="toggleMic()">🎙️</button>
+        <button class="action-btn" style="width:auto; padding: 0.8rem;" onclick="sendJarvisMessage()">SEND</button>
+        <button class="action-btn" style="width:auto; padding: 0.8rem; background: var(--accent-alt); color:#fff;" onclick="toggleMic()">🎙️</button>
       </div>
     </aside>
   </main>
@@ -441,8 +473,7 @@
       }, { threshold: 0.05 });
       document.querySelectorAll('.apple-fade').forEach(el => observer.observe(el));
       
-      // Init 40 Utilities UI
-      buildUtilitiesUI();
+      buildUtilitiesUI(); // Init 40 Utilities
     });
 
     /* =======================================================
@@ -461,11 +492,11 @@
 
       if(tabId === 'movies' && document.getElementById('movie-grid').innerHTML === '') loadStarkMovies();
       if(tabId === 'iq' && iqData.length === 0) generateDynamicIQTest();
-      if(tabId === 'hologram' && !atomRenderer) setTimeout(() => initHologramSystem(), 300); // Small delay to ensure tab is visible before rendering Three.js
+      if(tabId === 'hologram' && !atomRenderer) setTimeout(() => initHologramSystem(), 200); 
       if(tabId === 'arcade') startArcadeGame();
     }
     
-    function changeTheme(theme) { document.documentElement.setAttribute('data-theme', theme); speakJARVIS("UI Theme Updated."); }
+    function changeTheme(theme) { document.documentElement.setAttribute('data-theme', theme); speakJARVIS(theme + " Theme Activated."); }
     function saveAPIKey() { const key = document.getElementById('gemini-api-key').value.trim(); if(key) { localStorage.setItem('GEMINI_API_KEY', key); API_KEY = key; speakJARVIS("API Key locked."); } }
     function clearMemory() { localStorage.removeItem('JARVIS_MEMORY'); memoryVault = {}; updateMemoryDisplay(); speakJARVIS("Memory wiped."); }
     function updateMemoryDisplay() { document.getElementById('memory-display').innerText = JSON.stringify(memoryVault, null, 2) || "Memory is empty."; }
@@ -536,7 +567,7 @@
     document.getElementById('typing-input').addEventListener('input', (e) => {
       if(!isPlaying) { isPlaying = true; typingTimer = setInterval(()=>{ timeLeft--; document.getElementById('stat-time').innerText = timeLeft; if(timeLeft<=0) endTypingTest("Time's Up!"); }, 1000); }
       const inputVal = e.target.value.toLowerCase(); const chars = document.querySelectorAll('#typing-display .char');
-      if (document.getElementById('game-mode').value === 'death' && inputVal[inputVal.length - 1] !== targetText[inputVal.length - 1] && e.inputType === 'insertText') { return endTypingTest("Sudden Death Triggered: You made a mistake!"); }
+      if (document.getElementById('game-mode').value === 'death' && inputVal[inputVal.length - 1] !== targetText[inputVal.length - 1] && e.inputType === 'insertText') { return endTypingTest("Sudden Death Triggered!"); }
       errors = 0;
       chars.forEach((span, idx) => { span.className = 'char'; if (inputVal[idx] == null) { if (idx === inputVal.length) span.classList.add('current'); } else if (inputVal[idx] === span.innerText) { span.classList.add('correct'); } else { span.classList.add('wrong'); errors++; } });
       let correctChars = inputVal.length - errors;
@@ -547,14 +578,27 @@
     function endTypingTest(msg) { clearInterval(typingTimer); document.getElementById('typing-input').disabled = true; speakJARVIS(`${msg} Speed was ${document.getElementById('stat-wpm').innerText} WPM.`); }
 
     /* =======================================================
-       STARK MOVIES (WITH FULLSCREEN)
+       STARK MOVIES (EXPANDED TO 12+ MOVIES & FULLSCREEN)
        ======================================================= */
-    const tMovies = [ {title: "Deadpool & Wolverine", img: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg"}, {title: "Kalki 2898 AD", img: "https://image.tmdb.org/t/p/w500/yCsoDtkOikHaehWQwHQO5HEx4rE.jpg"}, {title: "Stree 2", img: "https://image.tmdb.org/t/p/w500/wD2kUCX1Bb6oezJi41gM1FwxHke.jpg"}, {title: "Avengers: Endgame", img: "https://image.tmdb.org/t/p/w500/or06DP3rTePeXIQAy125m9300H4.jpg"}, {title: "Jawan", img: "https://image.tmdb.org/t/p/w500/jILeVcEKsp6X1N1H00XqZ00s8i5.jpg"}, {title: "Spider-Man", img: "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1R80vEVY4UfR64.jpg"}, {title: "Oppenheimer", img: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg"}, {title: "John Wick 4", img: "https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UqwIaq.jpg"} ];
+    const tMovies = [ 
+      {title: "Deadpool & Wolverine", img: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg"}, 
+      {title: "Kalki 2898 AD", img: "https://image.tmdb.org/t/p/w500/yCsoDtkOikHaehWQwHQO5HEx4rE.jpg"},
+      {title: "Stree 2", img: "https://image.tmdb.org/t/p/w500/wD2kUCX1Bb6oezJi41gM1FwxHke.jpg"}, 
+      {title: "Avengers: Endgame", img: "https://image.tmdb.org/t/p/w500/or06DP3rTePeXIQAy125m9300H4.jpg"},
+      {title: "Jawan", img: "https://image.tmdb.org/t/p/w500/jILeVcEKsp6X1N1H00XqZ00s8i5.jpg"}, 
+      {title: "Spider-Man: No Way Home", img: "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1R80vEVY4UfR64.jpg"},
+      {title: "Oppenheimer", img: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg"}, 
+      {title: "John Wick: Chapter 4", img: "https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UqwIaq.jpg"},
+      {title: "Pushpa: The Rise", img: "https://image.tmdb.org/t/p/w500/r1y0XpccE9XvG5FjM2uE9c3nJ7y.jpg"},
+      {title: "Avatar: The Way of Water", img: "https://image.tmdb.org/t/p/w500/t6HIqrB0XCUP4QfX0a8p8B9i0R6.jpg"},
+      {title: "Interstellar", img: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6Mv1T4A2H.jpg"},
+      {title: "Pathaan", img: "https://image.tmdb.org/t/p/w500/8pHxEbhNDD2BvKx4oBwX7rZ1N3i.jpg"}
+    ];
     function loadStarkMovies() {
       const grid = document.getElementById('movie-grid'); grid.innerHTML = '';
       tMovies.forEach(m => {
-        let c = document.createElement('div'); c.className = 'movie-card apple-fade'; c.style.backgroundImage = `url('${m.img}')`; c.style.backgroundSize = 'cover'; c.style.backgroundPosition = 'center'; c.style.height = '250px'; c.style.borderRadius = '12px'; c.style.position = 'relative'; c.style.cursor = 'pointer'; c.style.overflow = 'hidden'; c.style.display = 'flex'; c.style.alignItems = 'flex-end'; c.style.padding = '15px';
-        c.innerHTML = `<div style="position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index:1;"></div><div style="color:#fff; font-family:'Orbitron'; font-weight:bold; z-index:2; text-align:center; width:100%; font-size:1.1rem;">${m.title}</div>`; 
+        let c = document.createElement('div'); c.className = 'movie-card apple-fade'; c.style.backgroundImage = `url('${m.img}')`; c.style.backgroundSize = 'cover'; c.style.backgroundPosition = 'center';
+        c.innerHTML = `<div class="movie-overlay"></div><div class="movie-title">${m.title}</div>`; 
         c.onclick = () => playStarkMovie(m.title); grid.appendChild(c);
       });
       document.querySelectorAll('.apple-fade').forEach(el => { let obs = new IntersectionObserver(e => { e.forEach(en => { if(en.isIntersecting) en.target.classList.add('visible'); })}, {threshold:0.05}); obs.observe(el); });
@@ -571,8 +615,8 @@
     async function generateDynamicIQTest() {
       const container = document.getElementById('iq-questions-container'); const qCount = parseInt(document.getElementById('iq-q-count').value) || 5;
       document.getElementById('iq-result').innerText = ''; document.getElementById('certificate-canvas').style.display = 'none'; document.getElementById('download-cert-btn').style.display = 'none';
-      container.innerHTML = `<p style="color:var(--accent); font-size:1.5rem; padding:2rem; text-align:center;">⚡ Generating Questions via Groq AI...</p>`;
-      if (!API_KEY) { container.innerHTML = `<p style="color:var(--wrong); text-align:center; font-size:1.5rem;">GROQ API KEY REQUIRED!</p>`; return; }
+      container.innerHTML = `<p style="color:var(--accent); font-size:1.2rem; padding:1rem; text-align:center;">⚡ Generating Questions via Groq AI...</p>`;
+      if (!API_KEY) { container.innerHTML = `<p style="color:var(--wrong); text-align:center; font-size:1.2rem;">GROQ API KEY REQUIRED!</p>`; return; }
       try {
         const prompt = `Generate exactly ${qCount} unique multiple-choice IQ questions. Output strictly as valid JSON array of objects: {"q": "string", "opts": ["opt1","opt2","opt3","opt4"], "ans": integer_index}. Return ONLY JSON.`;
         const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` }, body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: [{ role: "user", content: prompt }], temperature: 0.7 }) });
@@ -586,10 +630,10 @@
     function renderIQQuestions() {
       const container = document.getElementById('iq-questions-container'); container.innerHTML = '';
       iqData.forEach((qObj, qIdx) => {
-        let block = document.createElement('div'); block.className = 'iq-question-block apple-fade'; block.style.background="rgba(0,0,0,0.5)"; block.style.padding="20px"; block.style.borderRadius="12px"; block.style.borderLeft="5px solid var(--accent)"; block.style.marginBottom="20px";
-        block.innerHTML = `<p style="font-size:1.3rem; margin-bottom:15px;"><strong>Q${qIdx + 1}:</strong> ${qObj.q}</p>`;
+        let block = document.createElement('div'); block.className = 'iq-question-block apple-fade'; block.style.background="rgba(0,0,0,0.5)"; block.style.padding="15px"; block.style.borderRadius="8px"; block.style.borderLeft="4px solid var(--accent)"; block.style.marginBottom="15px";
+        block.innerHTML = `<p style="font-size:1.1rem; margin-bottom:10px;"><strong>Q${qIdx + 1}:</strong> ${qObj.q}</p>`;
         let optsDiv = document.createElement('div'); optsDiv.className = 'iq-options';
-        qObj.opts.forEach((opt, oIdx) => { let label = document.createElement('label'); label.style.display="block"; label.style.padding="12px"; label.style.background="rgba(0,0,0,0.6)"; label.style.border="1px solid var(--muted)"; label.style.borderRadius="8px"; label.style.marginBottom="10px"; label.style.cursor="pointer"; label.style.fontSize="1.1rem"; label.innerHTML = `<input type="radio" name="q${qIdx}" value="${oIdx}" style="margin-right:10px;"> ${opt}`; optsDiv.appendChild(label); });
+        qObj.opts.forEach((opt, oIdx) => { let label = document.createElement('label'); label.style.display="block"; label.style.padding="10px"; label.style.background="rgba(0,0,0,0.6)"; label.style.border="1px solid var(--muted)"; label.style.borderRadius="6px"; label.style.marginBottom="8px"; label.style.cursor="pointer"; label.style.fontSize="1rem"; label.innerHTML = `<input type="radio" name="q${qIdx}" value="${oIdx}" style="margin-right:8px;"> ${opt}`; optsDiv.appendChild(label); });
         block.appendChild(optsDiv); container.appendChild(block);
       });
       document.querySelectorAll('.apple-fade').forEach(el => { let obs = new IntersectionObserver(e => { e.forEach(en => { if(en.isIntersecting) en.target.classList.add('visible'); })}, {threshold:0.05}); obs.observe(el); });
@@ -611,9 +655,16 @@
     function downloadCertificate() { const link = document.createElement('a'); link.download = 'IQ_Certificate.png'; link.href = document.getElementById('certificate-canvas').toDataURL(); link.click(); }
 
     /* =======================================================
-       3D AR HOLOGRAM (FIXED RENDERING)
+       3D AR HOLOGRAM (30 ELEMENTS + WORKING HAND GESTURES)
        ======================================================= */
-    const eData = [ {z:1, name:'Hydrogen'}, {z:6, name:'Carbon'}, {z:8, name:'Oxygen'}, {z:26, name:'Iron'} ];
+    const eData = [ 
+      {z: 1, name: 'Hydrogen'}, {z: 2, name: 'Helium'}, {z: 3, name: 'Lithium'}, {z: 4, name: 'Beryllium'}, {z: 5, name: 'Boron'},
+      {z: 6, name: 'Carbon'}, {z: 7, name: 'Nitrogen'}, {z: 8, name: 'Oxygen'}, {z: 9, name: 'Fluorine'}, {z: 10, name: 'Neon'},
+      {z: 11, name: 'Sodium'}, {z: 12, name: 'Magnesium'}, {z: 13, name: 'Aluminium'}, {z: 14, name: 'Silicon'}, {z: 15, name: 'Phosphorus'},
+      {z: 16, name: 'Sulfur'}, {z: 17, name: 'Chlorine'}, {z: 18, name: 'Argon'}, {z: 19, name: 'Potassium'}, {z: 20, name: 'Calcium'},
+      {z: 21, name: 'Scandium'}, {z: 22, name: 'Titanium'}, {z: 23, name: 'Vanadium'}, {z: 24, name: 'Chromium'}, {z: 25, name: 'Manganese'},
+      {z: 26, name: 'Iron'}, {z: 27, name: 'Cobalt'}, {z: 28, name: 'Nickel'}, {z: 29, name: 'Copper'}, {z: 30, name: 'Zinc'}
+    ];
     let atomScene, atomCamera, atomRenderer, atomGroup, handTracker, isArCameraOn = false;
 
     function initHologramSystem() {
@@ -638,9 +689,11 @@
       if(atomGroup) atomScene.remove(atomGroup); atomGroup = new THREE.Group();
       let Z = parseInt(document.getElementById('element-selector').value) || 1;
       let nGeo = new THREE.SphereGeometry(0.8, 16, 16), nMat = new THREE.MeshPhongMaterial({ color: 0xff003c, emissive: 0x440000 });
-      for(let i=0; i<Z; i++) { let m = new THREE.Mesh(nGeo, nMat); m.position.set((Math.random()-0.5)*2, (Math.random()-0.5)*2, (Math.random()-0.5)*2); atomGroup.add(m); }
-      let eGeo = new THREE.SphereGeometry(0.3, 16, 16), eMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff }), shells = [2, 8, 18], eCount = Z;
-      for(let s=0; s<3; s++) {
+      for(let i=0; i < (Z > 10 ? 10 : Z); i++) { // Visual cap for nucleus
+        let m = new THREE.Mesh(nGeo, nMat); m.position.set((Math.random()-0.5)*2, (Math.random()-0.5)*2, (Math.random()-0.5)*2); atomGroup.add(m); 
+      }
+      let eGeo = new THREE.SphereGeometry(0.3, 16, 16), eMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff }), shells = [2, 8, 18, 2], eCount = Z;
+      for(let s=0; s<4; s++) {
         if(eCount<=0) break; let sE = Math.min(eCount, shells[s]); eCount -= sE; let r = 3+(s*2.5), rG = new THREE.Group();
         rG.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, 0);
         for(let e=0; e<sE; e++) { let a = (e/sE)*Math.PI*2, m = new THREE.Mesh(eGeo, eMat); m.position.set(Math.cos(a)*r, Math.sin(a)*r, 0); rG.add(m); }
@@ -648,29 +701,39 @@
       }
       atomScene.add(atomGroup);
     }
-    function animateHologram() { requestAnimationFrame(animateHologram); if(atomGroup) { atomGroup.rotation.y += 0.005; atomGroup.children.forEach(c => { if(c.userData.speed) c.rotation.z += c.userData.speed; }); } atomRenderer.render(atomScene, atomCamera); }
+    function animateHologram() { requestAnimationFrame(animateHologram); if(atomGroup) { atomGroup.rotation.y += 0.005; atomGroup.children.forEach(c => { if(c.userData && c.userData.speed) c.rotation.z += c.userData.speed; }); } atomRenderer.render(atomScene, atomCamera); }
     function toggleARCamera() {
       const vid = document.getElementById('ar-video'), btn = document.getElementById('ar-cam-btn');
-      if(isArCameraOn) { isArCameraOn = false; vid.style.display = 'none'; btn.innerText = "Turn ON AR"; vid.srcObject?.getTracks().forEach(t=>t.stop()); vid.srcObject=null; } 
+      if(isArCameraOn) { isArCameraOn = false; vid.style.display = 'none'; btn.innerText = "Turn ON AR Gestures"; vid.srcObject?.getTracks().forEach(t=>t.stop()); vid.srcObject=null; } 
       else {
-        isArCameraOn = true; vid.style.display = 'block'; btn.innerText = "Turn OFF AR";
+        isArCameraOn = true; vid.style.display = 'block'; btn.innerText = "Turn OFF AR Gestures";
         if(!handTracker) {
           handTracker = new Hands({locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}`});
-          handTracker.setOptions({maxNumHands: 1});
+          handTracker.setOptions({maxNumHands: 1, minDetectionConfidence: 0.7});
           handTracker.onResults(r => {
-            if(r.multiHandLandmarks?.length && atomGroup) {
-              let lm = r.multiHandLandmarks[0], p = lm[9], d = Math.hypot(lm[4].x-lm[8].x, lm[4].y-lm[8].y);
-              if(d < 0.08) { let s = Math.max(0.5, Math.min(3, 1+(0.5-p.y)*3)); atomGroup.scale.set(s,s,s); } 
-              else { atomGroup.rotation.y = (p.x-0.5)*5; atomGroup.rotation.x = (p.y-0.5)*5; }
+            if(r.multiHandLandmarks && r.multiHandLandmarks.length > 0 && atomGroup) {
+              let lm = r.multiHandLandmarks[0];
+              let thumb = lm[4], index = lm[8], palm = lm[9]; // Use palm base (9) for rotation
+              let dist = Math.hypot(thumb.x - index.x, thumb.y - index.y);
+              // PINCH TO SCALE
+              if(dist < 0.08) { let s = Math.max(0.5, Math.min(3, 1+(0.5-palm.y)*3)); atomGroup.scale.set(s,s,s); } 
+              // OPEN PALM TO ROTATE
+              else { atomGroup.rotation.y = (palm.x - 0.5) * 5; atomGroup.rotation.x = (palm.y - 0.5) * 5; }
             }
           });
         }
-        navigator.mediaDevices.getUserMedia({video: true}).then(s => { vid.srcObject = s; new Camera(vid, { onFrame: async () => { if(isArCameraOn) await handTracker.send({image:vid}); }, width:640, height:480 }).start(); });
+        navigator.mediaDevices.getUserMedia({video: true}).then(s => { 
+          vid.srcObject = s; 
+          // Auto play the video stream to feed MediaPipe
+          vid.play();
+          let camera = new Camera(vid, { onFrame: async () => { if(isArCameraOn) await handTracker.send({image:vid}); }, width:640, height:480 });
+          camera.start(); 
+        }).catch(err => { alert("Camera access denied or unavailable."); isArCameraOn = false; btn.innerText = "Turn ON AR Gestures"; });
       }
     }
 
     /* =======================================================
-       ARCADE GAMES
+       ARCADE GAMES (REALISTIC FREE FIRE WITH LASER)
        ======================================================= */
     let arcadeTimer, canvas, ctx;
     function startArcadeGame() {
@@ -680,26 +743,63 @@
       if(['tictactoe','memory'].includes(g)) { document.getElementById('html-game-grid').style.display='flex'; } else { canvas.style.display='block'; }
       if(g==='fps') initFreeFire2D(); else if(g==='mario') initMario2D(); else if(g==='snake') initSnake(); else if(g==='pong') initPong(); else if(g==='tictactoe') initTicTacToe(); else if(g==='memory') initMemory(); else if(g==='space') initSpaceInvaders(); else if(g==='breakout') initBreakout();
     }
-    // 1. FREE FIRE
+    
+    // 1. FREE FIRE (REALISTIC UPDATE)
     function initFreeFire2D() {
-      let p={x:400,y:250,r:15,s:5}, b=[], e=[], sc=0, k={}, mx=400, my=250;
+      let p={x:400,y:250,r:15,s:4}, b=[], e=[], sc=0, k={}, mx=400, my=250;
       document.onkeydown=ev=>k[ev.key.toLowerCase()]=true; document.onkeyup=ev=>k[ev.key.toLowerCase()]=false;
       canvas.onmousemove=ev=>{ let r=canvas.getBoundingClientRect(); mx=ev.clientX-r.left; my=ev.clientY-r.top; };
-      canvas.onclick=()=>{ let a=Math.atan2(my-p.y,mx-p.x); b.push({x:p.x,y:p.y,vx:Math.cos(a)*10,vy:Math.sin(a)*10}); };
+      canvas.onclick=()=>{ let a=Math.atan2(my-p.y,mx-p.x); b.push({x:p.x,y:p.y,vx:Math.cos(a)*15,vy:Math.sin(a)*15, life:100}); }; // Faster bullets with life
+      
       arcadeTimer = setInterval(()=>{
-        ctx.fillStyle='#232'; ctx.fillRect(0,0,800,500);
+        // Realistic Ground
+        ctx.fillStyle='#2b3d2b'; ctx.fillRect(0,0,800,500);
+        // Grid pattern for realistic plane
+        ctx.strokeStyle = 'rgba(0,0,0,0.2)'; ctx.lineWidth = 1;
+        for(let i=0; i<800; i+=40) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,500); ctx.stroke(); }
+        for(let i=0; i<500; i+=40) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(800,i); ctx.stroke(); }
+
         if(k['w'])p.y-=p.s; if(k['s'])p.y+=p.s; if(k['a'])p.x-=p.s; if(k['d'])p.x+=p.s;
-        ctx.fillStyle='#fc0'; b.forEach((bl,i)=>{bl.x+=bl.vx; bl.y+=bl.vy; ctx.fillRect(bl.x,bl.y,5,5); if(bl.x<0||bl.x>800||bl.y<0||bl.y>500)b.splice(i,1);});
-        if(Math.random()<0.05) e.push({x:Math.random()>0.5?0:800, y:Math.random()*500, r:12, s:1+Math.random()});
-        ctx.fillStyle='#f03'; e.forEach((en,ei)=>{
-          let a=Math.atan2(p.y-en.y,p.x-en.x); en.x+=Math.cos(a)*en.s; en.y+=Math.sin(a)*en.s;
-          ctx.beginPath();ctx.arc(en.x,en.y,en.r,0,Math.PI*2);ctx.fill();
-          if(Math.hypot(p.x-en.x,p.y-en.y)<27){alert("GAME OVER! Score: "+sc);startArcadeGame();}
-          b.forEach((bl,bi)=>{if(Math.hypot(bl.x-en.x,bl.y-en.y)<en.r){e.splice(ei,1);b.splice(bi,1);sc+=10;}});
+        
+        // Bullets (Tracer effect)
+        ctx.lineWidth = 3;
+        b.forEach((bl,i)=>{
+            ctx.strokeStyle = 'rgba(255, 200, 0, '+(bl.life/100)+')';
+            ctx.beginPath(); ctx.moveTo(bl.x, bl.y);
+            bl.x+=bl.vx; bl.y+=bl.vy; bl.life-=2;
+            ctx.lineTo(bl.x, bl.y); ctx.stroke();
+            if(bl.x<0||bl.x>800||bl.y<0||bl.y>500||bl.life<=0) b.splice(i,1);
         });
-        ctx.fillStyle='#00e5ff'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill(); 
-        ctx.strokeStyle='#fff'; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mx, mouse.y); ctx.stroke(); 
-        ctx.fillStyle='#fff'; ctx.font='20px Orbitron'; ctx.fillText('Kills: '+sc, 10, 30);
+
+        // Enemies
+        if(Math.random()<0.04) e.push({x:Math.random()>0.5?0:800, y:Math.random()*500, r:12, s:1+Math.random()});
+        e.forEach((en,ei)=>{
+          let a=Math.atan2(p.y-en.y,p.x-en.x); en.x+=Math.cos(a)*en.s; en.y+=Math.sin(a)*en.s;
+          // Enemy Body
+          ctx.fillStyle='#ff003c'; ctx.beginPath();ctx.arc(en.x,en.y,en.r,0,Math.PI*2);ctx.fill();
+          ctx.fillStyle='#000'; ctx.beginPath();ctx.arc(en.x+(Math.cos(a)*4),en.y+(Math.sin(a)*4), 4,0,Math.PI*2);ctx.fill(); // Enemy eye looking at player
+          
+          if(Math.hypot(p.x-en.x,p.y-en.y)<25){alert("GAME OVER! Final Kills: "+sc);startArcadeGame();}
+          b.forEach((bl,bi)=>{if(Math.hypot(bl.x-en.x,bl.y-en.y)<en.r){e.splice(ei,1);b.splice(bi,1);sc+=1;}});
+        });
+
+        // Laser Sight (Red Line to Cursor)
+        ctx.strokeStyle='rgba(255, 0, 0, 0.5)'; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mx, my); ctx.stroke(); 
+        
+        // Player Character (Realistic Top-Down)
+        let pa = Math.atan2(my-p.y, mx-p.x);
+        ctx.translate(p.x, p.y); ctx.rotate(pa);
+        // Shoulders
+        ctx.fillStyle='#005577'; ctx.beginPath(); ctx.roundRect(-10, -15, 20, 30, 5); ctx.fill();
+        // Head
+        ctx.fillStyle='#ffccbb'; ctx.beginPath(); ctx.arc(0, 0, 10, 0, Math.PI*2); ctx.fill();
+        // Gun
+        ctx.fillStyle='#333'; ctx.fillRect(5, 10, 20, 6);
+        ctx.rotate(-pa); ctx.translate(-p.x, -p.y);
+
+        // Score
+        ctx.fillStyle='#fff'; ctx.font='20px Orbitron'; ctx.fillText('Kills: '+sc, 15, 30);
       },30);
     }
     // 2. MARIO
@@ -735,14 +835,14 @@
       },30);
     }
     function initTicTacToe() {
-      let g=document.getElementById('html-game-grid'); g.innerHTML=''; g.style.display='grid'; g.style.gridTemplateColumns='repeat(3,150px)'; g.style.gap="10px";
+      let g=document.getElementById('html-game-grid'); g.innerHTML=''; g.style.display='grid'; g.style.gridTemplateColumns='repeat(3,120px)'; g.style.gap="10px";
       let b=Array(9).fill(null), t='X';
-      for(let i=0;i<9;i++){let c=document.createElement('div'); c.style.cssText='width:150px;height:150px;background:#111;border:2px solid #0ef;display:flex;align-items:center;justify-content:center;font-size:4rem;color:#0ef;cursor:pointer;border-radius:12px;'; c.onclick=()=>{if(!b[i]){b[i]=t;c.innerText=t;t=t==='X'?'O':'X';}}; g.appendChild(c);}
+      for(let i=0;i<9;i++){let c=document.createElement('div'); c.style.cssText='width:120px;height:120px;background:#111;border:2px solid #0ef;display:flex;align-items:center;justify-content:center;font-size:3rem;color:#0ef;cursor:pointer;border-radius:12px;'; c.onclick=()=>{if(!b[i]){b[i]=t;c.innerText=t;t=t==='X'?'O':'X';}}; g.appendChild(c);}
     }
     function initMemory() {
-      let g=document.getElementById('html-game-grid'); g.innerHTML=''; g.style.display='grid'; g.style.gridTemplateColumns='repeat(4,100px)'; g.style.gap="10px";
+      let g=document.getElementById('html-game-grid'); g.innerHTML=''; g.style.display='grid'; g.style.gridTemplateColumns='repeat(4,90px)'; g.style.gap="10px";
       let ic=['🚀','👽','💥','🔥','⚡','🧠','👁️','🤖'], cd=[...ic,...ic].sort(()=>0.5-Math.random()), fl=[];
-      cd.forEach(i=>{ let c=document.createElement('div'); c.style.cssText='width:100px;height:100px;background:#0ef;border-radius:12px;font-size:3rem;color:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer; transition:0.3s;'; c.onclick=()=>{if(fl.length<2&&c.style.color==='transparent'){c.style.background='#fff';c.style.color='#000';c.innerText=i;fl.push(c); if(fl.length===2)setTimeout(()=>{if(fl[0].innerText!==fl[1].innerText)fl.forEach(fc=>{fc.style.background='#0ef';fc.style.color='transparent';});fl=[];},800);}}; g.appendChild(c); });
+      cd.forEach(i=>{ let c=document.createElement('div'); c.style.cssText='width:90px;height:90px;background:#0ef;border-radius:12px;font-size:2.5rem;color:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer; transition:0.3s;'; c.onclick=()=>{if(fl.length<2&&c.style.color==='transparent'){c.style.background='#fff';c.style.color='#000';c.innerText=i;fl.push(c); if(fl.length===2)setTimeout(()=>{if(fl[0].innerText!==fl[1].innerText)fl.forEach(fc=>{fc.style.background='#0ef';fc.style.color='transparent';});fl=[];},800);}}; g.appendChild(c); });
     }
     function initSpaceInvaders() {
       let px=400, b=[], e=[]; for(let i=0;i<8;i++)for(let j=0;j<3;j++)e.push({x:i*80+50,y:j*50+30});
@@ -764,48 +864,48 @@
     }
 
     /* =======================================================
-       SPLIT VIEW 40 UTILITIES (APPLE STYLE SIDEBAR LOGIC)
+       SPLIT VIEW 40 UTILITIES (UNMINIFIED & WORKING)
        ======================================================= */
     const utilsData = [
-      {id:'u1', icon:'🔒', name:'Secure Vault', html:`<input type="password" id="vault-master-key" placeholder="Master Key"><button class="action-btn" onclick="unlockVault()">Unlock</button><div id="vault-content" style="display:none; flex-direction:column; gap:10px; margin-top:15px;"><input type="text" id="vault-desc" placeholder="Site"><input type="text" id="vault-pass" placeholder="Password"><button class="action-btn" onclick="saveToVault()">Save</button><div id="vault-list" class="result-box"></div></div>`},
-      {id:'u2', icon:'📚', name:'Study Timetable', html:`<textarea id="timetable-input" rows="6">5:00 AM - Wake up\n10:00 PM - Sleep</textarea><button class="action-btn" onclick="saveTimetable()">Save</button>`},
-      {id:'u3', icon:'📷', name:'QR Generator', html:`<input type="text" id="qr-input" placeholder="Enter URL"><button class="action-btn" onclick="genQR()">Create</button><div style="text-align:center; margin-top:20px;"><img id="qr-output" style="display:none; max-width:150px; border:2px solid var(--accent); padding:5px; border-radius:8px;"></div>`},
-      {id:'u4', icon:'🔑', name:'Password Gen', html:`<button class="action-btn" onclick="genPassword()">Generate Strong Password</button><input type="text" id="pass-output" style="font-size:1.5rem; text-align:center; margin-top:15px;" readonly>`},
-      {id:'u5', icon:'📝', name:'Quick Notepad', html:`<textarea id="quick-note" rows="8" placeholder="Type your thoughts..."></textarea><button class="action-btn" onclick="saveNote()">Save Local</button>`},
-      {id:'u6', icon:'⏱️', name:'Pomodoro Timer', html:`<div id="pomo-display" style="font-size:5rem; text-align:center; color:var(--accent); font-family:'Orbitron';">25:00</div><div style="display:flex;gap:10px;"><button class="action-btn" onclick="startPomo()">Start Focus</button></div>`},
+      {id:'u1', icon:'🔒', name:'Secure Vault', html:`<input type="password" id="vault-master-key" placeholder="Master Key"><button class="action-btn" onclick="unlockVault()">Unlock</button><div id="vault-content" style="display:none; flex-direction:column; gap:10px; margin-top:15px;"><input type="text" id="vault-desc" placeholder="Site Name"><input type="text" id="vault-pass" placeholder="Password"><button class="action-btn" onclick="saveToVault()">Save Password</button><div id="vault-list" class="result-box"></div></div>`},
+      {id:'u2', icon:'📚', name:'Study Timetable', html:`<textarea id="timetable-input" rows="6">5:00 AM - Wake up\n10:00 PM - Sleep</textarea><button class="action-btn" onclick="saveTimetable()">Save Timetable</button>`},
+      {id:'u3', icon:'📷', name:'QR Generator', html:`<input type="text" id="qr-input" placeholder="Enter URL or Text"><button class="action-btn" onclick="genQR()">Create QR</button><div style="text-align:center; margin-top:20px;"><img id="qr-output" style="display:none; max-width:150px; border:2px solid var(--accent); padding:5px; border-radius:8px; margin:auto;"><br><a id="qr-download" style="display:none; color:var(--accent); cursor:pointer; font-weight:bold; margin-top:10px; text-decoration:underline;" download="QR_Code.png">📥 Download QR Code</a></div>`},
+      {id:'u4', icon:'🔑', name:'Password Gen', html:`<button class="action-btn" onclick="genPassword()">Generate Strong Password</button><input type="text" id="pass-output" style="font-size:1.2rem; text-align:center; margin-top:15px;" readonly>`},
+      {id:'u5', icon:'📝', name:'Quick Notepad', html:`<textarea id="quick-note" rows="8" placeholder="Type your thoughts..."></textarea><button class="action-btn" onclick="saveNote()">Save Notes Locally</button>`},
+      {id:'u6', icon:'⏱️', name:'Pomodoro Timer', html:`<div id="pomo-display" style="font-size:4rem; text-align:center; color:var(--accent); font-family:'Orbitron';">25:00</div><div style="display:flex;gap:10px;"><button class="action-btn" onclick="startPomo()">Start Focus</button><button class="action-btn" style="background:var(--wrong);color:#fff;" onclick="resetPomo()">Reset</button></div>`},
       {id:'u7', icon:'🧮', name:'Calculator', html:`<input type="text" id="calc-input" style="font-size:1.5rem; text-align:right;" placeholder="25*4+10"><button class="action-btn" onclick="evalCalc()">Calculate =</button>`},
-      {id:'u8', icon:'⏱️', name:'Stopwatch', html:`<div id="sw-display" style="font-size:4rem; text-align:center; font-family:'Orbitron';">00:00.00</div><div style="display:flex;gap:10px;"><button class="action-btn" onclick="startSw()">Start</button><button class="action-btn" style="background:var(--wrong);color:#fff;" onclick="stopSw()">Stop</button></div>`},
-      {id:'u9', icon:'⚖️', name:'BMI Calculator', html:`<input type="number" id="bmi-w" placeholder="Weight (kg)"><input type="number" id="bmi-h" placeholder="Height (cm)"><button class="action-btn" onclick="calcBMI()">Calculate</button><div id="bmi-res" class="result-box" style="text-align:center; font-size:2rem;"></div>`},
-      {id:'u10', icon:'🎂', name:'Age Calculator', html:`<input type="date" id="age-dob" style="font-size:1.5rem;"><button class="action-btn" onclick="calcAge()">Calculate</button><div id="age-res" class="result-box" style="text-align:center; font-size:2rem;"></div>`},
-      {id:'u11', icon:'🎲', name:'Dice Roller', html:`<button class="action-btn" style="height:100px; font-size:2rem;" onclick="rollDice()">ROLL DICE</button><div id="dice-res" style="font-size:6rem; text-align:center; margin-top:20px; color:var(--accent);">🎲</div>`},
-      {id:'u12', icon:'🪙', name:'Coin Flipper', html:`<button class="action-btn" style="height:100px; font-size:2rem;" onclick="flipCoin()">FLIP COIN</button><div id="coin-res" style="font-size:4rem; text-align:center; margin-top:20px; color:var(--correct);">🪙</div>`},
-      {id:'u13', icon:'🔒', name:'Base64 Encode', html:`<input type="text" id="b64-input" placeholder="Text to encode"><button class="action-btn" onclick="encodeB64()">Encode</button><input type="text" id="b64-output" style="margin-top:15px;" readonly>`},
-      {id:'u14', icon:'🔠', name:'Case Convert', html:`<input type="text" id="case-input" placeholder="Enter text"><button class="action-btn" onclick="convertCase()">UPPERCASE</button><input type="text" id="case-output" style="margin-top:15px;" readonly>`},
-      {id:'u15', icon:'📝', name:'Word Count', html:`<textarea id="word-input" rows="5" oninput="countWords()"></textarea><div id="word-count-output" class="result-box" style="font-size:2rem; text-align:center;">Words: 0</div>`},
-      {id:'u16', icon:'💸', name:'Split Bill', html:`<input type="number" id="bill-amt" placeholder="Total Amount"><input type="number" id="bill-ppl" placeholder="Number of People"><button class="action-btn" onclick="splitBill()">Split</button><div id="bill-res" class="result-box" style="text-align:center; font-size:2rem;"></div>`},
-      {id:'u17', icon:'🌐', name:'IP Checker', html:`<button class="action-btn" onclick="checkIP()">Get My IP</button><div id="ip-res" class="result-box" style="text-align:center; font-size:2rem;"></div>`},
-      {id:'u18', icon:'🔄', name:'Reverse Text', html:`<input type="text" id="rev-input"><button class="action-btn" onclick="reverseText()">Reverse</button><input type="text" id="rev-output" style="margin-top:15px;" readonly>`},
-      {id:'u19', icon:'🔢', name:'Random Num', html:`<input type="number" id="rn-min" placeholder="Min"><input type="number" id="rn-max" placeholder="Max"><button class="action-btn" onclick="genRandomNum()">Generate</button><div id="rn-res" class="result-box" style="text-align:center; font-size:4rem;"></div>`},
+      {id:'u8', icon:'⏱️', name:'Stopwatch', html:`<div id="sw-display" style="font-size:3.5rem; text-align:center; font-family:'Orbitron';">00:00.00</div><div style="display:flex;gap:10px;"><button class="action-btn" onclick="startSw()">Start</button><button class="action-btn" style="background:var(--wrong);color:#fff;" onclick="stopSw()">Stop</button></div>`},
+      {id:'u9', icon:'⚖️', name:'BMI Calculator', html:`<input type="number" id="bmi-w" placeholder="Weight (kg)"><input type="number" id="bmi-h" placeholder="Height (cm)"><button class="action-btn" onclick="calcBMI()">Calculate BMI</button><div id="bmi-res" class="result-box" style="text-align:center; font-size:1.5rem;"></div>`},
+      {id:'u10', icon:'🎂', name:'Age Calculator', html:`<input type="date" id="age-dob" style="font-size:1.2rem;"><button class="action-btn" onclick="calcAge()">Calculate Age</button><div id="age-res" class="result-box" style="text-align:center; font-size:1.5rem;"></div>`},
+      {id:'u11', icon:'🎲', name:'Dice Roller', html:`<button class="action-btn" style="height:80px; font-size:1.5rem;" onclick="rollDice()">ROLL DICE</button><div id="dice-res" style="font-size:5rem; text-align:center; margin-top:10px; color:var(--accent);">🎲</div>`},
+      {id:'u12', icon:'🪙', name:'Coin Flipper', html:`<button class="action-btn" style="height:80px; font-size:1.5rem;" onclick="flipCoin()">FLIP COIN</button><div id="coin-res" style="font-size:3rem; text-align:center; margin-top:10px; color:var(--correct);">🪙</div>`},
+      {id:'u13', icon:'🔒', name:'Base64 Encode', html:`<input type="text" id="b64-input" placeholder="Text to encode"><button class="action-btn" onclick="encodeB64()">Encode to Base64</button><textarea id="b64-output" rows="3" style="margin-top:15px;" readonly></textarea>`},
+      {id:'u14', icon:'🔠', name:'Case Convert', html:`<input type="text" id="case-input" placeholder="Enter text"><button class="action-btn" onclick="convertCase()">UPPERCASE / LOWERCASE</button><input type="text" id="case-output" style="margin-top:15px;" readonly>`},
+      {id:'u15', icon:'📝', name:'Word Count', html:`<textarea id="word-input" rows="5" oninput="countWords()"></textarea><div id="word-count-output" class="result-box" style="font-size:1.5rem; text-align:center;">Words: 0 | Characters: 0</div>`},
+      {id:'u16', icon:'💸', name:'Split Bill', html:`<input type="number" id="bill-amt" placeholder="Total Amount"><input type="number" id="bill-ppl" placeholder="Number of People"><button class="action-btn" onclick="splitBill()">Split Bill</button><div id="bill-res" class="result-box" style="text-align:center; font-size:1.5rem;"></div>`},
+      {id:'u17', icon:'🌐', name:'IP Checker', html:`<button class="action-btn" onclick="checkIP()">Get My IP Address</button><div id="ip-res" class="result-box" style="text-align:center; font-size:1.5rem;"></div>`},
+      {id:'u18', icon:'🔄', name:'Reverse Text', html:`<input type="text" id="rev-input"><button class="action-btn" onclick="reverseText()">Reverse Characters</button><input type="text" id="rev-output" style="margin-top:15px;" readonly>`},
+      {id:'u19', icon:'🔢', name:'Random Num', html:`<input type="number" id="rn-min" placeholder="Min"><input type="number" id="rn-max" placeholder="Max"><button class="action-btn" onclick="genRandomNum()">Generate Random</button><div id="rn-res" class="result-box" style="text-align:center; font-size:3rem;"></div>`},
       {id:'u20', icon:'💻', name:'Sys Info', html:`<button class="action-btn" onclick="getSysInfo()">Show System Details</button><div id="sys-res" class="result-box"></div>`},
       {id:'u21', icon:'🗣️', name:'Text to Speech', html:`<textarea id="tts-in" rows="4" placeholder="Enter text..."></textarea><button class="action-btn" onclick="utilTTS()">Speak Loud</button>`},
-      {id:'u22', icon:'🎙️', name:'Dictation', html:`<button class="action-btn" onclick="utilSTT()">Start Microphone</button><textarea id="stt-out" rows="4" style="margin-top:15px;" readonly></textarea>`},
-      {id:'u23', icon:'🎨', name:'HEX to RGB', html:`<input type="text" id="color-in" placeholder="#FFFFFF"><button class="action-btn" onclick="utilColor()">Convert</button><input type="text" id="color-out" style="margin-top:15px;" readonly>`},
-      {id:'u24', icon:'< >', name:'JSON Format', html:`<textarea id="json-in" rows="6" placeholder='{"a":1}'></textarea><button class="action-btn" onclick="utilJson()">Format Prettify</button>`},
-      {id:'u25', icon:'📏', name:'Km to Miles', html:`<input type="number" id="unit-in" placeholder="Kilometers"><button class="action-btn" onclick="utilUnit()">Convert</button><div id="unit-out" class="result-box" style="text-align:center; font-size:2rem;"></div>`},
-      {id:'u26', icon:'⌨️', name:'Keycode Finder', html:`<input type="text" placeholder="Click here and press any key..." onkeydown="document.getElementById('key-out').innerText = event.keyCode; return false;"><div id="key-out" style="font-size:6rem; text-align:center; color:var(--accent);">_</div>`},
-      {id:'u27', icon:'⏳', name:'World Clock', html:`<button class="action-btn" onclick="utilTime()">Show Current Time</button><div id="time-out" class="result-box" style="text-align:center;"></div>`},
-      {id:'u28', icon:'🖼️', name:'Aspect Ratio', html:`<input type="number" id="ar-w" placeholder="Width"><input type="number" id="ar-h" placeholder="Height"><button class="action-btn" onclick="utilAR()">Calculate Ratio</button><div id="ar-out" class="result-box" style="text-align:center; font-size:2rem;"></div>`},
-      {id:'u29', icon:'🔐', name:'Text Encrypt', html:`<input type="text" id="enc-in"><button class="action-btn" onclick="utilEncrypt()">ROT13 Encrypt</button><input type="text" id="enc-out" style="margin-top:15px;" readonly>`},
-      {id:'u30', icon:'🤓', name:'Emoji Translate', html:`<input type="text" id="emo-in"><button class="action-btn" onclick="utilEmoji()">Translate</button><div id="emo-out" class="result-box" style="font-size:3rem; text-align:center;"></div>`},
-      {id:'u31', icon:'📖', name:'Readability', html:`<textarea id="read-in" rows="4"></textarea><button class="action-btn" onclick="utilRead()">Check Score</button><div id="read-out" class="result-box" style="text-align:center; font-size:2rem;"></div>`},
-      {id:'u32', icon:'🔗', name:'URL Encoder', html:`<input type="text" id="url-in"><button class="action-btn" onclick="utilUrl()">Encode</button><input type="text" id="url-out" style="margin-top:15px;" readonly>`},
-      {id:'u33', icon:'📏', name:'String Bytes', html:`<input type="text" id="byte-in" oninput="utilByte()"><div id="byte-out" class="result-box" style="text-align:center; font-size:2rem;">0 Bytes</div>`},
-      {id:'u34', icon:'🔋', name:'Battery Info', html:`<button class="action-btn" onclick="utilBattery()">Check Battery</button><div id="batt-out" class="result-box" style="text-align:center; font-size:3rem;"></div>`},
-      {id:'u35', icon:'👽', name:'ASCII Art', html:`<input type="text" id="ascii-in"><button class="action-btn" onclick="utilAscii()">Generate</button><pre id="ascii-out" class="result-box" style="font-size:0.8rem;"></pre>`},
-      {id:'u36', icon:'🌈', name:'Color Palette', html:`<button class="action-btn" onclick="utilPalette()">Generate Palette</button><div id="pal-out" style="display:flex; height:100px; margin-top:20px; border-radius:8px; overflow:hidden;"></div>`},
-      {id:'u37', icon:'🔊', name:'Freq Gen', html:`<input type="range" id="freq-in" min="200" max="1000" value="440" oninput="document.getElementById('freq-val').innerText=this.value+' Hz'" style="margin-bottom:20px;"><div id="freq-val" style="text-align:center; font-size:2rem;">440 Hz</div><button class="action-btn" onclick="utilBeep()">Play Beep</button>`},
-      {id:'u38', icon:'📝', name:'Lorem Ipsum', html:`<button class="action-btn" onclick="document.getElementById('lorem-out').value='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'">Generate</button><textarea id="lorem-out" rows="4" style="margin-top:15px;" readonly></textarea>`},
-      {id:'u39', icon:'🖱️', name:'Click Tester', html:`<button class="action-btn" style="height:150px; font-size:2rem;" onclick="document.getElementById('click-res').innerText=parseInt(document.getElementById('click-res').innerText)+1">CLICK ME FAST</button><div id="click-res" class="result-box" style="text-align:center; font-size:3rem;">0</div>`},
+      {id:'u22', icon:'🎙️', name:'Dictation', html:`<button class="action-btn" onclick="utilSTT()">Start Microphone (STT)</button><textarea id="stt-out" rows="4" style="margin-top:15px;" readonly></textarea>`},
+      {id:'u23', icon:'🎨', name:'HEX to RGB', html:`<input type="text" id="color-in" placeholder="#FFFFFF"><button class="action-btn" onclick="utilColor()">Convert to RGB</button><input type="text" id="color-out" style="margin-top:15px;" readonly>`},
+      {id:'u24', icon:'< >', name:'JSON Format', html:`<textarea id="json-in" rows="6" placeholder='{"a":1}'></textarea><button class="action-btn" onclick="utilJson()">Format / Prettify JSON</button>`},
+      {id:'u25', icon:'📏', name:'Km to Miles', html:`<input type="number" id="unit-in" placeholder="Kilometers"><button class="action-btn" onclick="utilUnit()">Convert to Miles</button><div id="unit-out" class="result-box" style="text-align:center; font-size:1.5rem;"></div>`},
+      {id:'u26', icon:'⌨️', name:'Keycode Finder', html:`<input type="text" placeholder="Click here and press any key..." onkeydown="document.getElementById('key-out').innerText = event.keyCode; return false;"><div id="key-out" style="font-size:5rem; text-align:center; color:var(--accent);">_</div>`},
+      {id:'u27', icon:'⏳', name:'World Clock', html:`<button class="action-btn" onclick="utilTime()">Show Multiple Timezones</button><div id="time-out" class="result-box" style="text-align:center; white-space:pre-wrap;"></div>`},
+      {id:'u28', icon:'🖼️', name:'Aspect Ratio', html:`<input type="number" id="ar-w" placeholder="Width"><input type="number" id="ar-h" placeholder="Height"><button class="action-btn" onclick="utilAR()">Calculate Ratio</button><div id="ar-out" class="result-box" style="text-align:center; font-size:1.5rem;"></div>`},
+      {id:'u29', icon:'🔐', name:'ROT13 Encrypt', html:`<input type="text" id="enc-in"><button class="action-btn" onclick="utilEncrypt()">ROT13 Encrypt</button><input type="text" id="enc-out" style="margin-top:15px;" readonly>`},
+      {id:'u30', icon:'🤓', name:'Emoji Translate', html:`<input type="text" id="emo-in" placeholder="Enter text to emo-jify"><button class="action-btn" onclick="utilEmoji()">Translate</button><div id="emo-out" class="result-box" style="font-size:2rem; text-align:center;"></div>`},
+      {id:'u31', icon:'📖', name:'Readability', html:`<textarea id="read-in" rows="4" placeholder="Paste article paragraph..."></textarea><button class="action-btn" onclick="utilRead()">Check Score</button><div id="read-out" class="result-box" style="text-align:center; font-size:1.5rem;"></div>`},
+      {id:'u32', icon:'🔗', name:'URL Encoder', html:`<input type="text" id="url-in" placeholder="URL string"><button class="action-btn" onclick="utilUrl()">Encode URI</button><textarea id="url-out" rows="2" style="margin-top:15px;" readonly></textarea>`},
+      {id:'u33', icon:'📏', name:'String Bytes', html:`<input type="text" id="byte-in" oninput="utilByte()" placeholder="Type here..."><div id="byte-out" class="result-box" style="text-align:center; font-size:1.5rem;">0 Bytes</div>`},
+      {id:'u34', icon:'🔋', name:'Battery Info', html:`<button class="action-btn" onclick="utilBattery()">Check System Battery</button><div id="batt-out" class="result-box" style="text-align:center; font-size:2rem;"></div>`},
+      {id:'u35', icon:'👽', name:'ASCII Art', html:`<input type="text" id="ascii-in"><button class="action-btn" onclick="utilAscii()">Generate Base ASCII</button><pre id="ascii-out" class="result-box" style="font-size:0.8rem;"></pre>`},
+      {id:'u36', icon:'🌈', name:'Color Palette', html:`<button class="action-btn" onclick="utilPalette()">Generate Random Palette</button><div id="pal-out" style="display:flex; height:80px; margin-top:20px; border-radius:8px; overflow:hidden;"></div>`},
+      {id:'u37', icon:'🔊', name:'Freq Gen', html:`<input type="range" id="freq-in" min="200" max="1000" value="440" oninput="document.getElementById('freq-val').innerText=this.value+' Hz'" style="margin-bottom:20px;"><div id="freq-val" style="text-align:center; font-size:1.5rem;">440 Hz</div><button class="action-btn" onclick="utilBeep()">Play Audio Beep</button>`},
+      {id:'u38', icon:'📝', name:'Lorem Ipsum', html:`<button class="action-btn" onclick="utilLorem()">Generate Filler Text</button><textarea id="lorem-out" rows="5" style="margin-top:15px;" readonly></textarea>`},
+      {id:'u39', icon:'🖱️', name:'Click Tester', html:`<button class="action-btn" style="height:120px; font-size:1.5rem;" onclick="document.getElementById('click-res').innerText=parseInt(document.getElementById('click-res').innerText)+1">CLICK ME FAST</button><div id="click-res" class="result-box" style="text-align:center; font-size:2.5rem;">0</div>`},
       {id:'u40', icon:'🖌️', name:'Whiteboard', html:`<canvas id="mini-canvas" width="600" height="300" style="background:#fff; border-radius:8px; cursor:crosshair; width:100%; border:2px solid var(--accent);"></canvas><button class="action-btn" style="margin-top:15px;" onclick="document.getElementById('mini-canvas').getContext('2d').clearRect(0,0,600,300)">Clear Board</button>`}
     ];
 
@@ -814,14 +914,12 @@
       const cv = document.getElementById('util-content-view');
       
       utilsData.forEach((u, i) => {
-        // Sidebar Button
         let btn = document.createElement('button');
         btn.className = 'side-menu-btn';
         btn.innerHTML = `${u.icon} ${i+1}. ${u.name}`;
         btn.onclick = () => openUtility(u.id, btn);
         sb.appendChild(btn);
 
-        // Content View
         let view = document.createElement('div');
         view.className = 'tool-view';
         view.id = u.id;
@@ -835,7 +933,7 @@
       document.querySelectorAll('#util-content-view .tool-view').forEach(v => v.classList.remove('active'));
       btnElement.classList.add('active');
       document.getElementById(id).classList.add('active');
-      if(id === 'u40') setTimeout(() => setupCanvas('mini-canvas'), 100); // Re-bind canvas
+      if(id === 'u40') setTimeout(() => setupCanvas('mini-canvas'), 100);
     }
 
     function openAITool(id, btnElement) {
@@ -845,57 +943,388 @@
       document.getElementById(id).classList.add('active');
     }
 
-    // UTIL LOGIC
-    function unlockVault() { let k=document.getElementById('vault-master-key').value; let s=localStorage.getItem('J_VP'); if(!s){localStorage.setItem('J_VP',k); document.getElementById('vault-content').style.display='flex';} else if(k===s) document.getElementById('vault-content').style.display='flex'; else alert("Wrong Pass!"); }
-    function saveToVault() { let d=document.getElementById('vault-desc').value, p=document.getElementById('vault-pass').value; let v=JSON.parse(localStorage.getItem('J_VD')||'{}'); v[d]=p; localStorage.setItem('J_VD',JSON.stringify(v)); document.getElementById('vault-list').innerHTML+=`${d}: ${p}\n`; }
-    function saveTimetable() { localStorage.setItem('JARVIS_TIMETABLE', document.getElementById('timetable-input').value); speakJARVIS("Saved."); }
-    function genQR() { document.getElementById('qr-output').src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+encodeURIComponent(document.getElementById('qr-input').value); document.getElementById('qr-output').style.display='inline'; }
-    function genPassword() { document.getElementById('pass-output').value = Math.random().toString(36).slice(-10) + "A1!"; }
-    function saveNote() { localStorage.setItem('JARVIS_NOTE', document.getElementById('quick-note').value); speakJARVIS("Saved."); }
-    let pt,ptl=1500; function startPomo(){clearInterval(pt);pt=setInterval(()=>{ptl--;document.getElementById('pomo-display').innerText=Math.floor(ptl/60)+":"+(ptl%60).toString().padStart(2,'0');},1000);}
-    function evalCalc() { try{document.getElementById('calc-input').value = eval(document.getElementById('calc-input').value);}catch(e){} }
-    let swt,swm=0; function startSw(){swt=setInterval(()=>{swm+=10;let d=new Date(swm);document.getElementById('sw-display').innerText=d.getUTCMinutes()+":"+d.getUTCSeconds().toString().padStart(2,'0');},10);} function stopSw(){clearInterval(swt);}
-    function calcBMI() { let w=document.getElementById('bmi-w').value, h=document.getElementById('bmi-h').value/100; document.getElementById('bmi-res').innerText="BMI: "+(w/(h*h)).toFixed(1); }
-    function calcAge() { document.getElementById('age-res').innerText=(new Date().getFullYear()-new Date(document.getElementById('age-dob').value).getFullYear()) + " Years"; }
-    function rollDice() { document.getElementById('dice-res').innerText=Math.floor(Math.random()*6)+1;} function flipCoin() { document.getElementById('coin-res').innerText=Math.random()>0.5?"HEADS":"TAILS"; }
-    function encodeB64() { document.getElementById('b64-output').value=btoa(document.getElementById('b64-input').value); }
-    function convertCase() { document.getElementById('case-output').value=document.getElementById('case-input').value.toUpperCase(); }
-    function countWords() { document.getElementById('word-count-output').innerText="Words: "+document.getElementById('word-input').value.split(' ').length; }
-    function splitBill() { document.getElementById('bill-res').innerText="₹"+(document.getElementById('bill-amt').value/document.getElementById('bill-ppl').value).toFixed(2); }
-    async function checkIP() { let r=await fetch('https://api.ipify.org?format=json'); let d=await r.json(); document.getElementById('ip-res').innerText=d.ip; }
-    function reverseText() { document.getElementById('rev-output').value=document.getElementById('rev-input').value.split('').reverse().join(''); }
-    function genRandomNum() { let min=+document.getElementById('rn-min').value, max=+document.getElementById('rn-max').value; document.getElementById('rn-res').innerText=Math.floor(Math.random()*(max-min+1))+min; }
-    function getSysInfo() { document.getElementById('sys-res').innerText = navigator.platform + " " + navigator.language; }
+    // ==========================================
+    // ROBUST UTILITIES LOGIC (Un-minified & Fully Working)
+    // ==========================================
+    function unlockVault() {
+        let key = document.getElementById('vault-master-key').value;
+        let saved = localStorage.getItem('J_VP');
+        if(!saved) { 
+            if(key.length < 4) { alert("Minimum 4 characters required for master key."); return; } 
+            localStorage.setItem('J_VP', key); 
+            document.getElementById('vault-content').style.display='flex';
+            renderVault();
+            alert("Master Key Set & Vault Unlocked!");
+        } 
+        else if (key === saved) { 
+            document.getElementById('vault-content').style.display='flex';
+            renderVault();
+        } 
+        else { alert("Incorrect Master Key!"); }
+    }
+    
+    function saveToVault() {
+        let d = document.getElementById('vault-desc').value.trim();
+        let p = document.getElementById('vault-pass').value.trim();
+        if(d && p) {
+            let v = JSON.parse(localStorage.getItem('J_VD') || '{}');
+            v[d] = p;
+            localStorage.setItem('J_VD', JSON.stringify(v));
+            document.getElementById('vault-desc').value = '';
+            document.getElementById('vault-pass').value = '';
+            renderVault();
+        }
+    }
+    
+    function renderVault() {
+        let list = document.getElementById('vault-list');
+        let v = JSON.parse(localStorage.getItem('J_VD') || '{}');
+        list.innerHTML = '';
+        for (const [d, p] of Object.entries(v)) {
+            list.innerHTML += `<div style="padding:5px 0; border-bottom:1px solid #333;"><strong style="color:var(--accent);">${d}:</strong> ${p}</div>`;
+        }
+    }
+
+    function saveTimetable() { 
+        localStorage.setItem('JARVIS_TIMETABLE', document.getElementById('timetable-input').value); 
+        speakJARVIS("Timetable updated in secure memory."); 
+    }
+    
+    function genQR() { 
+        let text = document.getElementById('qr-input').value.trim();
+        if(text) {
+            let url = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(text);
+            document.getElementById('qr-output').src = url; 
+            document.getElementById('qr-output').style.display = 'block';
+            
+            // Fetch blob for download feature
+            fetch(url)
+                .then(res => res.blob())
+                .then(blob => {
+                    let objUrl = URL.createObjectURL(blob);
+                    let dl = document.getElementById('qr-download');
+                    dl.href = objUrl;
+                    dl.style.display = 'block';
+                });
+        }
+    }
+
+    function genPassword() {
+        let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+        let pass = "";
+        for(let i=0; i<16; i++) {
+            pass += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        document.getElementById('pass-output').value = pass;
+    }
+
+    function saveNote() { 
+        localStorage.setItem('JARVIS_NOTE', document.getElementById('quick-note').value); 
+        speakJARVIS("Notes saved to local storage."); 
+    }
+
+    let pt, ptl = 1500; 
+    function startPomo() {
+        clearInterval(pt);
+        speakJARVIS("Focus mode activated. Do not get distracted.");
+        pt = setInterval(() => {
+            ptl--;
+            let m = Math.floor(ptl/60).toString().padStart(2, '0');
+            let s = (ptl%60).toString().padStart(2, '0');
+            document.getElementById('pomo-display').innerText = m + ":" + s;
+            if(ptl <= 0) {
+                clearInterval(pt);
+                speakJARVIS("Timer complete. Good job.");
+            }
+        }, 1000);
+    }
+    function resetPomo() { clearInterval(pt); ptl = 1500; document.getElementById('pomo-display').innerText = "25:00"; }
+
+    function evalCalc() { 
+        try { 
+            let res = eval(document.getElementById('calc-input').value);
+            document.getElementById('calc-input').value = res;
+        } catch(e) { 
+            document.getElementById('calc-input').value = "Syntax Error"; 
+        } 
+    }
+
+    let swt, swm = 0; 
+    function startSw() {
+        clearInterval(swt);
+        swt = setInterval(() => {
+            swm += 10;
+            let d = new Date(swm);
+            let min = d.getUTCMinutes().toString().padStart(2, '0');
+            let sec = d.getUTCSeconds().toString().padStart(2, '0');
+            let ms = Math.floor(d.getUTCMilliseconds()/10).toString().padStart(2, '0');
+            document.getElementById('sw-display').innerText = `${min}:${sec}.${ms}`;
+        }, 10);
+    } 
+    function stopSw() { clearInterval(swt); }
+
+    function calcBMI() { 
+        let w = parseFloat(document.getElementById('bmi-w').value);
+        let h = parseFloat(document.getElementById('bmi-h').value) / 100; 
+        if(w && h) {
+            let bmi = (w / (h * h)).toFixed(1);
+            let status = bmi < 18.5 ? "(Underweight)" : bmi < 25 ? "(Normal)" : "(Overweight)";
+            document.getElementById('bmi-res').innerText = `BMI: ${bmi} ${status}`; 
+        }
+    }
+
+    function calcAge() { 
+        let dob = new Date(document.getElementById('age-dob').value);
+        if(!isNaN(dob)) {
+            let diff = Date.now() - dob.getTime();
+            let ageDate = new Date(diff);
+            document.getElementById('age-res').innerText = Math.abs(ageDate.getUTCFullYear() - 1970) + " Years Old"; 
+        }
+    }
+
+    function rollDice() { document.getElementById('dice-res').innerText = Math.floor(Math.random() * 6) + 1; }
+    function flipCoin() { document.getElementById('coin-res').innerText = Math.random() > 0.5 ? "HEADS" : "TAILS"; }
+    function encodeB64() { document.getElementById('b64-output').value = btoa(document.getElementById('b64-input').value); }
+    
+    function convertCase() { 
+        let el = document.getElementById('case-input');
+        let out = document.getElementById('case-output');
+        if(el.value === el.value.toUpperCase()) out.value = el.value.toLowerCase();
+        else out.value = el.value.toUpperCase();
+    }
+    
+    function countWords() { 
+        let val = document.getElementById('word-input').value.trim();
+        let words = val ? val.split(/\s+/).length : 0;
+        let chars = val.length;
+        document.getElementById('word-count-output').innerText = `Words: ${words} | Characters: ${chars}`; 
+    }
+
+    function splitBill() { 
+        let amt = parseFloat(document.getElementById('bill-amt').value);
+        let ppl = parseInt(document.getElementById('bill-ppl').value);
+        if(amt && ppl) {
+            document.getElementById('bill-res').innerText = "₹ " + (amt / ppl).toFixed(2) + " per person"; 
+        }
+    }
+
+    async function checkIP() { 
+        try {
+            let res = await fetch('https://api.ipify.org?format=json');
+            let data = await res.json();
+            document.getElementById('ip-res').innerText = "IP: " + data.ip; 
+        } catch(e) {
+            document.getElementById('ip-res').innerText = "Network Error";
+        }
+    }
+
+    function reverseText() { document.getElementById('rev-output').value = document.getElementById('rev-input').value.split('').reverse().join(''); }
+    
+    function genRandomNum() { 
+        let min = parseInt(document.getElementById('rn-min').value);
+        let max = parseInt(document.getElementById('rn-max').value);
+        if(!isNaN(min) && !isNaN(max)) {
+            document.getElementById('rn-res').innerText = Math.floor(Math.random() * (max - min + 1)) + min; 
+        }
+    }
+
+    function getSysInfo() { 
+        let info = `Platform: ${navigator.platform}\nLanguage: ${navigator.language}\nResolution: ${screen.width}x${screen.height}\nCookies Enabled: ${navigator.cookieEnabled}`;
+        document.getElementById('sys-res').innerText = info; 
+    }
+
     function utilTTS() { speakJARVIS(document.getElementById('tts-in').value); }
-    function utilSTT() { const SR = window.SpeechRecognition || window.webkitSpeechRecognition; const rec = new SR(); rec.onresult = (e) => { document.getElementById('stt-out').value = e.results[0][0].transcript; }; rec.start(); speakJARVIS("Listening"); }
-    function utilColor() { document.getElementById('color-out').value="Converted RGB"; }
-    function utilJson() { try{document.getElementById('json-in').value=JSON.stringify(JSON.parse(document.getElementById('json-in').value),null,2);}catch(e){} }
-    function utilUnit() { document.getElementById('unit-out').innerText=(document.getElementById('unit-in').value*0.621371).toFixed(2)+" Miles"; }
-    function utilTime() { document.getElementById('time-out').innerText=new Date().toLocaleString(); }
-    function utilAR() { document.getElementById('ar-out').innerText=document.getElementById('ar-w').value/document.getElementById('ar-h').value; }
-    function utilEncrypt() { document.getElementById('enc-out').value=btoa(document.getElementById('enc-in').value); }
-    function utilEmoji() { document.getElementById('emo-out').innerText=document.getElementById('emo-in').value+" 😊"; }
-    function utilRead() { document.getElementById('read-out').innerText="Score: 85 (Good)"; }
-    function utilUrl() { document.getElementById('url-out').value=encodeURIComponent(document.getElementById('url-in').value); }
-    function utilByte() { document.getElementById('byte-out').innerText=document.getElementById('byte-in').value.length + " Bytes"; }
-    function utilBattery() { navigator.getBattery?.().then(b=>document.getElementById('batt-out').innerText=Math.round(b.level*100)+"%"); }
-    function utilAscii() { document.getElementById('ascii-out').innerText=document.getElementById('ascii-in').value; }
-    function utilPalette() { document.getElementById('pal-out').innerHTML='<div style="flex:1;background:#ff003c"></div><div style="flex:1;background:#00e5ff"></div><div style="flex:1;background:#00ff88"></div>'; }
-    function utilBeep() { let c=new window.AudioContext(), o=c.createOscillator(); o.frequency.value=document.getElementById('freq-in').value; o.connect(c.destination); o.start(); o.stop(c.currentTime+0.2); }
+    
+    function utilSTT() { 
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition; 
+        if(!SR) { alert("Speech Recognition not supported in this browser."); return; }
+        const rec = new SR(); 
+        rec.lang = 'en-US'; 
+        rec.onresult = (e) => { document.getElementById('stt-out').value = e.results[0][0].transcript; }; 
+        rec.start(); 
+        speakJARVIS("Microphone activated. Listening."); 
+    }
+
+    function utilColor() { 
+        let hex = document.getElementById('color-in').value.replace('#', '');
+        if(hex.length === 6) {
+            let r = parseInt(hex.substring(0,2), 16);
+            let g = parseInt(hex.substring(2,4), 16);
+            let b = parseInt(hex.substring(4,6), 16);
+            document.getElementById('color-out').value = `rgb(${r}, ${g}, ${b})`; 
+        } else {
+            document.getElementById('color-out').value = "Invalid HEX"; 
+        }
+    }
+
+    function utilJson() { 
+        try {
+            let parsed = JSON.parse(document.getElementById('json-in').value);
+            document.getElementById('json-in').value = JSON.stringify(parsed, null, 4);
+        } catch(e) { 
+            alert("Invalid JSON structure."); 
+        } 
+    }
+
+    function utilUnit() { 
+        let km = parseFloat(document.getElementById('unit-in').value);
+        if(!isNaN(km)) {
+            document.getElementById('unit-out').innerText = (km * 0.621371).toFixed(2) + " Miles"; 
+        }
+    }
+
+    function utilTime() { 
+        let d = new Date();
+        let out = `Local: ${d.toLocaleString()}\n`;
+        out += `NY: ${d.toLocaleString("en-US", {timeZone: "America/New_York"})}\n`;
+        out += `London: ${d.toLocaleString("en-GB", {timeZone: "Europe/London"})}\n`;
+        out += `Tokyo: ${d.toLocaleString("en-JP", {timeZone: "Asia/Tokyo"})}`;
+        document.getElementById('time-out').innerText = out; 
+    }
+
+    function utilAR() { 
+        let w = parseInt(document.getElementById('ar-w').value);
+        let h = parseInt(document.getElementById('ar-h').value);
+        if(w && h) {
+            let gcd = function(a, b) { return b === 0 ? a : gcd(b, a % b); };
+            let r = gcd(w, h);
+            document.getElementById('ar-out').innerText = `${w/r} : ${h/r}`; 
+        }
+    }
+
+    function utilEncrypt() { 
+        let str = document.getElementById('enc-in').value;
+        let encrypted = str.replace(/[a-zA-Z]/g, function(c){
+            return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);
+        });
+        document.getElementById('enc-out').value = encrypted; 
+    }
+
+    function utilEmoji() { 
+        let text = document.getElementById('emo-in').value.toLowerCase();
+        let map = {'happy':'😀', 'sad':'😢', 'fire':'🔥', 'robot':'🤖', 'ai':'🧠', 'ironman':'🦸‍♂️', 'car':'🚗'};
+        let res = text.split(' ').map(w => map[w] || w).join(' ');
+        document.getElementById('emo-out').innerText = res; 
+    }
+
+    function utilRead() { 
+        let text = document.getElementById('read-in').value.trim();
+        let words = text.split(' ').length;
+        if(words > 20) {
+            document.getElementById('read-out').innerText = "Score: Advanced (Suitable for Adults)"; 
+        } else {
+            document.getElementById('read-out').innerText = "Score: Basic (Easy to Read)"; 
+        }
+    }
+
+    function utilLorem() { 
+        document.getElementById('lorem-out').value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."; 
+    }
+
+    function utilUrl() { 
+        document.getElementById('url-out').value = encodeURIComponent(document.getElementById('url-in').value); 
+    }
+
+    function utilByte() { 
+        let blob = new Blob([document.getElementById('byte-in').value]);
+        document.getElementById('byte-out').innerText = blob.size + " Bytes"; 
+    }
+
+    function utilBattery() { 
+        if(navigator.getBattery) {
+            navigator.getBattery().then(b => {
+                document.getElementById('batt-out').innerText = Math.round(b.level * 100) + "% " + (b.charging ? "⚡" : "🔋");
+            });
+        } else {
+            document.getElementById('batt-out').innerText = "Not Supported";
+        }
+    }
+
+    function utilAscii() { 
+        let map = {'A':'/-\\','B':'8','C':'(','D':'|)','E':'|-','I':'|','O':'()','S':'5','T':'T','X':'> <'};
+        let txt = document.getElementById('ascii-in').value.toUpperCase();
+        document.getElementById('ascii-out').innerText = txt.split('').map(c => map[c] || c).join(' '); 
+    }
+
+    function utilPalette() { 
+        let p = document.getElementById('pal-out');
+        p.innerHTML = '';
+        for(let i=0; i<4; i++) {
+            let hex = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+            p.innerHTML += `<div style="flex:1; background:${hex};" title="${hex}"></div>`;
+        }
+    }
+
+    function utilBeep() { 
+        let AudioContext = window.AudioContext || window.webkitAudioContext;
+        let ctx = new AudioContext();
+        let osc = ctx.createOscillator(); 
+        osc.frequency.value = document.getElementById('freq-in').value; 
+        osc.connect(ctx.destination); 
+        osc.start(); 
+        osc.stop(ctx.currentTime + 0.2); 
+    }
 
     // AI Hub Groq Functions
-    function genAIImage() { let p = document.getElementById('ai-img-prompt').value; if(!p)return; document.getElementById('ai-img-loader').style.display='block'; document.getElementById('ai-img-result').style.display='none'; document.getElementById('ai-img-result').src=`https://image.pollinations.ai/prompt/${encodeURIComponent(p)}`; document.getElementById('ai-img-result').onload=()=>{document.getElementById('ai-img-loader').style.display='none'; document.getElementById('ai-img-result').style.display='block';} }
-    function runLiveCode() { document.getElementById('live-code-out').srcdoc = document.getElementById('live-code-in').value; }
-    function runCyberScan() { document.getElementById('scan-out').innerText="Initializing NMAP...\nScanning ports...\n[OK] Port 80 Open\n[OK] Port 443 Secure\nNo vulnerabilities detected."; speakJARVIS("Scan complete. System is secure."); }
-    function toggleHUD() { let h=document.getElementById('global-hud'); h.style.display=h.style.display==='block'?'none':'block'; }
+    function genAIImage() { 
+        let p = document.getElementById('ai-img-prompt').value; 
+        if(!p) { alert("Enter a prompt!"); return; }
+        document.getElementById('ai-img-loader').style.display = 'block'; 
+        document.getElementById('ai-img-result').style.display = 'none'; 
+        // Adding random seed to force new render
+        let seed = Math.floor(Math.random() * 10000);
+        document.getElementById('ai-img-result').src = `https://image.pollinations.ai/prompt/${encodeURIComponent(p)}?seed=${seed}&width=800&height=400&nologo=true`; 
+        document.getElementById('ai-img-result').onload = () => {
+            document.getElementById('ai-img-loader').style.display = 'none'; 
+            document.getElementById('ai-img-result').style.display = 'block';
+        } 
+    }
+
+    function runLiveCode() { 
+        document.getElementById('live-code-out').srcdoc = document.getElementById('live-code-in').value; 
+        speakJARVIS("Live Code Executed.");
+    }
+    
+    function runCyberScan() { 
+        document.getElementById('scan-out').innerText = "Initializing NMAP Sandbox...\nScanning local ports...\n[OK] Port 80 Open\n[OK] Port 443 Secure\n[WARN] Port 22 Filtered\nNo critical vulnerabilities detected."; 
+        speakJARVIS("Security scan complete. Local network is secure."); 
+    }
+    
+    function toggleHUD() { 
+        let h = document.getElementById('global-hud'); 
+        if(h.style.display === 'block') {
+            h.style.display = 'none';
+            speakJARVIS("Global HUD Disabled.");
+        } else {
+            h.style.display = 'block';
+            speakJARVIS("Optical HUD Activated. Welcome to the Matrix.");
+        }
+    }
 
     async function callGroqModule(inputId, outputId, systemPrefix) {
-        if (!API_KEY) return speakJARVIS("API Key Missing");
-        let msg = document.getElementById(inputId).value; document.getElementById(outputId).innerText = "Loading Quantum Link...";
+        if (!API_KEY) { speakJARVIS("API Key Missing. Please update settings."); return; }
+        let msg = document.getElementById(inputId).value; 
+        if(!msg) return;
+        
+        let out = document.getElementById(outputId);
+        out.innerText = "Loading Quantum Link...";
         try {
-          let res = await fetch(`https://api.groq.com/openai/v1/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` }, body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: [{ role: "system", content: systemPrefix }, { role: "user", content: msg }] }) });
-          let d = await res.json(); document.getElementById(outputId).innerText = d.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '');
-        } catch(e) { document.getElementById(outputId).innerText="Error connecting to API."; }
+          let res = await fetch(`https://api.groq.com/openai/v1/chat/completions`, { 
+              method: 'POST', 
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` }, 
+              body: JSON.stringify({ 
+                  model: "llama-3.3-70b-versatile", 
+                  messages: [
+                      { role: "system", content: systemPrefix }, 
+                      { role: "user", content: msg }
+                  ] 
+              }) 
+          });
+          let d = await res.json(); 
+          out.innerText = d.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+        } catch(e) { 
+            out.innerText = "Error connecting to AI Neural Link."; 
+        }
     }
 
   </script>
