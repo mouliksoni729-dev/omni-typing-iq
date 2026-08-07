@@ -69,7 +69,29 @@
 
     #certificate-canvas { width: 100%; max-width: 800px; height: auto; margin-top: 1.5rem; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border-radius: 2px; }
 
-    /* JARVIS UI */
+    /* STARK MOVIES UI */
+    .stark-movies-header { text-align: center; margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent); padding-bottom: 15px; }
+    .stark-movies-title { font-family: 'Orbitron', sans-serif; font-size: 3rem; color: var(--accent); text-shadow: 0 0 20px var(--accent); font-weight: 900; letter-spacing: 5px; margin:0;}
+    .stark-movies-founder { font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; color: var(--correct); font-weight: bold; letter-spacing: 3px; margin-top: 5px; text-transform: uppercase;}
+    .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; max-height: 500px; overflow-y: auto; padding-right: 10px; }
+    .movie-grid::-webkit-scrollbar { width: 8px; } .movie-grid::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+    .movie-card { background: #111; border: 1px solid var(--muted); border-radius: 8px; overflow: hidden; cursor: pointer; transition: 0.3s; position: relative; height: 250px; display:flex; align-items:flex-end; padding:10px; text-align:center; }
+    .movie-card:hover { transform: scale(1.05); border-color: var(--accent); box-shadow: 0 0 20px var(--accent); }
+    .movie-title { color: #fff; font-family: 'Orbitron', sans-serif; font-weight: bold; width: 100%; text-shadow: 0 2px 4px #000; z-index: 2; }
+    .movie-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index: 1;}
+
+    /* UTILITIES 20 FEATURES */
+    .util-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; max-height: 650px; overflow-y: auto; padding-right: 10px; }
+    .util-grid::-webkit-scrollbar { width: 8px; } .util-grid::-webkit-scrollbar-thumb { background: var(--accent); }
+    .util-box { background:rgba(0,0,0,0.5); padding:1rem; border:1px solid var(--muted); border-radius:8px; display:flex; flex-direction:column; gap:8px; transition:0.3s; }
+    .util-box:hover { border-color:var(--accent); box-shadow:0 5px 15px rgba(0,0,0,0.5); transform: translateY(-3px); }
+    .util-box h3 { color:var(--accent-alt); font-family:'Orbitron', sans-serif; font-size:1rem; border-bottom:1px solid var(--muted); padding-bottom:5px; }
+
+    /* ARCADE GAMES STYLES */
+    #arcade-viewport { width:100%; height:450px; background:#050505; border:2px solid var(--accent); border-radius:8px; position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center; box-shadow: 0 0 30px rgba(0,0,0,0.8) inset; cursor: crosshair; }
+    canvas.game-canvas { display:none; background:#000; width:100%; height:100%; }
+
+    /* JARVIS SIDEBAR UI */
     .jarvis-sidebar { background: var(--panel); backdrop-filter: blur(15px); border: 1px solid var(--accent); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; height: 85vh; position: sticky; top: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); }
     .jarvis-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--muted); padding-bottom: 0.8rem; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--accent); }
     
@@ -88,21 +110,6 @@
     .chat-msg.jarvis { background: rgba(0, 229, 255, 0.1); color: var(--accent); align-self: flex-start; border-left: 4px solid var(--accent); max-width: 95%; text-shadow: 0 0 2px var(--accent); }
     .jarvis-controls { display: flex; gap: 0.5rem; }
 
-    /* UTILITIES STYLES */
-    .util-box { background:rgba(0,0,0,0.5); padding:1.2rem; border:1px solid var(--muted); border-radius:8px; display:flex; flex-direction:column; gap:10px; transition:0.3s; }
-    .util-box:hover { border-color:var(--accent); box-shadow:0 5px 15px rgba(0,0,0,0.5); transform: translateY(-3px); }
-    .util-box h3 { color:var(--accent-alt); font-family:'Orbitron', sans-serif; font-size:1.1rem; border-bottom:1px solid var(--muted); padding-bottom:5px; }
-
-    /* STARK MOVIES */
-    .stark-movies-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:1rem; border-bottom: 2px solid var(--accent); padding-bottom: 10px;}
-    .stark-movies-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--accent); text-shadow: 0 0 15px var(--accent); margin:0; line-height: 1; }
-    .stark-movies-founder { font-family: 'Rajdhani', sans-serif; font-size: 1rem; color: var(--correct); font-weight: bold; letter-spacing: 2px; }
-
-    /* ARCADE GAMES STYLES */
-    #arcade-viewport { width:100%; height:500px; background:#000; border:2px solid var(--accent); border-radius:8px; position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center; box-shadow: 0 0 30px rgba(0,0,0,0.8) inset; cursor: crosshair; }
-    #game-canvas { display:none; background:#050505; width:100%; height:100%; }
-
-    /* TICKER */
     .ticker-wrap { width: 100%; background: var(--accent); color: #000; padding: 6px 0; font-family: 'Share Tech Mono', monospace; font-weight: bold; overflow: hidden; position: fixed; bottom: 0; left: 0; z-index: 100; font-size: 1rem; box-shadow: 0 0 15px var(--accent); }
     .ticker { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 25s linear infinite; }
     @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
@@ -116,8 +123,8 @@
       <button class="nav-btn active" onclick="switchTab('typing')">⌨️ Typing</button>
       <button class="nav-btn" onclick="switchTab('iq')">🧠 IQ Test</button>
       <button class="nav-btn" onclick="switchTab('movies')">🎬 Stark Movies</button>
-      <button class="nav-btn" onclick="switchTab('arcade')">🎮 Space Defender</button>
-      <button class="nav-btn" onclick="switchTab('utilities')">🛠️ Utilities</button>
+      <button class="nav-btn" onclick="switchTab('arcade')">🎮 Arcade (10)</button>
+      <button class="nav-btn" onclick="switchTab('utilities')">🛠️ Utilities (20)</button>
       <button class="nav-btn" onclick="switchTab('hologram')">⚛️ 3D AR</button>
       <button class="nav-btn" onclick="switchTab('custom')">⚙️ Settings</button>
     </nav>
@@ -137,10 +144,6 @@
                 <option value="30" selected>30 Seconds</option>
                 <option value="60">60 Seconds</option>
               </select>
-            </div>
-            <div>
-              <label>AI Generation</label>
-              <button class="action-btn" style="background:var(--accent-alt); color:#fff;" onclick="generateGroqWords()">🤖 Fetch Groq Words</button>
             </div>
             <div>
               <label>Action</label>
@@ -196,94 +199,86 @@
         </div>
       </section>
 
-      <!-- 3. STARK MOVIES (FULL SCREEN IFRAME) -->
+      <!-- 3. STARK MOVIES (CUSTOM UI OVER PVRPLAY) -->
       <section id="movies-tab" class="section-page">
-        <div class="card" style="height: 80vh; display: flex; flex-direction: column; padding: 1rem;">
+        <div class="card" style="height: 85vh; display: flex; flex-direction: column; padding: 1rem;">
           <div class="stark-movies-header">
-             <div>
-               <h2 class="stark-movies-title">🎬 STARK MOVIES</h2>
-               <p class="stark-movies-founder">Founded by Moulik Soni</p>
-             </div>
-             <div style="display:flex; gap:10px; width:40%;">
-               <input type="text" id="movie-search-input" placeholder="Search any movie..." onkeypress="if(event.key==='Enter') searchMovie()">
-               <button class="action-btn" style="width:120px;" onclick="searchMovie()">Search</button>
-             </div>
+             <h2 class="stark-movies-title">🎬 STARK MOVIES</h2>
+             <p class="stark-movies-founder">FOUNDED BY MOULIK SONI</p>
           </div>
-          <!-- Replaced broken PVRPlay with a highly reliable embed search proxy -->
-          <iframe id="movie-iframe" src="https://vidsrc.in/" style="flex:1; width:100%; border:2px solid var(--accent); border-radius:8px; box-shadow: 0 0 20px rgba(0,255,255,0.2);" allowfullscreen></iframe>
+          <div style="display:flex; gap:10px; margin-bottom:1.5rem;">
+            <input type="text" id="movie-search-input" placeholder="Search any Movie, Series or Anime..." onkeypress="if(event.key==='Enter') searchStarkMovie()">
+            <button class="action-btn" style="width:150px;" onclick="searchStarkMovie()">Search</button>
+          </div>
+
+          <!-- The Custom Movie Grid -->
+          <div id="movie-grid" class="movie-grid"></div>
+
+          <!-- Hidden Player -->
+          <div id="movie-player" style="display:none; flex:1; flex-direction:column;">
+            <button class="action-btn" style="width:auto; margin-bottom:10px; background:var(--wrong); color:#fff;" onclick="closeMoviePlayer()">🔙 Back to Stark Movies Dashboard</button>
+            <iframe id="movie-iframe" style="flex:1; width:100%; border:2px solid var(--accent); border-radius:8px; box-shadow: 0 0 20px rgba(0,255,255,0.2);" allowfullscreen></iframe>
+          </div>
         </div>
       </section>
 
-      <!-- 4. ARCADE GAMES (ULTIMATE SPACE DEFENDER) -->
+      <!-- 4. ARCADE GAMES (10 EPIC 2D GAMES) -->
       <section id="arcade-tab" class="section-page">
         <div class="card">
-          <h2 style="color:var(--accent); margin-bottom:1rem;">🎮 Stark Space Defender</h2>
+          <h2 style="color:var(--accent); margin-bottom:1rem;">🎮 Stark Arcade (10 Epic Games)</h2>
           <div class="controls-grid">
-            <button class="action-btn" onclick="startSpaceDefender()">▶️ Start Mission</button>
+            <select id="arcade-selector" onchange="startArcadeGame()">
+              <option value="fps">1. Free Fire (Survival FPS)</option>
+              <option value="mario">2. Super Mario (Endless)</option>
+              <option value="tekken">3. Tekken (Street Fighter)</option>
+              <option value="minecraft">4. Minecraft (2D Builder)</option>
+              <option value="snake">5. Classic Snake</option>
+              <option value="pong">6. AI Pong</option>
+              <option value="tictactoe">7. Tic-Tac-Toe</option>
+              <option value="memory">8. Memory Match</option>
+              <option value="space">9. Space Invaders</option>
+              <option value="breakout">10. Breakout Bricks</option>
+            </select>
+            <button class="action-btn" onclick="startArcadeGame()">▶️ Start / Restart Game</button>
           </div>
           
           <div id="arcade-viewport">
-            <canvas id="game-canvas" width="800" height="500"></canvas>
+            <canvas id="game-canvas" class="game-canvas" width="800" height="500"></canvas>
+            <div id="html-game-grid" style="display:none; flex-wrap:wrap; gap:5px; padding:10px; width:100%; height:100%; overflow:auto;"></div>
           </div>
-          <p id="game-instructions" style="text-align:center; color:var(--correct); margin-top:10px; font-size:1rem; font-weight:bold;">Move: Mouse | Shoot: Click | Destroy the Alien Fleet!</p>
+          <p id="game-instructions" style="text-align:center; color:var(--correct); margin-top:10px; font-size:1rem; font-weight:bold;"></p>
         </div>
       </section>
 
-      <!-- 5. UTILITIES (5 NEW AMAZING TOOLS) -->
+      <!-- 5. UTILITIES (20 AMAZING TOOLS) -->
       <section id="utilities-tab" class="section-page">
         <div class="card">
-          <h2 style="color:var(--accent); margin-bottom:1rem;">🛠️ Advanced System Utilities</h2>
-          <div class="controls-grid" style="grid-template-columns: 1fr 1fr;">
+          <h2 style="color:var(--accent); margin-bottom:1rem;">🛠️ Advanced Utilities Panel (20 Tools)</h2>
+          <div class="util-grid">
             
-            <!-- SECURE PASSWORD VAULT -->
-            <div class="util-box">
-              <h3>🔒 Secure Password Vault</h3>
-              <input type="password" id="vault-master-key" placeholder="Enter Master Password">
-              <button class="action-btn" onclick="unlockVault()">Access Vault</button>
-              <div id="vault-content" style="display:none; margin-top:10px; flex-direction:column; gap:5px;">
-                <input type="text" id="vault-desc" placeholder="E.g., Gmail, Instagram...">
-                <input type="text" id="vault-pass" placeholder="Password to save...">
-                <button class="action-btn" onclick="saveToVault()" style="padding:0.5rem; font-size:0.8rem;">Save Securely</button>
-                <div id="vault-list" style="margin-top:10px; background:#000; padding:10px; border-radius:4px; max-height:100px; overflow-y:auto; font-size:0.8rem;"></div>
-              </div>
-            </div>
-
-            <!-- TIMETABLE -->
-            <div class="util-box">
-              <h3>📚 Master Study Timetable</h3>
-              <textarea id="timetable-input" rows="5">5:00 AM - Wake up
-4:30 PM to 7:30 PM - Live Classes
-7:30 PM to 8:30 PM - CBSE Self Study
-8:30 PM - Dinner
-10:00 PM - Sleep</textarea>
-              <button class="action-btn" onclick="saveTimetable()" style="padding:0.5rem;">Save Timetable (Local)</button>
-            </div>
-
-            <!-- LO-FI BEATS -->
-            <div class="util-box">
-              <h3>🎧 Lofi Focus Beats</h3>
-              <iframe width="100%" height="100" src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=0" title="Lofi" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="border-radius:8px;"></iframe>
-            </div>
-
-            <!-- VOICE NOTEPAD -->
-            <div class="util-box">
-              <h3>🎙️ Voice Dictation Notepad</h3>
-              <textarea id="dictation-note" rows="3" placeholder="Click mic to speak notes..."></textarea>
-              <div style="display:flex; gap:10px;">
-                 <button class="action-btn" onclick="startDictation()" style="padding:0.5rem; background:var(--accent-alt); color:#fff;">Start Mic</button>
-                 <button class="action-btn" onclick="saveDictation()" style="padding:0.5rem;">Save</button>
-              </div>
-            </div>
-
-            <!-- LIVE CRYPTO TICKER -->
-            <div class="util-box" style="grid-column: span 2;">
-              <h3>📈 Live Crypto Market</h3>
-              <div style="display:flex; justify-content:space-around; align-items:center; background:#000; padding:10px; border-radius:6px;">
-                 <div style="text-align:center;"><span style="color:#f7931a; font-weight:bold;">BITCOIN (BTC)</span><br><span id="btc-price" style="font-size:1.5rem; color:var(--text);">Loading...</span></div>
-                 <div style="text-align:center;"><span style="color:#627eea; font-weight:bold;">ETHEREUM (ETH)</span><br><span id="eth-price" style="font-size:1.5rem; color:var(--text);">Loading...</span></div>
-              </div>
-              <button class="action-btn" style="margin-top:10px; padding:0.5rem;" onclick="fetchCrypto()">Refresh Prices</button>
-            </div>
+            <div class="util-box"><h3>🔒 Secure Vault</h3><input type="password" id="vault-master-key" placeholder="Master Key"><button class="action-btn" onclick="unlockVault()" style="padding:5px;">Unlock</button><div id="vault-content" style="display:none; flex-direction:column; gap:5px; margin-top:5px;"><input type="text" id="vault-desc" placeholder="App/Site"><input type="text" id="vault-pass" placeholder="Password"><button class="action-btn" onclick="saveToVault()" style="padding:5px;">Save</button><div id="vault-list" style="max-height:80px; overflow:auto; font-size:0.8rem;"></div></div></div>
+            <div class="util-box"><h3>📚 Study Timetable</h3><textarea id="timetable-input" rows="4">5:00 AM - Wake up
+4:30-7:30 PM - Live Classes
+7:30-8:30 PM - CBSE Self Study
+10:00 PM - Sleep</textarea><button class="action-btn" onclick="saveTimetable()" style="padding:5px;">Save</button></div>
+            <div class="util-box"><h3>📷 QR Generator</h3><input type="text" id="qr-input" placeholder="Enter URL"><button class="action-btn" onclick="genQR()" style="padding:5px;">Create</button><div style="text-align:center; margin-top:5px;"><img id="qr-output" style="display:none; max-width:80px;"><a id="qr-download" style="display:none; color:var(--accent); cursor:pointer;" download="QR.png">📥 Download</a></div></div>
+            <div class="util-box"><h3>🔑 Password Gen</h3><button class="action-btn" onclick="genPassword()" style="padding:5px;">Generate</button><input type="text" id="pass-output" readonly></div>
+            <div class="util-box"><h3>📝 Quick Notepad</h3><textarea id="quick-note" rows="3" placeholder="Type notes..."></textarea><button class="action-btn" onclick="saveNote()" style="padding:5px;">Save Local</button></div>
+            <div class="util-box"><h3>⏱️ Pomodoro</h3><div id="pomo-display" style="font-size:1.8rem; font-weight:bold; text-align:center; color:var(--correct);">25:00</div><div style="display:flex; gap:5px;"><button class="action-btn" onclick="startPomo()" style="padding:5px;">Start</button><button class="action-btn" onclick="resetPomo()" style="padding:5px; background:var(--muted);">Reset</button></div></div>
+            <div class="util-box"><h3>🧮 Calculator</h3><input type="text" id="calc-input" placeholder="e.g. 25*4+10"><button class="action-btn" onclick="evalCalc()" style="padding:5px;">Calculate =</button></div>
+            <div class="util-box"><h3>⏱️ Stopwatch</h3><div id="sw-display" style="font-size:1.5rem; text-align:center;">00:00.00</div><div style="display:flex; gap:5px;"><button class="action-btn" onclick="startSw()" style="padding:5px;">Start</button><button class="action-btn" onclick="stopSw()" style="padding:5px;">Stop</button></div></div>
+            <div class="util-box"><h3>⚖️ BMI Calculator</h3><input type="number" id="bmi-w" placeholder="Weight (kg)"><input type="number" id="bmi-h" placeholder="Height (cm)"><button class="action-btn" onclick="calcBMI()" style="padding:5px;">Calculate</button><div id="bmi-res"></div></div>
+            <div class="util-box"><h3>🎂 Age Calculator</h3><input type="date" id="age-dob"><button class="action-btn" onclick="calcAge()" style="padding:5px;">Calculate</button><div id="age-res"></div></div>
+            <div class="util-box"><h3>🎲 Dice Roller</h3><button class="action-btn" onclick="rollDice()" style="padding:15px; font-size:1.5rem;">Roll Dice 🎲</button><div id="dice-res" style="text-align:center; font-size:2rem; font-weight:bold;">-</div></div>
+            <div class="util-box"><h3>🪙 Coin Flipper</h3><button class="action-btn" onclick="flipCoin()" style="padding:15px; font-size:1.5rem;">Flip Coin 🪙</button><div id="coin-res" style="text-align:center; font-size:1.5rem; font-weight:bold;">-</div></div>
+            <div class="util-box"><h3>🔒 Base64 Encoder</h3><input type="text" id="b64-input" placeholder="Text"><button class="action-btn" onclick="encodeB64()" style="padding:5px;">Encode</button><input type="text" id="b64-output" readonly></div>
+            <div class="util-box"><h3>🔠 Case Converter</h3><input type="text" id="case-input" placeholder="Text"><button class="action-btn" onclick="convertCase()" style="padding:5px;">UPPERCASE</button><input type="text" id="case-output" readonly></div>
+            <div class="util-box"><h3>📝 Word Counter</h3><textarea id="word-input" rows="2" oninput="countWords()"></textarea><div id="word-count-output" style="font-weight:bold;">Words: 0</div></div>
+            <div class="util-box"><h3>💸 Bill Splitter</h3><input type="number" id="bill-amt" placeholder="Total Bill"><input type="number" id="bill-ppl" placeholder="People"><button class="action-btn" onclick="splitBill()" style="padding:5px;">Split</button><div id="bill-res"></div></div>
+            <div class="util-box"><h3>🌐 IP Checker</h3><button class="action-btn" onclick="checkIP()" style="padding:5px;">Get My IP</button><div id="ip-res" style="font-family:monospace; margin-top:5px;"></div></div>
+            <div class="util-box"><h3>🔄 Text Reverser</h3><input type="text" id="rev-input" placeholder="Text"><button class="action-btn" onclick="reverseText()" style="padding:5px;">Reverse</button><input type="text" id="rev-output" readonly></div>
+            <div class="util-box"><h3>🔢 Random Number</h3><div style="display:flex; gap:5px;"><input type="number" id="rn-min" placeholder="Min"><input type="number" id="rn-max" placeholder="Max"></div><button class="action-btn" onclick="genRandomNum()" style="padding:5px; margin-top:5px;">Generate</button><div id="rn-res" style="text-align:center; font-size:1.5rem;">-</div></div>
+            <div class="util-box"><h3>💻 System Info</h3><button class="action-btn" onclick="getSysInfo()" style="padding:5px;">Show Info</button><div id="sys-res" style="font-size:0.8rem; overflow:auto; max-height:80px;"></div></div>
             
           </div>
         </div>
@@ -334,7 +329,6 @@
             <pre id="memory-display" style="background:rgba(0,0,0,0.6); padding:1rem; border-radius:6px; color:var(--correct); white-space:pre-wrap; font-family:'Share Tech Mono';"></pre>
             <div style="display:flex; gap:10px; margin-top:1rem;">
                <button class="action-btn" style="background:var(--wrong);" onclick="clearMemory()">Wipe Memory</button>
-               <button class="action-btn" style="background:#ffaa00;" onclick="resetVaultPass()">Reset Vault Password</button>
             </div>
           </div>
         </div>
@@ -382,7 +376,7 @@
 
     // Load saved utilities
     document.getElementById('timetable-input').value = localStorage.getItem('JARVIS_TIMETABLE') || document.getElementById('timetable-input').value;
-    document.getElementById('dictation-note').value = localStorage.getItem('JARVIS_NOTE') || "";
+    document.getElementById('quick-note').value = localStorage.getItem('JARVIS_NOTE') || "";
 
     function updateMemoryDisplay() {
       document.getElementById('memory-display').innerText = JSON.stringify(memoryVault, null, 2) || "Memory is empty.";
@@ -402,9 +396,10 @@
       
       clearInterval(arcadeTimer);
 
+      if(tabId === 'movies' && document.getElementById('movie-grid').innerHTML === '') loadStarkMovies();
       if(tabId === 'iq' && iqData.length === 0) generateDynamicIQTest();
       if(tabId === 'hologram' && !atomRenderer) initHologramSystem();
-      if(tabId === 'utilities') fetchCrypto();
+      if(tabId === 'arcade') startArcadeGame();
     }
 
     function changeTheme(theme) {
@@ -422,150 +417,9 @@
     }
 
     /* =======================================================
-       TYPING TEST ENGINE (GROQ GENERATED WORDS FIXED)
-       ======================================================= */
-    const defaultWords = "algorithm binary compiler database encryption function hardware keyboard network protocol quantum software terminal variable velocity syntax circuit pixel array processor matrix server cloud logic cyber".split(" ");
-    let targetText = "", typingTimer = null, timeLeft = 30, totalTime = 30, isPlaying = false, errors = 0;
-    let currentWordsArray = [...defaultWords];
-
-    async function generateGroqWords() {
-      if(!API_KEY) { alert("Please save Groq API key in settings first!"); return; }
-      const display = document.getElementById('typing-display');
-      display.innerHTML = "<span style='color:var(--accent);'>Fetching difficult words from Groq AGI...</span>";
-      
-      try {
-        const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
-          method: 'POST', 
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
-          body: JSON.stringify({
-            model: "llama-3.3-70b-versatile",
-            messages: [{ role: "user", content: "Generate a space-separated string of 30 difficult, complex English words for a typing test. Do not include numbers, punctuation, or markdown. Only return the raw words." }],
-            temperature: 0.8
-          })
-        });
-        const data = await response.json();
-        let text = data.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
-        currentWordsArray = text.split(/\s+/);
-        initTypingGame(true);
-        speakJARVIS("New vocabulary loaded from Groq.");
-      } catch (e) {
-        display.innerHTML = "<span style='color:var(--wrong);'>Failed to fetch words. Check API key.</span>";
-        setTimeout(() => initTypingGame(false), 2000);
-      }
-    }
-
-    function initTypingGame(useCustomArray = false) {
-      clearInterval(typingTimer);
-      timeLeft = parseInt(document.getElementById('time-limit').value);
-      totalTime = timeLeft; isPlaying = false; errors = 0;
-      
-      document.getElementById('stat-time').innerText = timeLeft;
-      document.getElementById('stat-wpm').innerText = '0';
-      document.getElementById('stat-acc').innerText = '100%';
-      const inputEl = document.getElementById('typing-input');
-      inputEl.value = ''; inputEl.disabled = false; inputEl.focus();
-
-      let shuffled = [];
-      let pool = useCustomArray ? currentWordsArray : defaultWords;
-      for(let i=0; i<25; i++) shuffled.push(pool[Math.floor(Math.random() * pool.length)]);
-      targetText = shuffled.join(" ").toLowerCase(); // Fix matching
-
-      const display = document.getElementById('typing-display');
-      display.innerHTML = '';
-      targetText.split('').forEach((char, idx) => {
-        let span = document.createElement('span');
-        span.className = 'char' + (idx === 0 ? ' current' : '');
-        span.innerText = char;
-        display.appendChild(span);
-      });
-    }
-
-    document.getElementById('typing-input').addEventListener('input', (e) => {
-      if(!isPlaying) { isPlaying = true; typingTimer = setInterval(updateTypingTimer, 1000); }
-      const inputVal = e.target.value.toLowerCase(); // Fix case mismatch
-      const chars = document.querySelectorAll('#typing-display .char');
-
-      errors = 0;
-      chars.forEach((span, idx) => {
-        span.className = 'char';
-        if (inputVal[idx] == null) { if (idx === inputVal.length) span.classList.add('current'); } 
-        else if (inputVal[idx] === span.innerText) { span.classList.add('correct'); } 
-        else { span.classList.add('wrong'); errors++; }
-      });
-
-      let timeElapsed = totalTime - timeLeft || 1;
-      let correctChars = inputVal.length - errors;
-      document.getElementById('stat-wpm').innerText = Math.round((correctChars / 5) / (timeElapsed / 60)) || 0;
-      document.getElementById('stat-acc').innerText = inputVal.length > 0 ? Math.round((correctChars / inputVal.length) * 100) + '%' : '100%';
-
-      if (inputVal.length >= targetText.length) endTypingTest("Test Complete!");
-    });
-
-    function updateTypingTimer() {
-      timeLeft--; document.getElementById('stat-time').innerText = timeLeft;
-      if(timeLeft <= 0) endTypingTest("Time's Up!");
-    }
-
-    function endTypingTest(msg) {
-      clearInterval(typingTimer); document.getElementById('typing-input').disabled = true;
-      speakJARVIS(`${msg} Speed was ${document.getElementById('stat-wpm').innerText} WPM.`);
-    }
-
-    /* =======================================================
-       TTS VOICE ENGINE (MICROSOFT HINDI/HINGLISH FIX)
-       ======================================================= */
-    let speechQueue = [];
-
-    function sanitizeForSpeech(text) {
-      // toLowerCase prevents spelling out ALL CAPS words like J-A-R-V-I-S
-      return text.replace(/[*_~#`@$%^&()=+[\]{}|\\<>/]/g, ' ').toLowerCase().replace(/\s+/g, ' ').trim();
-    }
-
-    function speakJARVIS(text) {
-      if(!text) return;
-      window.speechSynthesis.cancel();
-      let cleanText = sanitizeForSpeech(text);
-      speechQueue = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText]; 
-      speakNextChunk();
-    }
-
-    function speakNextChunk() {
-      if(speechQueue.length === 0) {
-        document.getElementById('jarvis-orb').classList.remove('speaking');
-        return;
-      }
-      
-      let chunk = speechQueue.shift().trim();
-      if(!chunk) { speakNextChunk(); return; }
-
-      let u = new SpeechSynthesisUtterance(chunk);
-      let voices = window.speechSynthesis.getVoices();
-      
-      // Force pick Microsoft Indian Voice for perfect Hinglish pronunciation
-      let bestVoice = voices.find(v => v.name.includes('Microsoft') && (v.lang === 'hi-IN' || v.lang === 'en-IN')) || 
-                      voices.find(v => v.lang === 'hi-IN' || v.lang === 'en-IN') ||
-                      voices[0];
-                      
-      if(bestVoice) u.voice = bestVoice;
-      u.rate = 1.0; 
-      u.pitch = 1.0;
-      
-      u.onstart = () => { document.getElementById('jarvis-orb').classList.add('speaking'); };
-      u.onend = () => { speakNextChunk(); };
-      u.onerror = () => { speakNextChunk(); };
-
-      window.speechSynthesis.speak(u);
-    }
-
-    function interruptJARVIS() {
-      speechQueue = [];
-      window.speechSynthesis.cancel();
-      document.getElementById('jarvis-orb').classList.remove('speaking');
-    }
-
-    /* =======================================================
        GROQ AGI ENGINE (EXACT UNTOUCHED SYSTEM PROMPT & MODEL)
        ======================================================= */
+    // Note: Kept strictly untouched as requested!
     const PUBLIC_PERSONA = `You are jarvis, an advanced AI assistant. 
     Crucial Context: You were created by the genius developer, Moulik Soni. You are currently interacting with a PUBLIC USER on the web.
     Rules:
@@ -584,14 +438,12 @@
       input.value = '';
 
       let lowerMsg = msg.toLowerCase();
-      // Voice Tab Switching
-      if(lowerMsg.includes("typing test")) { switchTab('typing'); speakJARVIS("Opening Typing Suite."); return; }
-      if(lowerMsg.includes("settings")) { switchTab('custom'); speakJARVIS("Opening Settings."); return; }
-      if(lowerMsg.includes("iq test")) { switchTab('iq'); speakJARVIS("Opening IQ Test."); return; }
-      if(lowerMsg.includes("movies")) { switchTab('movies'); speakJARVIS("Opening Stark Movies."); return; }
-      if(lowerMsg.includes("game") || lowerMsg.includes("arcade")) { switchTab('arcade'); speakJARVIS("Opening Arcade."); return; }
-      if(lowerMsg.includes("utilities")) { switchTab('utilities'); speakJARVIS("Opening Utilities."); return; }
-      if(lowerMsg.includes("hologram") || lowerMsg.includes("3d")) { switchTab('hologram'); speakJARVIS("Opening Hologram Engine."); return; }
+      if(lowerMsg.includes("open typing")) { switchTab('typing'); speakJARVIS("Opening Typing Suite."); return; }
+      if(lowerMsg.includes("open settings")) { switchTab('custom'); speakJARVIS("Opening Settings."); return; }
+      if(lowerMsg.includes("open iq")) { switchTab('iq'); speakJARVIS("Opening IQ Test."); return; }
+      if(lowerMsg.includes("open arcade") || lowerMsg.includes("play game")) { switchTab('arcade'); speakJARVIS("Opening Arcade."); return; }
+      if(lowerMsg.includes("open utilities")) { switchTab('utilities'); speakJARVIS("Opening Utilities."); return; }
+      if(lowerMsg.includes("open movies")) { switchTab('movies'); speakJARVIS("Opening Stark Movies."); return; }
       
       if(lowerMsg.includes("my name is")) {
         let n = lowerMsg.split("my name is")[1].trim();
@@ -664,7 +516,7 @@
     function toggleMic() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) { alert("Mic not supported."); return; }
-      const recognition = new SpeechRecognition(); recognition.lang = 'en-IN'; // Better understanding for English/Hinglish
+      const recognition = new SpeechRecognition(); recognition.lang = 'hi-IN';
       
       recognition.onstart = () => { document.getElementById('jarvis-orb').classList.add('listening'); };
       recognition.onend = () => { document.getElementById('jarvis-orb').classList.remove('listening'); };
@@ -673,6 +525,187 @@
         sendJarvisMessage();
       };
       recognition.start();
+    }
+
+    /* =======================================================
+       TTS VOICE ENGINE (FIXED ALPHABET PRONUNCIATION)
+       ======================================================= */
+    let speechQueue = [];
+
+    function sanitizeForSpeech(text) {
+      // toLowerCase prevents spelling out ALL CAPS words like J-A-R-V-I-S
+      return text.replace(/[*_~#`@$%^&()=+[\]{}|\\<>/]/g, ' ').toLowerCase().replace(/\s+/g, ' ').trim();
+    }
+
+    function speakJARVIS(text) {
+      if(!text) return;
+      window.speechSynthesis.cancel();
+      let cleanText = sanitizeForSpeech(text);
+      speechQueue = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText]; 
+      speakNextChunk();
+    }
+
+    function speakNextChunk() {
+      if(speechQueue.length === 0) {
+        document.getElementById('jarvis-orb').classList.remove('speaking');
+        return;
+      }
+      
+      let chunk = speechQueue.shift().trim();
+      if(!chunk) { speakNextChunk(); return; }
+
+      let u = new SpeechSynthesisUtterance(chunk);
+      let voices = window.speechSynthesis.getVoices();
+      
+      // Force pick Microsoft Voice for excellent Hindi/Hinglish reading
+      let bestVoice = voices.find(v => v.name.includes('Microsoft') && v.lang === 'hi-IN') || 
+                      voices.find(v => v.name.includes('Microsoft') && v.lang.includes('hi')) ||
+                      voices.find(v => v.lang === 'hi-IN') || 
+                      voices.find(v => v.lang.includes('IN')) ||
+                      voices[0];
+                      
+      if(bestVoice) u.voice = bestVoice;
+      
+      u.rate = 0.95; // Slightly slower makes Hindi pronunciation perfect
+      u.pitch = 1.0;
+      
+      u.onstart = () => { document.getElementById('jarvis-orb').classList.add('speaking'); };
+      u.onend = () => { speakNextChunk(); };
+      u.onerror = () => { speakNextChunk(); };
+
+      window.speechSynthesis.speak(u);
+    }
+
+    function interruptJARVIS() {
+      speechQueue = [];
+      window.speechSynthesis.cancel();
+      document.getElementById('jarvis-orb').classList.remove('speaking');
+    }
+
+    /* =======================================================
+       TYPING TEST ENGINE
+       ======================================================= */
+    const typePools = {
+      classic: "algorithm binary compiler database encryption function hardware keyboard network protocol quantum software terminal variable velocity syntax circuit pixel array processor matrix server cloud logic cyber".split(" "),
+      code: ["const obj = { id: 1 };", "def solve(x): return x*2", "SELECT * FROM users;", "document.getElementById('app')", "for(let i=0; i<n; i++)", "import numpy as np"],
+    };
+
+    let targetText = "", typingTimer = null, timeLeft = 30, totalTime = 30, isPlaying = false, errors = 0;
+
+    function initTypingGame() {
+      clearInterval(typingTimer);
+      let mode = document.getElementById('game-mode').value;
+      timeLeft = parseInt(document.getElementById('time-limit').value);
+      totalTime = timeLeft; isPlaying = false; errors = 0;
+      
+      document.getElementById('stat-time').innerText = timeLeft;
+      document.getElementById('stat-wpm').innerText = '0';
+      document.getElementById('stat-acc').innerText = '100%';
+      document.getElementById('typing-input').value = '';
+      document.getElementById('typing-input').disabled = false;
+
+      let pool = typePools[mode === 'death' ? 'classic' : mode] || typePools.classic;
+      let shuffled = [];
+      for(let i=0; i<30; i++) shuffled.push(pool[Math.floor(Math.random() * pool.length)]);
+      targetText = shuffled.join(" ").toLowerCase();
+
+      const display = document.getElementById('typing-display');
+      display.innerHTML = '';
+      targetText.split('').forEach((char, idx) => {
+        let span = document.createElement('span');
+        span.className = 'char' + (idx === 0 ? ' current' : '');
+        span.innerText = char;
+        display.appendChild(span);
+      });
+    }
+
+    document.getElementById('typing-input').addEventListener('input', (e) => {
+      if(!isPlaying) { isPlaying = true; typingTimer = setInterval(updateTypingTimer, 1000); }
+      const inputVal = e.target.value.toLowerCase();
+      const chars = document.querySelectorAll('#typing-display .char');
+
+      if (document.getElementById('game-mode').value === 'death' && e.inputType === 'insertText') {
+        if (inputVal[inputVal.length - 1] !== targetText[inputVal.length - 1]) {
+          endTypingTest("Sudden Death Triggered: You made a mistake!"); return;
+        }
+      }
+
+      errors = 0;
+      chars.forEach((span, idx) => {
+        span.className = 'char';
+        if (inputVal[idx] == null) { if (idx === inputVal.length) span.classList.add('current'); } 
+        else if (inputVal[idx] === span.innerText) { span.classList.add('correct'); } 
+        else { span.classList.add('wrong'); errors++; }
+      });
+
+      let timeElapsed = totalTime - timeLeft || 1;
+      let correctChars = inputVal.length - errors;
+      document.getElementById('stat-wpm').innerText = Math.round((correctChars / 5) / (timeElapsed / 60)) || 0;
+      document.getElementById('stat-acc').innerText = inputVal.length > 0 ? Math.round((correctChars / inputVal.length) * 100) + '%' : '100%';
+
+      if (inputVal.length >= targetText.length) endTypingTest("Test Complete!");
+    });
+
+    function updateTypingTimer() {
+      timeLeft--; document.getElementById('stat-time').innerText = timeLeft;
+      if(timeLeft <= 0) endTypingTest("Time's Up!");
+    }
+
+    function endTypingTest(msg) {
+      clearInterval(typingTimer); document.getElementById('typing-input').disabled = true;
+      speakJARVIS(`${msg} Speed was ${document.getElementById('stat-wpm').innerText} WPM.`);
+    }
+
+    /* =======================================================
+       STARK MOVIES (CUSTOM UI + PVRPLAY STREAMING)
+       ======================================================= */
+    const trendingMovies = [
+      {title: "Deadpool & Wolverine", img: "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg"},
+      {title: "Kalki 2898 AD", img: "https://image.tmdb.org/t/p/w500/yCsoDtkOikHaehWQwHQO5HEx4rE.jpg"},
+      {title: "Stree 2", img: "https://image.tmdb.org/t/p/w500/wD2kUCX1Bb6oezJi41gM1FwxHke.jpg"},
+      {title: "Avengers: Endgame", img: "https://image.tmdb.org/t/p/w500/or06DP3rTePeXIQAy125m9300H4.jpg"},
+      {title: "Jawan", img: "https://image.tmdb.org/t/p/w500/jILeVcEKsp6X1N1H00XqZ00s8i5.jpg"},
+      {title: "Spider-Man: No Way Home", img: "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1R80vEVY4UfR64.jpg"},
+      {title: "Oppenheimer", img: "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg"},
+      {title: "John Wick: Chapter 4", img: "https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UqwIaq.jpg"},
+      {title: "Pushpa: The Rise", img: "https://image.tmdb.org/t/p/w500/r1y0XpccE9XvG5FjM2uE9c3nJ7y.jpg"},
+      {title: "Avatar: The Way of Water", img: "https://image.tmdb.org/t/p/w500/t6HIqrB0XCUP4QfX0a8p8B9i0R6.jpg"},
+      {title: "Interstellar", img: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6Mv1T4A2H.jpg"},
+      {title: "Pathaan", img: "https://image.tmdb.org/t/p/w500/8pHxEbhNDD2BvKx4oBwX7rZ1N3i.jpg"}
+    ];
+
+    function loadStarkMovies() {
+      const grid = document.getElementById('movie-grid');
+      grid.innerHTML = '';
+      trendingMovies.forEach(m => {
+        let card = document.createElement('div');
+        card.className = 'movie-card';
+        card.style.backgroundImage = `url('${m.img}')`;
+        card.style.backgroundSize = 'cover';
+        card.style.backgroundPosition = 'center';
+        card.innerHTML = `<div class="movie-overlay"></div><div class="movie-title">${m.title}</div>`;
+        card.onclick = () => playStarkMovie(m.title);
+        grid.appendChild(card);
+      });
+    }
+
+    function searchStarkMovie() {
+      const query = document.getElementById('movie-search-input').value.trim();
+      if(query) playStarkMovie(query);
+    }
+
+    function playStarkMovie(title) {
+      document.getElementById('movie-grid').style.display = 'none';
+      document.getElementById('movie-player').style.display = 'flex';
+      // Loading pvrplay under the hood
+      document.getElementById('movie-iframe').src = `https://pvrplay.online/?s=${encodeURIComponent(title)}`;
+      speakJARVIS(`Streaming ${title} on Stark Movies.`);
+    }
+
+    function closeMoviePlayer() {
+      document.getElementById('movie-player').style.display = 'none';
+      document.getElementById('movie-grid').style.display = 'grid';
+      document.getElementById('movie-iframe').src = '';
     }
 
     /* =======================================================
@@ -956,301 +989,344 @@
     }
 
     /* =======================================================
-       ARCADE GAMES (EPIC SPACE DEFENDER 2D)
+       ARCADE GAMES (10 EPIC 2D CRASH-PROOF GAMES)
        ======================================================= */
     let arcadeTimer;
     let canvas, ctx;
-    
-    // Space Defender State
-    let ship = { x: 375, y: 400, w: 50, h: 40, speed: 7 };
-    let bullets = [];
-    let enemies = [];
-    let particles = [];
-    let score = 0;
-    let gameActive = false;
-    let keys = {};
 
     function startArcadeGame() {
       clearInterval(arcadeTimer);
       canvas = document.getElementById('game-canvas');
       ctx = canvas.getContext('2d');
-      canvas.style.display = 'block';
+      const game = document.getElementById('arcade-selector').value;
       
-      document.getElementById('game-instructions').innerText = "Controls: LEFT/RIGHT Arrows to Move | SPACE to Shoot Laser";
+      document.getElementById('html-game-grid').style.display = 'none';
+      canvas.style.display = 'none';
       
-      ship.x = 375;
-      bullets = [];
-      enemies = [];
-      particles = [];
-      score = 0;
-      gameActive = true;
-
-      document.addEventListener('keydown', (e) => { keys[e.code] = true; });
-      document.addEventListener('keyup', (e) => { keys[e.code] = false; });
-
-      arcadeTimer = setInterval(updateSpaceDefender, 1000/60);
-    }
-
-    function createExplosion(x, y, color) {
-      for(let i=0; i<15; i++) {
-        particles.push({
-          x: x, y: y,
-          vx: (Math.random() - 0.5) * 10,
-          vy: (Math.random() - 0.5) * 10,
-          life: 1.0,
-          color: color
-        });
+      if(['tictactoe', 'memory', 'reaction'].includes(game)) {
+         document.getElementById('html-game-grid').style.display = 'flex';
+      } else {
+         canvas.style.display = 'block';
       }
+
+      if(game === 'fps') initFreeFire2D();
+      else if(game === 'mario') initMario2D();
+      else if(game === 'tekken') initTekken2D();
+      else if(game === 'minecraft') initMinecraft2D();
+      else if(game === 'snake') initSnake();
+      else if(game === 'pong') initPong();
+      else if(game === 'tictactoe') initTicTacToe();
+      else if(game === 'memory') initMemory();
+      else if(game === 'space') initSpaceInvaders();
+      else if(game === 'breakout') initBreakout();
     }
 
-    function updateSpaceDefender() {
-      if(!gameActive) return;
-
-      // Clear bg
-      ctx.fillStyle = '#050a0f';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Starfield
-      ctx.fillStyle = '#fff';
-      for(let i=0; i<30; i++) ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 1, 1);
-
-      // Ship movement
-      if(keys['ArrowLeft'] && ship.x > 0) ship.x -= ship.speed;
-      if(keys['ArrowRight'] && ship.x < canvas.width - ship.w) ship.x += ship.speed;
-
-      // Shooting
-      if(keys['Space']) {
-        if(bullets.length === 0 || bullets[bullets.length-1].y < ship.y - 30) {
-          bullets.push({ x: ship.x + ship.w/2 - 2, y: ship.y, w: 4, h: 15 });
-          // Engine flame
-          particles.push({x: ship.x + ship.w/2, y: ship.y + ship.h, vx: (Math.random()-0.5)*2, vy: 5, life: 1.0, color: '#00e5ff'});
+    // 1. FREE FIRE (Top-Down Survival FPS)
+    function initFreeFire2D() {
+      document.getElementById('game-instructions').innerText = "Free Fire: WASD to Move | Mouse to Aim | Click to Shoot";
+      let p = {x:400, y:250, r:15, speed:5}, bullets = [], enemies = [], score = 0, keys = {}, mouse = {x:400, y:250};
+      document.onkeydown = e => keys[e.key.toLowerCase()] = true;
+      document.onkeyup = e => keys[e.key.toLowerCase()] = false;
+      canvas.onmousemove = e => { let r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; };
+      canvas.onclick = () => {
+        let angle = Math.atan2(mouse.y - p.y, mouse.x - p.x);
+        bullets.push({x: p.x, y: p.y, vx: Math.cos(angle)*10, vy: Math.sin(angle)*10});
+      };
+      
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#223322'; ctx.fillRect(0,0,800,500); // Grass bg
+        if(keys['w'] && p.y>20) p.y -= p.speed; if(keys['s'] && p.y<480) p.y += p.speed;
+        if(keys['a'] && p.x>20) p.x -= p.speed; if(keys['d'] && p.x<780) p.x += p.speed;
+        
+        ctx.fillStyle = '#ffcc00';
+        bullets.forEach((b,i) => { b.x+=b.vx; b.y+=b.vy; ctx.fillRect(b.x, b.y, 5, 5); if(b.x<0||b.x>800||b.y<0||b.y>500) bullets.splice(i,1); });
+        
+        if(Math.random()<0.05) {
+           let ex = Math.random()>0.5 ? 0 : 800, ey = Math.random()*500;
+           enemies.push({x:ex, y:ey, r:12, speed: 1 + Math.random()});
         }
-      }
-
-      // Draw Ship (Triangle shape)
-      ctx.fillStyle = '#00e5ff';
-      ctx.beginPath();
-      ctx.moveTo(ship.x + ship.w/2, ship.y);
-      ctx.lineTo(ship.x + ship.w, ship.y + ship.h);
-      ctx.lineTo(ship.x, ship.y + ship.h);
-      ctx.fill();
-
-      // Update & Draw Bullets
-      ctx.fillStyle = '#00ff88';
-      for(let i=bullets.length-1; i>=0; i--) {
-        let b = bullets[i];
-        b.y -= 10;
-        ctx.fillRect(b.x, b.y, b.w, b.h);
-        if(b.y < 0) bullets.splice(i, 1);
-      }
-
-      // Spawn Enemies
-      if(Math.random() < 0.03 + (score*0.001)) { // gets harder
-        enemies.push({
-          x: Math.random() * (canvas.width - 40),
-          y: -40, w: 40, h: 40,
-          speed: 2 + Math.random()*2 + (score*0.05)
+        
+        ctx.fillStyle = '#ff003c';
+        enemies.forEach((e, ei) => {
+          let a = Math.atan2(p.y - e.y, p.x - e.x);
+          e.x += Math.cos(a)*e.speed; e.y += Math.sin(a)*e.speed;
+          ctx.beginPath(); ctx.arc(e.x, e.y, e.r, 0, Math.PI*2); ctx.fill();
+          
+          if(Math.hypot(p.x-e.x, p.y-e.y) < p.r+e.r) { alert("GAME OVER! Score: "+score); startArcadeGame(); }
+          bullets.forEach((b, bi) => {
+            if(Math.hypot(b.x-e.x, b.y-e.y) < e.r) { enemies.splice(ei,1); bullets.splice(bi,1); score+=10; }
+          });
         });
+        
+        ctx.fillStyle = '#00e5ff'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill(); // Player
+        ctx.strokeStyle = '#fff'; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke(); // Laser Sight
+        
+        ctx.fillStyle = '#fff'; ctx.font = '20px Orbitron'; ctx.fillText('Kills: '+score, 10, 30);
+      }, 30);
+    }
+
+    // 2. SUPER MARIO (Endless Runner)
+    function initMario2D() {
+      document.getElementById('game-instructions').innerText = "Super Mario: Press SPACE or Click to Jump";
+      let m = {x:100, y:350, w:30, h:40, vy:0}, pipes = [], score = 0, frame = 0, isJumping = false;
+      document.onkeydown = e => { if(e.key===' ' && !isJumping) { m.vy = -16; isJumping = true; } };
+      canvas.onclick = () => { if(!isJumping) { m.vy = -16; isJumping = true; } };
+      
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#87CEEB'; ctx.fillRect(0,0,800,500); // Sky
+        ctx.fillStyle = '#8B4513'; ctx.fillRect(0,390,800,110); // Ground
+        
+        m.vy += 1.2; m.y += m.vy; // Gravity
+        if(m.y >= 350) { m.y = 350; m.vy = 0; isJumping = false; }
+        
+        ctx.fillStyle = 'red'; ctx.fillRect(m.x, m.y, m.w, m.h); // Mario
+        
+        if(frame % 80 === 0) pipes.push({x:800, w:40, h: 40 + Math.random()*60});
+        ctx.fillStyle = '#00ff00';
+        pipes.forEach((p, i) => {
+          p.x -= 8; ctx.fillRect(p.x, 390 - p.h, p.w, p.h);
+          if(m.x < p.x+p.w && m.x+m.w > p.x && m.y+m.h > 390-p.h) { alert("GAME OVER! Score: "+score); startArcadeGame(); }
+          if(p.x < -40) { pipes.splice(i,1); score++; }
+        });
+        
+        ctx.fillStyle = '#000'; ctx.font = '20px Orbitron'; ctx.fillText('Score: '+score, 10, 30);
+        frame++;
+      }, 30);
+    }
+
+    // 3. TEKKEN (2D Fighter)
+    function initTekken2D() {
+      document.getElementById('game-instructions').innerText = "Tekken: 'A' to Punch | 'D' to Kick";
+      let p1 = {x: 200, hp: 100, action: 0}, ai = {x: 500, hp: 100, action: 0};
+      document.onkeydown = e => {
+        if(e.key.toLowerCase()==='a' && p1.action===0) { p1.action = 1; setTimeout(()=>p1.action=0, 200); if(ai.x-p1.x<80) { ai.hp-=10; ai.x+=30; } }
+        if(e.key.toLowerCase()==='d' && p1.action===0) { p1.action = 2; setTimeout(()=>p1.action=0, 300); if(ai.x-p1.x<100) { ai.hp-=15; ai.x+=40; } }
+      };
+
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#111'; ctx.fillRect(0,0,800,500); // Arena
+        ctx.fillStyle = 'red'; ctx.fillRect(50,30,300,20); ctx.fillRect(450,30,300,20); // HP
+        ctx.fillStyle = 'green'; ctx.fillRect(50,30,p1.hp*3,20); ctx.fillRect(450,30,ai.hp*3,20);
+        
+        if(ai.x > p1.x+90) ai.x -= 3;
+        else if(Math.random()<0.05 && ai.action===0) {
+          ai.action = 1; setTimeout(()=>ai.action=0, 200);
+          if(ai.x-p1.x<90) { p1.hp-=10; p1.x-=30; }
+        }
+        
+        if(p1.hp<=0) { alert("AI WINS!"); startArcadeGame(); }
+        if(ai.hp<=0) { alert("YOU WIN!"); startArcadeGame(); }
+
+        ctx.fillStyle = '#0077ff'; ctx.fillRect(p1.x, 250, 50, 150); // P1
+        if(p1.action===1) ctx.fillRect(p1.x+50, 280, 40, 20); // Punch
+        if(p1.action===2) ctx.fillRect(p1.x+50, 350, 60, 20); // Kick
+
+        ctx.fillStyle = '#ff003c'; ctx.fillRect(ai.x, 250, 50, 150); // AI
+        if(ai.action===1) ctx.fillRect(ai.x-40, 280, 40, 20);
+      }, 30);
+    }
+
+    // 4. MINECRAFT (2D Builder)
+    function initMinecraft2D() {
+      document.getElementById('game-instructions').innerText = "Minecraft 2D: Click to Add Block | Shift+Click to Remove Block";
+      let blocks = [];
+      for(let i=0; i<800; i+=40) blocks.push({x:i, y:460}); // Floor
+      
+      canvas.onclick = e => {
+        let r = canvas.getBoundingClientRect(), x = Math.floor((e.clientX-r.left)/40)*40, y = Math.floor((e.clientY-r.top)/40)*40;
+        if(e.shiftKey) blocks = blocks.filter(b => b.x!==x || b.y!==y);
+        else if(!blocks.some(b => b.x===x && b.y===y)) blocks.push({x,y});
+      };
+      
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#87CEEB'; ctx.fillRect(0,0,800,500);
+        ctx.fillStyle = '#8B4513'; blocks.forEach(b => ctx.fillRect(b.x, b.y, 40, 40));
+        ctx.strokeStyle = '#228B22'; ctx.lineWidth=4; blocks.forEach(b => ctx.strokeRect(b.x, b.y, 40, 40));
+      }, 50);
+    }
+
+    // 5. SNAKE
+    function initSnake() {
+      document.getElementById('game-instructions').innerText = "Snake: Arrow Keys to Move";
+      let snake = [{x:10, y:10}], dir = {x:0, y:0}, food = {x:15, y:10}, score = 0;
+      document.onkeydown = e => {
+        if(e.key==='ArrowUp' && dir.y!==1) dir={x:0,y:-1}; if(e.key==='ArrowDown' && dir.y!==-1) dir={x:0,y:1};
+        if(e.key==='ArrowLeft' && dir.x!==1) dir={x:-1,y:0}; if(e.key==='ArrowRight' && dir.x!==-1) dir={x:1,y:0};
+      };
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#000'; ctx.fillRect(0,0,800,500);
+        let h = {x: snake[0].x+dir.x, y: snake[0].y+dir.y};
+        if(h.x<0||h.x>=40||h.y<0||h.y>=25||snake.some(s=>s.x===h.x && s.y===h.y)) { dir={x:0,y:0}; head={x:10,y:10}; snake=[head]; score=0; }
+        snake.unshift(h);
+        if(h.x===food.x && h.y===food.y) { food={x:Math.floor(Math.random()*40), y:Math.floor(Math.random()*25)}; score++; } else { snake.pop(); }
+        ctx.fillStyle = '#00ff88'; snake.forEach(s => ctx.fillRect(s.x*20, s.y*20, 18, 18));
+        ctx.fillStyle = '#ff003c'; ctx.fillRect(food.x*20, food.y*20, 18, 18);
+        ctx.fillStyle='#fff'; ctx.font='20px Orbitron'; ctx.fillText('Score: '+score, 10, 20);
+      }, 80);
+    }
+
+    // 6. PONG
+    function initPong() {
+      document.getElementById('game-instructions').innerText = "Pong: Move Mouse Up/Down";
+      let pY=200, aiY=200, bX=400, bY=250, bdX=7, bdY=7;
+      canvas.onmousemove = e => pY = e.clientY - canvas.getBoundingClientRect().top - 50;
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle='#000'; ctx.fillRect(0,0,800,500);
+        ctx.fillStyle='#00e5ff'; ctx.fillRect(20, pY, 15, 100); ctx.fillRect(765, aiY, 15, 100); ctx.fillRect(bX, bY, 15, 15);
+        bX+=bdX; bY+=bdY; aiY += (bY - (aiY+50))*0.1;
+        if(bY<=0||bY>=485) bdY=-bdY;
+        if(bX<=35 && bY>pY && bY<pY+100) bdX=-bdX; if(bX>=750 && bY>aiY && bY<aiY+100) bdX=-bdX;
+        if(bX<0||bX>800) { bX=400; bY=250; bdX=-bdX; }
+      }, 30);
+    }
+
+    // 7. TIC TAC TOE (HTML GRID)
+    function initTicTacToe() {
+      const grid = document.getElementById('html-game-grid'); grid.innerHTML = '';
+      grid.style.display = 'grid'; grid.style.gridTemplateColumns = 'repeat(3, 100px)'; grid.style.justifyContent = 'center'; grid.style.alignContent = 'center';
+      document.getElementById('game-instructions').innerText = "Tic-Tac-Toe: Click cells to play.";
+      let board = Array(9).fill(null), turn = 'X';
+      for(let i=0; i<9; i++) {
+        let cell = document.createElement('div');
+        cell.style.cssText = 'width:100px; height:100px; background:#222; border:2px solid var(--accent); display:flex; justify-content:center; align-items:center; font-size:3rem; cursor:pointer; color:var(--accent); font-family:Orbitron;';
+        cell.onclick = () => { if(!board[i]) { board[i]=turn; cell.innerText=turn; turn=turn==='X'?'O':'X'; } };
+        grid.appendChild(cell);
       }
+    }
 
-      // Update & Draw Enemies
-      ctx.fillStyle = '#ff003c';
-      for(let i=enemies.length-1; i>=0; i--) {
-        let e = enemies[i];
-        e.y += e.speed;
-        ctx.fillRect(e.x, e.y, e.w, e.h);
-
-        // Check Collision with Bullets
-        for(let j=bullets.length-1; j>=0; j--) {
-          let b = bullets[j];
-          if(b.x < e.x + e.w && b.x + b.w > e.x && b.y < e.y + e.h && b.h + b.y > e.y) {
-            createExplosion(e.x + e.w/2, e.y + e.h/2, '#ff003c');
-            enemies.splice(i, 1);
-            bullets.splice(j, 1);
-            score += 10;
-            break;
+    // 8. MEMORY MATCH
+    function initMemory() {
+      const grid = document.getElementById('html-game-grid'); grid.innerHTML = '';
+      grid.style.display = 'grid'; grid.style.gridTemplateColumns = 'repeat(4, 80px)'; grid.style.justifyContent = 'center'; grid.style.alignContent = 'center';
+      document.getElementById('game-instructions').innerText = "Memory: Match the emojis.";
+      let icons = ['🚀','👽','💥','🔥','⚡','🧠','👁️','🤖'];
+      let cards = [...icons, ...icons].sort(()=>0.5-Math.random());
+      let flipped = [];
+      cards.forEach(icon => {
+        let card = document.createElement('div');
+        card.style.cssText = 'width:80px; height:80px; background:var(--accent); border-radius:8px; display:flex; justify-content:center; align-items:center; font-size:2rem; cursor:pointer; color:transparent; transition:0.3s;';
+        card.onclick = () => {
+          if(flipped.length<2 && card.style.color==='transparent') {
+            card.style.background='#fff'; card.style.color='#000'; card.innerText=icon; flipped.push(card);
+            if(flipped.length===2) {
+              setTimeout(() => {
+                if(flipped[0].innerText !== flipped[1].innerText) { flipped.forEach(c => { c.style.background='var(--accent)'; c.style.color='transparent'; }); }
+                flipped = [];
+              }, 800);
+            }
           }
-        }
-
-        // Check Collision with Ship
-        if(e.y + e.h > ship.y && e.x < ship.x + ship.w && e.x + e.w > ship.x) {
-          gameActive = false;
-          createExplosion(ship.x + ship.w/2, ship.y + ship.h/2, '#00e5ff');
-          setTimeout(() => { alert("GAME OVER! Score: " + score); }, 100);
-        }
-
-        if(e.y > canvas.height) enemies.splice(i, 1);
-      }
-
-      // Particles
-      for(let i=particles.length-1; i>=0; i--) {
-        let p = particles[i];
-        p.x += p.vx; p.y += p.vy; p.life -= 0.05;
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = Math.max(0, p.life);
-        ctx.fillRect(p.x, p.y, 4, 4);
-        ctx.globalAlpha = 1.0;
-        if(p.life <= 0) particles.splice(i, 1);
-      }
-
-      // Score
-      ctx.fillStyle = '#fff';
-      ctx.font = '20px Orbitron';
-      ctx.fillText("SCORE: " + score, 20, 30);
+        };
+        grid.appendChild(card);
+      });
     }
 
-    /* =======================================================
-       MOVIES HUB (STARK MOVIES - RELIABLE IFRAME)
-       ======================================================= */
-    function searchMovie() {
-      const query = document.getElementById('movie-search-input').value.trim();
-      const iframe = document.getElementById('movie-iframe');
-      if(query) {
-        // Highly reliable open movie searcher
-        iframe.src = `https://vidsrc.in/#${encodeURIComponent(query)}`;
-      } else {
-        iframe.src = "https://vidsrc.in/";
-      }
-      speakJARVIS("Searching for movie " + query + " in Stark Movies database.");
-    }
-
-    /* =======================================================
-       SYSTEM UTILITIES (VAULT, TIMETABLE, QR, ETC)
-       ======================================================= */
-    function unlockVault() {
-      const inputKey = document.getElementById('vault-master-key').value;
-      let savedPass = localStorage.getItem('JARVIS_VAULT_PASS');
+    // 9. SPACE INVADERS
+    function initSpaceInvaders() {
+      document.getElementById('game-instructions').innerText = "Space Invaders: Mouse to Move | Click to Shoot";
+      let p = {x: 400}, bullets = [], enemies = [];
+      for(let i=0; i<8; i++) for(let j=0; j<3; j++) enemies.push({x: i*80 + 50, y: j*50 + 30});
+      canvas.onmousemove = e => p.x = e.clientX - canvas.getBoundingClientRect().left - 25;
+      canvas.onclick = () => bullets.push({x: p.x+20, y: 450});
       
-      if (!savedPass) {
-        // First time setup
-        if(inputKey.length < 4) { alert("Please enter at least 4 characters for your new Master Password."); return; }
-        localStorage.setItem('JARVIS_VAULT_PASS', inputKey);
-        alert("Master Password Set Successfully! Please remember it.");
-        openVaultUI();
-      } else {
-        if (inputKey === savedPass) {
-          openVaultUI();
-        } else {
-          alert("Incorrect Master Password!");
-        }
-      }
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle='#000'; ctx.fillRect(0,0,800,500);
+        ctx.fillStyle='#00ff88'; ctx.fillRect(p.x, 460, 50, 20); // Ship
+        ctx.fillStyle='#fff'; bullets.forEach((b,i)=>{ b.y-=10; ctx.fillRect(b.x, b.y, 4, 15); if(b.y<0) bullets.splice(i,1); });
+        ctx.fillStyle='#ff003c';
+        enemies.forEach((e, ei) => {
+          e.y += 0.3; ctx.fillRect(e.x, e.y, 40, 30);
+          bullets.forEach((b, bi) => { if(b.x>e.x && b.x<e.x+40 && b.y>e.y && b.y<e.y+30) { enemies.splice(ei,1); bullets.splice(bi,1); } });
+        });
+      }, 30);
     }
 
-    function openVaultUI() {
-      document.getElementById('vault-content').style.display = "flex";
-      renderVault();
-      speakJARVIS("Secure Vault unlocked.");
+    // 10. BREAKOUT
+    function initBreakout() {
+      document.getElementById('game-instructions').innerText = "Breakout: Mouse to Move Paddle";
+      let px=350, bx=400, by=300, bdx=5, bdy=-5, bricks=[];
+      for(let i=0; i<8; i++) for(let j=0; j<5; j++) bricks.push({x: i*90+40, y: j*30+30, act: 1});
+      canvas.onmousemove = e => px = e.clientX - canvas.getBoundingClientRect().left - 60;
+      
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle='#000'; ctx.fillRect(0,0,800,500);
+        ctx.fillStyle='#00e5ff'; ctx.fillRect(px, 470, 120, 15); // Paddle
+        ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(bx, by, 10, 0, Math.PI*2); ctx.fill(); // Ball
+        
+        bx+=bdx; by+=bdy;
+        if(bx<=0||bx>=800) bdx=-bdx; if(by<=0) bdy=-bdy;
+        if(by>=460 && bx>px && bx<px+120) bdy=-bdy;
+        if(by>500) { bx=400; by=300; bdy=-5; } // Dead
+        
+        ctx.fillStyle='#ff007f';
+        bricks.forEach(b => {
+          if(b.act) {
+            ctx.fillRect(b.x, b.y, 80, 20);
+            if(bx>b.x && bx<b.x+80 && by>b.y && by<b.y+20) { b.act=0; bdy=-bdy; }
+          }
+        });
+      }, 30);
     }
+
+    /* =======================================================
+       SYSTEM UTILITIES (20 AMAZING TOOLS)
+       ======================================================= */
     
+    // 1-6. Existing Base Utils
+    function unlockVault() {
+      let key = document.getElementById('vault-master-key').value;
+      let saved = localStorage.getItem('JARVIS_VAULT_PASS');
+      if(!saved) { if(key.length<4){alert("Minimum 4 characters required.");return;} localStorage.setItem('JARVIS_VAULT_PASS', key); alert("Master Password Set!"); document.getElementById('vault-content').style.display="flex"; renderVault(); speakJARVIS("Vault unlocked."); }
+      else if(key === saved) { document.getElementById('vault-content').style.display="flex"; renderVault(); speakJARVIS("Vault unlocked."); }
+      else alert("Incorrect Master Password!");
+    }
     function saveToVault() {
-      const desc = document.getElementById('vault-desc').value.trim();
-      const pass = document.getElementById('vault-pass').value.trim();
-      if(desc && pass) {
-        let vault = JSON.parse(localStorage.getItem('JARVIS_VAULT_DATA') || '{}');
-        vault[desc] = pass;
-        localStorage.setItem('JARVIS_VAULT_DATA', JSON.stringify(vault));
-        document.getElementById('vault-desc').value = ''; document.getElementById('vault-pass').value = '';
-        renderVault();
-      }
+      let desc = document.getElementById('vault-desc').value.trim(), pass = document.getElementById('vault-pass').value.trim();
+      if(desc && pass) { let v = JSON.parse(localStorage.getItem('JARVIS_VAULT_DATA') || '{}'); v[desc] = pass; localStorage.setItem('JARVIS_VAULT_DATA', JSON.stringify(v)); document.getElementById('vault-desc').value=''; document.getElementById('vault-pass').value=''; renderVault(); }
     }
-
     function renderVault() {
-      const list = document.getElementById('vault-list');
-      let vault = JSON.parse(localStorage.getItem('JARVIS_VAULT_DATA') || '{}');
-      list.innerHTML = '';
-      for (const [desc, pass] of Object.entries(vault)) {
-        list.innerHTML += `<div style="border-bottom:1px solid #333; padding:5px 0;"><strong style="color:var(--accent);">${desc}:</strong> ${pass}</div>`;
-      }
+      let list = document.getElementById('vault-list'), v = JSON.parse(localStorage.getItem('JARVIS_VAULT_DATA') || '{}'); list.innerHTML = '';
+      for (const [d, p] of Object.entries(v)) list.innerHTML += `<div style="border-bottom:1px solid #333; padding:5px 0;"><strong style="color:var(--accent);">${d}:</strong> ${p}</div>`;
     }
-
-    function resetVaultPass() {
-      if(confirm("Are you sure you want to reset your Vault Password? This will not delete your saved passwords, but requires setting a new Master Key.")) {
-        localStorage.removeItem('JARVIS_VAULT_PASS');
-        alert("Master Password reset. Please enter a new one in the Utilities tab.");
-      }
-    }
-
-    // QR Code
+    function saveTimetable() { localStorage.setItem('JARVIS_TIMETABLE', document.getElementById('timetable-input').value); speakJARVIS("Timetable saved."); }
     function genQR() {
-      const text = document.getElementById('qr-input').value.trim();
-      const img = document.getElementById('qr-output');
-      const dl = document.getElementById('qr-download');
+      let text = document.getElementById('qr-input').value.trim(), img = document.getElementById('qr-output'), dl = document.getElementById('qr-download');
       if(text) { 
         let url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(text); 
-        img.src = url; 
-        img.style.display = 'inline'; 
-        fetch(url).then(res => res.blob()).then(blob => {
-          let objectURL = URL.createObjectURL(blob);
-          dl.href = objectURL;
-          dl.style.display = 'block';
-        });
+        img.src = url; img.style.display = 'inline'; 
+        fetch(url).then(r => r.blob()).then(b => { dl.href = URL.createObjectURL(b); dl.style.display = 'block'; });
       }
     }
-
-    // Pass Gen
     function genPassword() {
-      const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
-      let pass = ""; for(let i=0; i<16; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-      document.getElementById('pass-output').value = pass;
+      let c = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?"; let p = "";
+      for(let i=0; i<16; i++) p += c.charAt(Math.floor(Math.random()*c.length)); document.getElementById('pass-output').value = p;
     }
+    function saveNote() { localStorage.setItem('JARVIS_NOTE', document.getElementById('quick-note').value); speakJARVIS("Note saved."); }
+    let pomoTimer, pomoTimeLeft = 25*60;
+    function startPomo() { clearInterval(pomoTimer); speakJARVIS("Focus mode activated."); pomoTimer = setInterval(()=>{ pomoTimeLeft--; document.getElementById('pomo-display').innerText = `${Math.floor(pomoTimeLeft/60).toString().padStart(2,'0')}:${(pomoTimeLeft%60).toString().padStart(2,'0')}`; if(pomoTimeLeft<=0){clearInterval(pomoTimer); speakJARVIS("Timer complete!");} }, 1000); }
+    function resetPomo() { clearInterval(pomoTimer); pomoTimeLeft=25*60; document.getElementById('pomo-display').innerText="25:00"; }
+    function encodeB64() { document.getElementById('b64-output').value = btoa(document.getElementById('b64-input').value); }
+    function convertCase() { document.getElementById('case-output').value = document.getElementById('case-input').value.toUpperCase(); }
+    function countWords() { let text = document.getElementById('word-input').value; document.getElementById('word-count-output').innerText = `Words: ${text.trim()?text.trim().split(/\s+/).length:0} | Chars: ${text.length}`; }
 
-    // Timetable & Notes
-    function saveTimetable() {
-      localStorage.setItem('JARVIS_TIMETABLE', document.getElementById('timetable-input').value);
-      speakJARVIS("Study Timetable saved locally.");
-    }
-
-    function saveDictation() {
-      localStorage.setItem('JARVIS_NOTE', document.getElementById('dictation-note').value);
-      speakJARVIS("Quick note saved securely.");
-    }
-
-    // Voice Dictation
-    function startDictation() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) { alert("Mic not supported."); return; }
-      const recognition = new SpeechRecognition(); 
-      recognition.lang = 'en-IN';
-      recognition.continuous = false;
-      
-      recognition.onstart = () => { document.getElementById('dictation-note').placeholder = "Listening..."; };
-      recognition.onresult = (e) => {
-        document.getElementById('dictation-note').value += " " + e.results[0][0].transcript;
-      };
-      recognition.start();
-    }
-
-    // Live Crypto Fetch
-    async function fetchCrypto() {
-      try {
-        const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd");
-        const data = await response.json();
-        document.getElementById('btc-price').innerText = `$${data.bitcoin.usd}`;
-        document.getElementById('eth-price').innerText = `$${data.ethereum.usd}`;
-      } catch(e) {
-        document.getElementById('btc-price').innerText = "Error";
-      }
-    }
-
-    // Pomodoro
-    let pomoTimer;
-    let pomoTimeLeft = 25 * 60;
-    function startPomo() {
-      clearInterval(pomoTimer);
-      speakJARVIS("Focus mode activated.");
-      pomoTimer = setInterval(() => {
-        pomoTimeLeft--;
-        let m = Math.floor(pomoTimeLeft / 60).toString().padStart(2, '0');
-        let s = (pomoTimeLeft % 60).toString().padStart(2, '0');
-        document.getElementById('pomo-display').innerText = `${m}:${s}`;
-        if(pomoTimeLeft <= 0) { clearInterval(pomoTimer); speakJARVIS("Timer complete boss! Take a break."); }
-      }, 1000);
-    }
-    function resetPomo() { clearInterval(pomoTimer); pomoTimeLeft = 25 * 60; document.getElementById('pomo-display').innerText = "25:00"; }
+    // 7-20. NEW UTILITIES
+    function evalCalc() { try { document.getElementById('calc-input').value = eval(document.getElementById('calc-input').value); } catch(e) { document.getElementById('calc-input').value = "Error"; } }
+    
+    let swTimer, swTime = 0, swRunning = false;
+    function startSw() { if(!swRunning) { swRunning=true; swTimer=setInterval(()=>{swTime+=10; let d=new Date(swTime); document.getElementById('sw-display').innerText=`${d.getUTCMinutes().toString().padStart(2,'0')}:${d.getUTCSeconds().toString().padStart(2,'0')}.${Math.floor(d.getUTCMilliseconds()/10).toString().padStart(2,'0')}`;}, 10); } }
+    function stopSw() { swRunning=false; clearInterval(swTimer); }
+    
+    function calcBMI() { let w=parseFloat(document.getElementById('bmi-w').value), h=parseFloat(document.getElementById('bmi-h').value)/100; if(w&&h) { let bmi=(w/(h*h)).toFixed(1); document.getElementById('bmi-res').innerHTML=`<b>BMI: ${bmi}</b>`; } }
+    function calcAge() { let d=new Date(document.getElementById('age-dob').value); if(!isNaN(d)) { let age=new Date().getFullYear()-d.getFullYear(); document.getElementById('age-res').innerHTML=`<b>Age: ~${age} Years</b>`; } }
+    function rollDice() { document.getElementById('dice-res').innerText = Math.floor(Math.random()*6)+1; }
+    function flipCoin() { document.getElementById('coin-res').innerText = Math.random()>0.5 ? "HEADS" : "TAILS"; }
+    function splitBill() { let a=parseFloat(document.getElementById('bill-amt').value), p=parseFloat(document.getElementById('bill-ppl').value); if(a&&p) document.getElementById('bill-res').innerHTML=`<b>₹${(a/p).toFixed(2)} per person</b>`; }
+    async function checkIP() { try { let r=await fetch('https://api.ipify.org?format=json'); let d=await r.json(); document.getElementById('ip-res').innerText = `IP: ${d.ip}`; } catch(e) { document.getElementById('ip-res').innerText="Failed"; } }
+    function reverseText() { document.getElementById('rev-output').value = document.getElementById('rev-input').value.split('').reverse().join(''); }
+    function genRandomNum() { let min=parseInt(document.getElementById('rn-min').value), max=parseInt(document.getElementById('rn-max').value); if(!isNaN(min) && !isNaN(max)) document.getElementById('rn-res').innerText = Math.floor(Math.random()*(max-min+1))+min; }
+    function getSysInfo() { document.getElementById('sys-res').innerText = `Platform: ${navigator.platform}\nLanguage: ${navigator.language}\nResolution: ${screen.width}x${screen.height}`; }
 
     // Init defaults
     initTypingGame();
-    window.speechSynthesis.onvoiceschanged = () => { console.log("Voices ready."); };
   </script>
 </body>
 </html>
