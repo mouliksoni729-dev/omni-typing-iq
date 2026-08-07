@@ -12,39 +12,41 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
 
   <style>
-    /* 7 UNIQUE THEMES */
-    :root[data-theme="stark"] { --bg: #050a0f; --panel: rgba(10, 15, 25, 0.8); --accent: #00e5ff; --accent-alt: #0077ff; --text: #e0ffff; --muted: #005577; --correct: #00ff88; --wrong: #ff003c; --font: 'Rajdhani', sans-serif; }
+    /* 7 UNIQUE THEMES & ANIMATIONS */
+    :root[data-theme="stark"] { --bg: #050a0f; --panel: rgba(10, 15, 25, 0.85); --accent: #00e5ff; --accent-alt: #0077ff; --text: #e0ffff; --muted: #005577; --correct: #00ff88; --wrong: #ff003c; --font: 'Rajdhani', sans-serif; }
     :root[data-theme="hacker"] { --bg: #000000; --panel: rgba(10, 0, 0, 0.9); --accent: #ff003c; --accent-alt: #880000; --text: #ff3333; --muted: #440000; --correct: #00ff00; --wrong: #ffcc00; --font: 'Share Tech Mono', monospace; }
-    :root[data-theme="matrix"] { --bg: #020502; --panel: rgba(5, 15, 5, 0.85); --accent: #00ff41; --accent-alt: #008f11; --text: #00ff41; --muted: #003b00; --correct: #ffffff; --wrong: #ff0000; --font: 'Share Tech Mono', monospace; }
+    :root[data-theme="matrix"] { --bg: #020502; --panel: rgba(5, 15, 5, 0.9); --accent: #00ff41; --accent-alt: #008f11; --text: #00ff41; --muted: #003b00; --correct: #ffffff; --wrong: #ff0000; --font: 'Share Tech Mono', monospace; }
     :root[data-theme="ironman"] { --bg: #110000; --panel: rgba(30, 0, 0, 0.85); --accent: #ffcc00; --accent-alt: #ff0000; --text: #ffdd66; --muted: #880000; --correct: #00ff88; --wrong: #ff003c; --font: 'Orbitron', sans-serif; }
-    :root[data-theme="cyberpunk"] { --bg: #0d0e15; --panel: rgba(22, 25, 37, 0.85); --accent: #00f0ff; --accent-alt: #ff007f; --text: #e0e6ed; --muted: #4a5568; --correct: #00ff88; --wrong: #ff3366; --font: 'Rajdhani', sans-serif; }
+    :root[data-theme="cyberpunk"] { --bg: #0d0e15; --panel: rgba(22, 25, 37, 0.9); --accent: #00f0ff; --accent-alt: #ff007f; --text: #e0e6ed; --muted: #4a5568; --correct: #00ff88; --wrong: #ff3366; --font: 'Rajdhani', sans-serif; }
     :root[data-theme="synthwave"] { --bg: #1a0933; --panel: rgba(45, 17, 77, 0.85); --accent: #f72585; --accent-alt: #7209b7; --text: #4cc9f0; --muted: #3f37c9; --correct: #4361ee; --wrong: #f72585; --font: 'Rajdhani', sans-serif; }
-    :root[data-theme="dark"] { --bg: #121212; --panel: rgba(30, 30, 30, 0.85); --accent: #bb86fc; --accent-alt: #03dac6; --text: #e1e1e1; --muted: #555555; --correct: #4caf50; --wrong: #f44336; --font: system-ui, sans-serif; }
+    :root[data-theme="dark"] { --bg: #121212; --panel: rgba(30, 30, 30, 0.9); --accent: #bb86fc; --accent-alt: #03dac6; --text: #e1e1e1; --muted: #555555; --correct: #4caf50; --wrong: #f44336; --font: system-ui, sans-serif; }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, border-color 0.3s; }
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.4s ease, border-color 0.4s ease; }
     body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     
-    header { background: var(--panel); backdrop-filter: blur(10px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); box-shadow: 0 0 20px var(--muted); z-index: 10; }
-    h1 { font-size: 1.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 3px; font-family: 'Orbitron', sans-serif; font-weight: 900; }
+    header { background: var(--panel); backdrop-filter: blur(12px); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); box-shadow: 0 0 25px var(--muted); z-index: 10; }
+    h1 { font-size: 1.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 3px; font-family: 'Orbitron', sans-serif; font-weight: 900; text-shadow: 0 0 10px var(--accent); }
     
     nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    nav button { background: transparent; border: 1px solid var(--accent); color: var(--text); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; }
-    nav button.active, nav button:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); }
+    nav button { background: transparent; border: 1px solid var(--accent); color: var(--text); padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 0.8rem; font-weight: bold; transition: all 0.2s ease-in-out; }
+    nav button.active, nav button:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); transform: scale(1.05); }
 
     main { flex: 1; padding: 1.5rem; max-width: 1400px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; align-items: start; }
     
-    .section-page { display: none; animation: fadeIn 0.3s ease; }
+    .section-page { display: none; animation: slideFadeUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
     .section-page.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideFadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    .card { background: var(--panel); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 1.5rem; }
+    .card { background: var(--panel); backdrop-filter: blur(12px); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--accent); box-shadow: 0 15px 35px rgba(0,0,0,0.6); margin-bottom: 1.5rem; }
     
+    /* INPUTS & BUTTONS */
     .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-    select, input, textarea { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--accent); color: var(--text); padding: 0.8rem; border-radius: 6px; font-family: inherit; font-size: 1rem; outline: none; }
-    select:focus, input:focus, textarea:focus { box-shadow: 0 0 10px var(--accent); }
-    button.action-btn { width: 100%; background: var(--accent); color: #000; padding: 0.8rem; border: none; border-radius: 6px; font-weight: 900; font-family: 'Orbitron', sans-serif; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
-    button.action-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px var(--accent); }
+    select, input, textarea { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid var(--accent); color: var(--text); padding: 0.8rem; border-radius: 6px; font-family: inherit; font-size: 1rem; outline: none; transition: 0.3s; }
+    select:focus, input:focus, textarea:focus { box-shadow: 0 0 12px var(--accent); }
+    button.action-btn { width: 100%; background: var(--accent); color: #000; padding: 0.8rem; border: none; border-radius: 6px; font-weight: 900; font-family: 'Orbitron', sans-serif; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; }
+    button.action-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--accent); }
 
+    /* TYPING STATS */
     .stats-bar { display: flex; justify-content: space-around; margin-bottom: 1.5rem; background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 8px; border: 1px solid var(--muted); }
     .stat-box { text-align: center; }
     .stat-value { font-size: 2.2rem; color: var(--accent); font-weight: 900; text-shadow: 0 0 10px var(--accent); font-family: 'Orbitron', sans-serif; }
@@ -57,15 +59,17 @@
     .char.current { background: var(--accent); color: #000; border-radius: 2px; }
     #typing-input { font-size: 1.2rem; font-family: 'Share Tech Mono', monospace; }
 
-    .iq-question-block { margin-bottom: 1.5rem; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent); }
+    /* IQ TEST STYLES */
+    .iq-question-block { margin-bottom: 1.5rem; background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent); animation: fadeIn 0.5s ease; }
     .iq-question-block p { font-size: 1.1rem; font-weight: bold; margin-bottom: 0.8rem; }
-    .iq-options label { display: block; padding: 0.6rem; margin-bottom: 0.4rem; background: rgba(0,0,0,0.5); border: 1px solid var(--muted); border-radius: 4px; cursor: pointer; font-size: 1rem; }
-    .iq-options label:hover { border-color: var(--accent); }
+    .iq-options label { display: block; padding: 0.8rem; margin-bottom: 0.5rem; background: rgba(0,0,0,0.6); border: 1px solid var(--muted); border-radius: 6px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+    .iq-options label:hover { border-color: var(--accent); transform: translateX(5px); }
     .iq-options input[type="radio"] { margin-right: 10px; accent-color: var(--accent); width: auto; }
 
     #certificate-canvas { width: 100%; max-width: 800px; height: auto; margin-top: 1.5rem; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border-radius: 2px; }
 
-    .jarvis-sidebar { background: var(--panel); backdrop-filter: blur(10px); border: 1px solid var(--accent); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; height: 85vh; position: sticky; top: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); }
+    /* JARVIS UI */
+    .jarvis-sidebar { background: var(--panel); backdrop-filter: blur(15px); border: 1px solid var(--accent); border-radius: 12px; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; height: 85vh; position: sticky; top: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.9); }
     .jarvis-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--muted); padding-bottom: 0.8rem; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--accent); }
     
     .orb-container { display: flex; justify-content: center; align-items: center; height: 120px; }
@@ -77,33 +81,33 @@
     @keyframes speak-pulse { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
     @keyframes listen-pulse { 0% { transform: scale(0.9); } 100% { transform: scale(1.1); } }
 
-    .jarvis-chat-log { flex-grow: 1; overflow-y: auto; background: rgba(0,0,0,0.5); border: 1px solid var(--muted); padding: 1rem; border-radius: 8px; display: flex; flex-direction: column; gap: 0.8rem; font-size: 1.05rem; }
-    .chat-msg { padding: 0.6rem 0.8rem; border-radius: 6px; line-height: 1.4; }
-    .chat-msg.user { background: rgba(255,255,255,0.1); color: #fff; align-self: flex-end; border-right: 3px solid #fff; max-width: 85%; }
-    .chat-msg.jarvis { background: rgba(0, 229, 255, 0.1); color: var(--accent); align-self: flex-start; border-left: 3px solid var(--accent); max-width: 95%; text-shadow: 0 0 2px var(--accent); }
+    .jarvis-chat-log { flex-grow: 1; overflow-y: auto; background: rgba(0,0,0,0.6); border: 1px inset var(--muted); padding: 1rem; border-radius: 8px; display: flex; flex-direction: column; gap: 0.8rem; font-size: 1.05rem; }
+    .chat-msg { padding: 0.8rem; border-radius: 8px; line-height: 1.5; animation: fadeIn 0.3s ease; }
+    .chat-msg.user { background: rgba(255,255,255,0.1); color: #fff; align-self: flex-end; border-right: 4px solid #fff; max-width: 85%; }
+    .chat-msg.jarvis { background: rgba(0, 229, 255, 0.1); color: var(--accent); align-self: flex-start; border-left: 4px solid var(--accent); max-width: 95%; text-shadow: 0 0 2px var(--accent); }
     .jarvis-controls { display: flex; gap: 0.5rem; }
 
-    #code-preview { width: 100%; height: 300px; background: #fff; border: 2px solid var(--accent); border-radius: 8px; margin-top: 1rem; }
-    #zen-canvas { width: 100%; height: 400px; background: #000; border: 1px solid var(--accent); border-radius: 8px; margin-top: 1rem; display: block; }
-
     /* ARCADE GAMES STYLES */
-    #arcade-viewport { width:100%; height:450px; background:#000; border:2px solid var(--accent); border-radius:8px; position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center;}
+    #arcade-viewport { width:100%; height:450px; background:#000; border:2px solid var(--accent); border-radius:8px; position:relative; overflow:hidden; display:flex; justify-content:center; align-items:center; box-shadow: 0 0 20px rgba(0,0,0,0.8) inset; }
     #game-canvas { display:none; background:#000; width:100%; height:100%; }
+    #minecraft-container { display:none; width:100%; height:100%; position:relative; }
+    #fps-container { display:none; width:100%; height:100%; position:relative; }
+    #fps-crosshair, #mc-crosshair { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#00ff00; font-size:24px; pointer-events:none; z-index:10; font-weight:bold; }
+    
     .tic-tac-grid { display:none; grid-template-columns: repeat(3, 1fr); gap:5px; width:300px; height:300px; }
     .tic-tac-cell { background:#222; display:flex; justify-content:center; align-items:center; font-size:3rem; font-weight:bold; color:var(--accent); cursor:pointer; }
     .memory-grid { display:none; grid-template-columns: repeat(4, 1fr); gap:10px; width:100%; height:100%; padding:10px; }
     .mem-card { background:var(--accent); color:transparent; display:flex; justify-content:center; align-items:center; font-size:2rem; cursor:pointer; border-radius:6px; transition:0.3s; }
     .mem-card.flipped { background:#fff; color:#000; }
     .reaction-box { display:none; width:100%; height:100%; background:#880000; cursor:pointer; justify-content:center; align-items:center; font-size:2rem; color:#fff; font-weight:bold; }
-    
-    /* FPS SHOOTER STYLES */
-    #fps-container { display:none; width:100%; height:100%; position:relative; }
-    #fps-crosshair { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#00ff00; font-size:24px; pointer-events:none; z-index:10; font-weight:bold; }
 
     /* UTILITIES STYLES */
-    .util-box { background:rgba(0,0,0,0.4); padding:1rem; border:1px solid var(--muted); border-radius:8px; }
+    .util-box { background:rgba(0,0,0,0.5); padding:1.2rem; border:1px solid var(--muted); border-radius:8px; display:flex; flex-direction:column; gap:10px; transition:0.3s; }
+    .util-box:hover { border-color:var(--accent); box-shadow:0 5px 15px rgba(0,0,0,0.5); }
+    .util-box h3 { color:var(--accent-alt); font-family:'Orbitron', sans-serif; font-size:1.1rem; border-bottom:1px solid var(--muted); padding-bottom:5px; }
 
-    .ticker-wrap { width: 100%; background: var(--accent); color: #000; padding: 5px 0; font-family: 'Share Tech Mono', monospace; font-weight: bold; overflow: hidden; position: fixed; bottom: 0; left: 0; z-index: 100; font-size: 0.9rem; }
+    /* TICKER */
+    .ticker-wrap { width: 100%; background: var(--accent); color: #000; padding: 6px 0; font-family: 'Share Tech Mono', monospace; font-weight: bold; overflow: hidden; position: fixed; bottom: 0; left: 0; z-index: 100; font-size: 1rem; }
     .ticker { display: inline-block; white-space: nowrap; padding-left: 100%; animation: ticker 25s linear infinite; }
     @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
   </style>
@@ -115,11 +119,10 @@
     <nav>
       <button class="nav-btn active" onclick="switchTab('typing')">⌨️ Typing</button>
       <button class="nav-btn" onclick="switchTab('iq')">🧠 IQ Test</button>
-      <button class="nav-btn" onclick="switchTab('hologram')">⚛️ 3D AR</button>
       <button class="nav-btn" onclick="switchTab('arcade')">🎮 Arcade (10)</button>
+      <button class="nav-btn" onclick="switchTab('movies')">🎬 Movies</button>
       <button class="nav-btn" onclick="switchTab('utilities')">🛠️ Utilities</button>
-      <button class="nav-btn" onclick="switchTab('codelab')">💻 Code Lab</button>
-      <button class="nav-btn" onclick="switchTab('zen')">🧘 Zen Mode</button>
+      <button class="nav-btn" onclick="switchTab('hologram')">⚛️ 3D AR</button>
       <button class="nav-btn" onclick="switchTab('custom')">⚙️ Settings</button>
     </nav>
   </header>
@@ -164,7 +167,7 @@
         </div>
       </section>
 
-      <!-- 2. IQ TEST SUITE -->
+      <!-- 2. IQ TEST SUITE (STRICTLY GROQ API) -->
       <section id="iq-tab" class="section-page">
         <div class="card">
           <h2 style="color:var(--accent); margin-bottom:1rem;">Advanced Cognitive Evaluation</h2>
@@ -172,7 +175,7 @@
           <div class="controls-grid" style="margin-bottom:1rem;">
             <div>
               <label>Number of Questions</label>
-              <select id="iq-q-count" onchange="generateDynamicIQTest()">
+              <select id="iq-q-count">
                 <option value="3">3 Questions</option>
                 <option value="5" selected>5 Questions</option>
                 <option value="10">10 Questions</option>
@@ -180,7 +183,7 @@
             </div>
             <div>
               <label>&nbsp;</label>
-              <button class="action-btn" onclick="generateDynamicIQTest()">Load / Reset Questions</button>
+              <button class="action-btn" onclick="generateDynamicIQTest()">Load AI Questions</button>
             </div>
           </div>
           
@@ -201,38 +204,22 @@
         </div>
       </section>
 
-      <!-- 3. 3D HOLOGRAM AR ELEMENTS 1-30 -->
-      <section id="hologram-tab" class="section-page">
-        <div class="card">
-          <h2 style="color:var(--accent); margin-bottom:1rem;">⚛️ 3D AR Quantum Elements (1-30)</h2>
-          <div class="controls-grid">
-            <select id="element-selector" onchange="loadElementHologram()"></select>
-            <button class="action-btn" onclick="toggleARCamera()" id="ar-cam-btn">Turn ON AR Gestures</button>
-          </div>
-          <p style="text-align:center; color:var(--correct); margin-bottom:10px; font-size:0.9rem;">Gestures: 🤚 Open Palm to Rotate | 🤏 Pinch to Scale</p>
-          <div id="ar-container" style="position:relative; height: 400px; background:#000; border-radius:8px; overflow:hidden;">
-            <video id="ar-video" style="position:absolute; width:100%; height:100%; object-fit:cover; opacity:0.4; display:none;" autoplay muted playsinline></video>
-            <div id="three-canvas-container" style="position:absolute; width:100%; height:100%;"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4. JARVIS ARCADE (10 GAMES) -->
+      <!-- 3. ARCADE GAMES (10 GAMES) -->
       <section id="arcade-tab" class="section-page">
         <div class="card">
-          <h2 style="color:var(--accent); margin-bottom:1rem;">🎮 Jarvis Arcade (10 Games)</h2>
+          <h2 style="color:var(--accent); margin-bottom:1rem;">🎮 Jarvis Arcade (10 Epic Games)</h2>
           <div class="controls-grid">
             <select id="arcade-selector" onchange="startArcadeGame()">
-              <option value="fps">1. 3D FPS Shooter (Free Fire Style)</option>
-              <option value="snake">2. Classic Snake</option>
-              <option value="pong">3. AI Pong</option>
-              <option value="tictactoe">4. Tic-Tac-Toe</option>
-              <option value="memory">5. Memory Match</option>
-              <option value="reaction">6. Reaction Speed Tester</option>
-              <option value="space">7. Space Invaders</option>
-              <option value="flappy">8. Flappy Bird Clone</option>
-              <option value="breakout">9. Breakout (Brick Breaker)</option>
-              <option value="whack">10. Whack-a-Mole</option>
+              <option value="minecraft">1. Minecraft 3D Voxel Builder</option>
+              <option value="mario">2. Super Mario (Infinite Runner)</option>
+              <option value="tekken">3. Tekken (Street Fighter 2D)</option>
+              <option value="fps">4. 3D FPS Shooter (Target Practice)</option>
+              <option value="snake">5. Classic Snake</option>
+              <option value="pong">6. AI Pong</option>
+              <option value="tictactoe">7. Tic-Tac-Toe</option>
+              <option value="memory">8. Memory Match</option>
+              <option value="reaction">9. Reaction Speed Tester</option>
+              <option value="space">10. Space Invaders</option>
             </select>
             <button class="action-btn" onclick="startArcadeGame()">Restart Game</button>
           </div>
@@ -242,74 +229,107 @@
             <div id="tictactoe-grid" class="tic-tac-grid"></div>
             <div id="memory-grid" class="memory-grid"></div>
             <div id="reaction-box" class="reaction-box">WAIT FOR GREEN...</div>
-            <div id="fps-container">
-              <div id="fps-crosshair">+</div>
-            </div>
+            <div id="fps-container"><div id="fps-crosshair">⌖</div></div>
+            <div id="minecraft-container"><div id="mc-crosshair">+</div></div>
           </div>
+          <p id="game-instructions" style="text-align:center; color:var(--correct); margin-top:10px; font-size:0.9rem; font-weight:bold;"></p>
         </div>
       </section>
 
-      <!-- 5. UTILITIES (5 TOOLS) -->
+      <!-- 4. MOVIES HUB -->
+      <section id="movies-tab" class="section-page">
+        <div class="card">
+          <h2 style="color:var(--accent); margin-bottom:1rem;">🎬 PVR Play - Free Movie Streamer</h2>
+          <div style="display:flex; gap:10px; margin-bottom:1rem;">
+            <input type="text" id="movie-search-input" placeholder="Search for any movie..." onkeypress="if(event.key==='Enter') searchMovie()">
+            <button class="action-btn" style="width:150px;" onclick="searchMovie()">Search</button>
+          </div>
+          <iframe id="movie-iframe" src="https://pvrplay.online/" width="100%" height="600px" style="border:2px solid var(--accent); border-radius:8px;" allowfullscreen></iframe>
+        </div>
+      </section>
+
+      <!-- 5. SYSTEM UTILITIES (10+ TOOLS) -->
       <section id="utilities-tab" class="section-page">
         <div class="card">
-          <h2 style="color:var(--accent); margin-bottom:1rem;">🛠️ System Utilities</h2>
+          <h2 style="color:var(--accent); margin-bottom:1rem;">🛠️ Advanced Utilities Panel</h2>
           <div class="controls-grid" style="grid-template-columns: 1fr 1fr;">
+            
             <div class="util-box">
-              <h3 style="color:var(--accent-alt);">🔑 Password Gen</h3>
-              <button class="action-btn" style="margin-top:10px;" onclick="genPassword()">Generate Strong Pass</button>
-              <input type="text" id="pass-output" style="margin-top:10px;" readonly>
+              <h3>🔒 Secure Password Vault</h3>
+              <input type="password" id="vault-master-key" placeholder="Enter Master Password to Unlock">
+              <button class="action-btn" onclick="unlockVault()">Unlock Vault</button>
+              <div id="vault-content" style="display:none; margin-top:10px; flex-direction:column; gap:5px;">
+                <input type="text" id="vault-desc" placeholder="E.g., Gmail, Instagram...">
+                <input type="text" id="vault-pass" placeholder="Password to save...">
+                <button class="action-btn" onclick="saveToVault()" style="padding:0.5rem; font-size:0.8rem;">Save</button>
+                <div id="vault-list" style="margin-top:10px; background:#000; padding:10px; border-radius:4px; max-height:100px; overflow-y:auto; font-size:0.8rem;"></div>
+              </div>
             </div>
+
             <div class="util-box">
-              <h3 style="color:var(--accent-alt);">📷 QR Code Gen</h3>
-              <input type="text" id="qr-input" placeholder="Enter URL or Text" style="margin-top:10px;">
-              <button class="action-btn" style="margin-top:10px;" onclick="genQR()">Create QR</button>
-              <div style="text-align:center; margin-top:10px;"><img id="qr-output" style="display:none; max-width:100px;"></div>
+              <h3>📚 Study Timetable & Planner</h3>
+              <textarea id="timetable-input" rows="4">5:00 AM - Wake up
+4:30 PM to 7:30 PM - Live Classes
+7:30 PM to 8:30 PM - CBSE Self Study
+8:30 PM - Dinner</textarea>
+              <button class="action-btn" onclick="saveTimetable()" style="padding:0.5rem;">Save Planner (Local)</button>
             </div>
+
             <div class="util-box">
-              <h3 style="color:var(--accent-alt);">🔒 Base64 Encoder</h3>
-              <input type="text" id="b64-input" placeholder="Text to encode" style="margin-top:10px;">
-              <button class="action-btn" style="margin-top:10px;" onclick="encodeB64()">Encode</button>
-              <input type="text" id="b64-output" style="margin-top:10px;" readonly>
+              <h3>📷 QR Code Gen & Download</h3>
+              <input type="text" id="qr-input" placeholder="Enter URL or Text">
+              <button class="action-btn" onclick="genQR()">Create</button>
+              <div style="text-align:center; margin-top:10px;">
+                <img id="qr-output" style="display:none; max-width:100px; border:2px solid #fff;">
+                <a id="qr-download" style="display:none; color:var(--accent); cursor:pointer; font-weight:bold; margin-top:5px; display:block;" download="QRCode.png">📥 Download</a>
+              </div>
             </div>
+
             <div class="util-box">
-              <h3 style="color:var(--accent-alt);">🔠 Case Converter</h3>
-              <input type="text" id="case-input" placeholder="Type text..." style="margin-top:10px;">
-              <button class="action-btn" style="margin-top:10px;" onclick="convertCase()">To UPPERCASE</button>
-              <input type="text" id="case-output" style="margin-top:10px;" readonly>
+              <h3>🔑 Password Gen</h3>
+              <button class="action-btn" onclick="genPassword()">Generate Strong Pass</button>
+              <input type="text" id="pass-output" readonly>
             </div>
-            <div class="util-box" style="grid-column: span 2;">
-              <h3 style="color:var(--accent-alt);">📝 Word & Char Counter</h3>
-              <textarea id="word-input" rows="3" placeholder="Type your article here..." style="margin-top:10px;" oninput="countWords()"></textarea>
-              <div style="margin-top:10px; font-weight:bold; color:var(--correct);" id="word-count-output">Words: 0 | Characters: 0</div>
+
+            <div class="util-box">
+              <h3>📝 Quick Notepad</h3>
+              <textarea id="quick-note" rows="3" placeholder="Type your notes here..."></textarea>
+              <button class="action-btn" onclick="saveNote()" style="padding:0.5rem;">Save Locally</button>
             </div>
+
+            <div class="util-box">
+              <h3>⏱️ Pomodoro Timer</h3>
+              <div id="pomo-display" style="font-size:2rem; font-weight:bold; text-align:center; color:var(--correct);">25:00</div>
+              <div style="display:flex; gap:5px;">
+                <button class="action-btn" onclick="startPomo()" style="padding:0.5rem;">Start</button>
+                <button class="action-btn" onclick="resetPomo()" style="padding:0.5rem; background:var(--muted);">Reset</button>
+              </div>
+            </div>
+            
           </div>
         </div>
       </section>
 
-      <!-- 6. CODE LAB -->
-      <section id="codelab-tab" class="section-page">
+      <!-- 6. 3D HOLOGRAM AR ELEMENTS -->
+      <section id="hologram-tab" class="section-page">
         <div class="card">
-          <h2 style="color:var(--accent); margin-bottom:1rem;">💻 Dev Sandbox (HTML/JS/CSS)</h2>
-          <textarea id="code-editor" rows="8" placeholder="Type HTML/CSS/JS here... e.g. <h1 style='color:red;'>Hello World</h1>"></textarea>
-          <button class="action-btn" style="margin-top:1rem;" onclick="runCode()">Run Code</button>
-          <iframe id="code-preview"></iframe>
+          <h2 style="color:var(--accent); margin-bottom:1rem;">⚛️ 3D AR Quantum Elements (1-30)</h2>
+          <div class="controls-grid">
+            <select id="element-selector" onchange="loadElementHologram()"></select>
+            <button class="action-btn" onclick="toggleARCamera()" id="ar-cam-btn">Turn ON AR Gestures</button>
+          </div>
+          <p style="text-align:center; color:var(--correct); margin-bottom:10px; font-size:0.9rem;">Gestures: 🤚 Open Palm to Rotate | 🤏 Pinch to Scale</p>
+          <div id="ar-container" style="position:relative; height: 400px; background:#000; border-radius:8px; overflow:hidden; box-shadow: 0 0 20px rgba(0,255,255,0.2) inset;">
+            <video id="ar-video" style="position:absolute; width:100%; height:100%; object-fit:cover; opacity:0.4; display:none;" autoplay muted playsinline></video>
+            <div id="three-canvas-container" style="position:absolute; width:100%; height:100%;"></div>
+          </div>
         </div>
       </section>
 
-      <!-- 7. ZEN MODE -->
-      <section id="zen-tab" class="section-page">
-        <div class="card" style="text-align:center;">
-          <h2 style="color:var(--accent);">🧘 Matrix Zen Mode</h2>
-          <p>Relax your mind. Stare at the code.</p>
-          <canvas id="zen-canvas"></canvas>
-          <button class="action-btn" style="margin-top:1rem;" onclick="initMatrix()">Restart Rain</button>
-        </div>
-      </section>
-
-      <!-- 8. SETTINGS & MEMORY VAULT -->
+      <!-- 7. SETTINGS & CONFIG -->
       <section id="custom-tab" class="section-page">
         <div class="card">
-          <h2 style="color:var(--accent); margin-bottom:1rem;">⚙️ Configuration & Memory Vault</h2>
+          <h2 style="color:var(--accent); margin-bottom:1rem;">⚙️ Configuration & System Vault</h2>
           
           <div class="builder-form">
             <label>UI Theme (7 Themes Available)</label>
@@ -323,24 +343,23 @@
               <option value="dark">Dark Minimal</option>
             </select>
 
-            <!-- LABEL CHANGED FOR GROQ API -->
             <label>Groq API Key (Required for JARVIS Brain & Dynamic IQ)</label>
             <div style="display:flex; gap:10px; margin-bottom:1rem;">
               <input type="password" id="gemini-api-key" placeholder="Paste Groq API Key here (starts with gsk_)...">
-              <button class="action-btn" style="width:auto;" onclick="saveAPIKey()">Save</button>
+              <button class="action-btn" style="width:auto;" onclick="saveAPIKey()">Save Key</button>
             </div>
 
             <hr style="border-color:var(--muted); margin:1rem 0;">
             <h3 style="color:var(--accent);">🧠 JARVIS Memory Vault</h3>
             <p style="font-size:0.9rem; opacity:0.8; margin-bottom:0.5rem;">Here is what JARVIS knows about you in this session:</p>
-            <pre id="memory-display" style="background:rgba(0,0,0,0.5); padding:1rem; border-radius:6px; color:var(--correct); white-space:pre-wrap;"></pre>
+            <pre id="memory-display" style="background:rgba(0,0,0,0.6); padding:1rem; border-radius:6px; color:var(--correct); white-space:pre-wrap; font-family:'Share Tech Mono';"></pre>
             <button class="action-btn" style="background:var(--wrong); margin-top:1rem;" onclick="clearMemory()">Wipe Memory</button>
           </div>
         </div>
       </section>
     </div>
 
-    <!-- RIGHT SIDEBAR: REAL GROQ JARVIS AI -->
+    <!-- RIGHT SIDEBAR: GROQ JARVIS AI -->
     <aside class="jarvis-sidebar">
       <div class="jarvis-header">
         <span>J.A.R.V.I.S. AGI</span>
@@ -352,7 +371,7 @@
       </div>
 
       <div class="jarvis-chat-log" id="jarvis-chat-log">
-        <div class="chat-msg jarvis">System Rebooted. Microsoft Voice Engine Online. Hello, how can I assist you today?</div>
+        <div class="chat-msg jarvis">System Rebooted. Microsoft English/Hindi Engine Online. Hello Boss, how can I assist you today?</div>
       </div>
 
       <div class="jarvis-controls">
@@ -365,7 +384,7 @@
 
   <div class="ticker-wrap">
     <div class="ticker">
-      SYSTEM STATUS: OPTIMAL | AGI CORES: ONLINE | WEATHER: CLEAR | GLOBAL MARKETS: STARK IND +4.2% | NEXT EVENT: COGNITIVE EVALUATION 
+      SYSTEM STATUS: OPTIMAL | AGI CORES: ONLINE | SECURE VAULT: ACTIVE | GLOBAL MARKETS: STARK IND +4.2% | NEXT EVENT: COGNITIVE EVALUATION 
     </div>
   </div>
 
@@ -378,6 +397,10 @@
 
     let memoryVault = JSON.parse(localStorage.getItem('JARVIS_MEMORY') || '{}');
     updateMemoryDisplay();
+
+    // Load saved utilities
+    document.getElementById('timetable-input').value = localStorage.getItem('JARVIS_TIMETABLE') || document.getElementById('timetable-input').value;
+    document.getElementById('quick-note').value = localStorage.getItem('JARVIS_NOTE') || "";
 
     function updateMemoryDisplay() {
       document.getElementById('memory-display').innerText = JSON.stringify(memoryVault, null, 2) || "Memory is empty.";
@@ -395,12 +418,9 @@
       document.getElementById(tabId + '-tab').classList.add('active');
       document.querySelector(`nav button[onclick="switchTab('${tabId}')"]`).classList.add('active');
       
-      // Cleanup running loops if switching away
-      clearInterval(matrixInterval);
       clearInterval(arcadeTimer);
       if(fpsAnimationId) cancelAnimationFrame(fpsAnimationId);
 
-      if(tabId === 'zen') initMatrix();
       if(tabId === 'iq' && iqData.length === 0) generateDynamicIQTest();
       if(tabId === 'hologram' && !atomRenderer) initHologramSystem();
       if(tabId === 'arcade') startArcadeGame();
@@ -408,7 +428,7 @@
 
     function changeTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
-      speakJARVIS("UI Theme Updated successfully.");
+      speakJARVIS("UI Theme Updated.");
     }
 
     function saveAPIKey() {
@@ -418,139 +438,6 @@
         API_KEY = key;
         speakJARVIS("Groq API Key locked in secure vault.");
       }
-    }
-
-    /* =======================================================
-       TYPING TEST ENGINE
-       ======================================================= */
-    const typePools = {
-      classic: "algorithm binary compiler database encryption function hardware keyboard network protocol quantum software terminal variable velocity syntax circuit pixel array processor matrix server cloud logic cyber".split(" "),
-      code: ["const obj = { id: 1 };", "def solve(x): return x*2", "SELECT * FROM users;", "document.getElementById('app')", "for(let i=0; i<n; i++)", "import numpy as np"],
-    };
-
-    let targetText = "", typingTimer = null, timeLeft = 30, totalTime = 30, isPlaying = false, errors = 0;
-
-    function initTypingGame() {
-      clearInterval(typingTimer);
-      let mode = document.getElementById('game-mode').value;
-      timeLeft = parseInt(document.getElementById('time-limit').value);
-      totalTime = timeLeft; isPlaying = false; errors = 0;
-      
-      document.getElementById('stat-time').innerText = timeLeft;
-      document.getElementById('stat-wpm').innerText = '0';
-      document.getElementById('stat-acc').innerText = '100%';
-      document.getElementById('typing-input').value = '';
-      document.getElementById('typing-input').disabled = false;
-
-      let pool = typePools[mode === 'death' ? 'classic' : mode] || typePools.classic;
-      let shuffled = [];
-      for(let i=0; i<30; i++) shuffled.push(pool[Math.floor(Math.random() * pool.length)]);
-      targetText = shuffled.join(" ");
-
-      const display = document.getElementById('typing-display');
-      display.innerHTML = '';
-      targetText.split('').forEach((char, idx) => {
-        let span = document.createElement('span');
-        span.className = 'char' + (idx === 0 ? ' current' : '');
-        span.innerText = char;
-        display.appendChild(span);
-      });
-    }
-
-    document.getElementById('typing-input').addEventListener('input', (e) => {
-      if(!isPlaying) { isPlaying = true; typingTimer = setInterval(updateTypingTimer, 1000); }
-      const inputVal = e.target.value;
-      const chars = document.querySelectorAll('#typing-display .char');
-
-      if (document.getElementById('game-mode').value === 'death' && e.inputType === 'insertText') {
-        if (inputVal[inputVal.length - 1] !== targetText[inputVal.length - 1]) {
-          endTypingTest("Sudden Death Triggered: You made a mistake!"); return;
-        }
-      }
-
-      errors = 0;
-      chars.forEach((span, idx) => {
-        span.className = 'char';
-        if (inputVal[idx] == null) { if (idx === inputVal.length) span.classList.add('current'); } 
-        else if (inputVal[idx] === span.innerText) { span.classList.add('correct'); } 
-        else { span.classList.add('wrong'); errors++; }
-      });
-
-      let timeElapsed = totalTime - timeLeft || 1;
-      let correctChars = inputVal.length - errors;
-      document.getElementById('stat-wpm').innerText = Math.round((correctChars / 5) / (timeElapsed / 60)) || 0;
-      document.getElementById('stat-acc').innerText = inputVal.length > 0 ? Math.round((correctChars / inputVal.length) * 100) + '%' : '100%';
-
-      if (inputVal.length >= targetText.length) endTypingTest("Test Complete!");
-    });
-
-    function updateTypingTimer() {
-      timeLeft--; document.getElementById('stat-time').innerText = timeLeft;
-      if(timeLeft <= 0) endTypingTest("Time's Up!");
-    }
-
-    function endTypingTest(msg) {
-      clearInterval(typingTimer); document.getElementById('typing-input').disabled = true;
-      speakJARVIS(`${msg} Speed was ${document.getElementById('stat-wpm').innerText} WPM.`);
-    }
-
-    /* =======================================================
-       TTS VOICE ENGINE (FIXED ALPHABET PRONUNCIATION)
-       ======================================================= */
-    let speechQueue = [];
-
-    function sanitizeForSpeech(text) {
-      // toLowerCase prevents spelling out ALL CAPS words like J-A-R-V-I-S
-      return text
-        .replace(/[*_~#`@$%^&()=+[\]{}|\\<>/]/g, ' ') 
-        .toLowerCase() 
-        .replace(/\s+/g, ' ')
-        .trim();
-    }
-
-    function speakJARVIS(text) {
-      if(!text) return;
-      window.speechSynthesis.cancel();
-      let cleanText = sanitizeForSpeech(text);
-      speechQueue = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText]; 
-      speakNextChunk();
-    }
-
-    function speakNextChunk() {
-      if(speechQueue.length === 0) {
-        document.getElementById('jarvis-orb').classList.remove('speaking');
-        return;
-      }
-      
-      let chunk = speechQueue.shift().trim();
-      if(!chunk) { speakNextChunk(); return; }
-
-      let u = new SpeechSynthesisUtterance(chunk);
-      let voices = window.speechSynthesis.getVoices();
-      
-      // Force pick Microsoft Voice for excellent Hindi/Hinglish reading
-      let bestVoice = voices.find(v => v.name.includes('Microsoft') && v.lang === 'hi-IN') || 
-                      voices.find(v => v.name.includes('Microsoft') && v.lang.includes('hi')) ||
-                      voices.find(v => v.lang === 'hi-IN') || 
-                      voices.find(v => v.lang.includes('IN')) ||
-                      voices[0];
-                      
-      if(bestVoice) u.voice = bestVoice;
-      
-      u.rate = 0.95; // Slightly slower makes Hindi pronunciation perfect
-      u.pitch = 1.0;
-      
-      u.onstart = () => { document.getElementById('jarvis-orb').classList.add('speaking'); };
-      u.onend = () => { speakNextChunk(); };
-      u.onerror = () => { speakNextChunk(); };
-
-      window.speechSynthesis.speak(u);
-    }
-
-    function interruptJARVIS() {
-      speechQueue = [];
-      window.speechSynthesis.cancel();
-      document.getElementById('jarvis-orb').classList.remove('speaking');
     }
 
     /* =======================================================
@@ -577,8 +464,8 @@
       if(lowerMsg.includes("open typing")) { switchTab('typing'); speakJARVIS("Opening Typing Suite."); return; }
       if(lowerMsg.includes("open settings")) { switchTab('custom'); speakJARVIS("Opening Settings."); return; }
       if(lowerMsg.includes("open iq")) { switchTab('iq'); speakJARVIS("Opening IQ Test."); return; }
-      if(lowerMsg.includes("open code")) { switchTab('codelab'); speakJARVIS("Opening Code Lab."); return; }
-      if(lowerMsg.includes("zen mode")) { switchTab('zen'); speakJARVIS("Activating Zen Mode."); return; }
+      if(lowerMsg.includes("open arcade") || lowerMsg.includes("play game")) { switchTab('arcade'); speakJARVIS("Opening Arcade."); return; }
+      if(lowerMsg.includes("open utilities")) { switchTab('utilities'); speakJARVIS("Opening Utilities."); return; }
       
       if(lowerMsg.includes("my name is")) {
         let n = lowerMsg.split("my name is")[1].trim();
@@ -598,7 +485,7 @@
       try {
         let memContext = memoryVault.userName ? ` The user's name is ${memoryVault.userName}.` : "";
         
-        // 🔥 USING GROQ REST API WITH THE EXACT MODEL YOU REQUESTED
+        // 🔥 EXACT GROQ REST API FETCH AS REQUESTED
         const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
           method: 'POST', 
           headers: { 
@@ -623,7 +510,7 @@
         
         let raw_response = data.choices[0].message.content;
         
-        // YOUR EXACT LOGIC FOR CLEANING <THINK> TAGS
+        // EXACT LOGIC TO REMOVE <THINK> TAGS
         let final_answer = raw_response.replace(/<think>[\s\S]*?(<\/think>|$)/g, '').trim();
         if (final_answer.includes("Thinking Process:")) {
             final_answer = final_answer.split("Thinking Process:").pop().trim();
@@ -651,7 +538,7 @@
     function toggleMic() {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) { alert("Mic not supported."); return; }
-      const recognition = new SpeechRecognition(); recognition.lang = 'hi-IN';
+      const recognition = new SpeechRecognition(); recognition.lang = 'en-IN'; // Better understanding for English/Hinglish
       
       recognition.onstart = () => { document.getElementById('jarvis-orb').classList.add('listening'); };
       recognition.onend = () => { document.getElementById('jarvis-orb').classList.remove('listening'); };
@@ -663,7 +550,59 @@
     }
 
     /* =======================================================
-       STRICT GROQ AI-POWERED IQ TEST (NO FALLBACKS)
+       TTS VOICE ENGINE (FIXED PRONUNCIATION FOR HINGLISH)
+       ======================================================= */
+    let speechQueue = [];
+
+    function sanitizeForSpeech(text) {
+      // toLowerCase prevents spelling out ALL CAPS words like J-A-R-V-I-S
+      return text.replace(/[*_~#`@$%^&()=+[\]{}|\\<>/]/g, ' ').toLowerCase().replace(/\s+/g, ' ').trim();
+    }
+
+    function speakJARVIS(text) {
+      if(!text) return;
+      window.speechSynthesis.cancel();
+      let cleanText = sanitizeForSpeech(text);
+      speechQueue = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText]; 
+      speakNextChunk();
+    }
+
+    function speakNextChunk() {
+      if(speechQueue.length === 0) {
+        document.getElementById('jarvis-orb').classList.remove('speaking');
+        return;
+      }
+      
+      let chunk = speechQueue.shift().trim();
+      if(!chunk) { speakNextChunk(); return; }
+
+      let u = new SpeechSynthesisUtterance(chunk);
+      let voices = window.speechSynthesis.getVoices();
+      
+      // Force pick Microsoft Indian English/Hindi Voice for perfect Hinglish pronunciation
+      let bestVoice = voices.find(v => v.name.includes('Microsoft') && (v.lang === 'en-IN' || v.lang === 'hi-IN')) || 
+                      voices.find(v => v.lang === 'en-IN' || v.lang === 'hi-IN') ||
+                      voices[0];
+                      
+      if(bestVoice) u.voice = bestVoice;
+      u.rate = 1.0; 
+      u.pitch = 1.0;
+      
+      u.onstart = () => { document.getElementById('jarvis-orb').classList.add('speaking'); };
+      u.onend = () => { speakNextChunk(); };
+      u.onerror = () => { speakNextChunk(); };
+
+      window.speechSynthesis.speak(u);
+    }
+
+    function interruptJARVIS() {
+      speechQueue = [];
+      window.speechSynthesis.cancel();
+      document.getElementById('jarvis-orb').classList.remove('speaking');
+    }
+
+    /* =======================================================
+       STRICT GROQ AI-POWERED IQ TEST
        ======================================================= */
     let iqData = [];
 
@@ -684,13 +623,9 @@
       try {
         const prompt = `Generate exactly ${qCount} unique multiple-choice IQ, logic, pattern, or spatial reasoning questions. Output strictly as a valid JSON array of objects with keys "q" (string), "opts" (array of 4 option strings), and "ans" (0-based integer index of correct option). Do not use markdown backticks or extra text. Only return the JSON array.`;
         
-        // USING GROQ API TO GENERATE IQ QUESTIONS
         const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
           method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${API_KEY}`
-          },
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
           body: JSON.stringify({ 
             model: "llama-3.3-70b-versatile",
             messages: [{ role: "user", content: prompt }],
@@ -703,14 +638,11 @@
 
         if (data.choices && data.choices[0].message.content) {
           let rawText = data.choices[0].message.content.trim();
-          rawText = rawText.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
-          rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+          rawText = rawText.replace(/<think>[\s\S]*?<\/think>/g, '').replace(/```json/g, '').replace(/```/g, '').trim();
           
           let startIndex = rawText.indexOf('[');
           let endIndex = rawText.lastIndexOf(']') + 1;
-          if(startIndex !== -1 && endIndex !== 0) {
-             rawText = rawText.substring(startIndex, endIndex);
-          }
+          if(startIndex !== -1 && endIndex !== 0) rawText = rawText.substring(startIndex, endIndex);
           
           iqData = JSON.parse(rawText);
           renderIQQuestions();
@@ -725,15 +657,12 @@
     function renderIQQuestions() {
       const container = document.getElementById('iq-questions-container');
       container.innerHTML = '';
-      
       iqData.forEach((qObj, qIdx) => {
         let block = document.createElement('div');
         block.className = 'iq-question-block';
         block.innerHTML = `<p>Q${qIdx + 1}: ${qObj.q}</p>`;
-        
         let optsDiv = document.createElement('div');
         optsDiv.className = 'iq-options';
-        
         qObj.opts.forEach((opt, oIdx) => {
           let label = document.createElement('label');
           label.innerHTML = `<input type="radio" name="q${qIdx}" value="${oIdx}"> ${opt}`;
@@ -745,9 +674,7 @@
     }
 
     function submitIQAndGenerateCertificate() {
-      if(iqData.length === 0) {
-        alert("Load questions first!"); return;
-      }
+      if(iqData.length === 0) { alert("Load questions first!"); return; }
       const nameInput = document.getElementById('user-full-name').value.trim();
       if(!nameInput) {
         alert("CRITICAL: Certificate cannot be issued without a Name!");
@@ -818,6 +745,513 @@
     }
 
     /* =======================================================
+       ARCADE GAMES (10 MINI GAMES INCL MINECRAFT, MARIO, TEKKEN)
+       ======================================================= */
+    let arcadeTimer, fpsAnimationId, mcAnimationId;
+    let fpsScene, fpsCamera, fpsRenderer, fpsTargets = [];
+    let mcScene, mcCamera, mcRenderer, mcRaycaster, mcPlane, mcObjects = [];
+
+    function startArcadeGame() {
+      clearInterval(arcadeTimer);
+      if(fpsAnimationId) cancelAnimationFrame(fpsAnimationId);
+      if(mcAnimationId) cancelAnimationFrame(mcAnimationId);
+
+      const game = document.getElementById('arcade-selector').value;
+      document.getElementById('game-canvas').style.display = 'none';
+      document.getElementById('tictactoe-grid').style.display = 'none';
+      document.getElementById('memory-grid').style.display = 'none';
+      document.getElementById('reaction-box').style.display = 'none';
+      document.getElementById('fps-container').style.display = 'none';
+      document.getElementById('minecraft-container').style.display = 'none';
+      document.getElementById('game-instructions').innerText = "";
+
+      if(game === 'minecraft') initMinecraft();
+      else if(game === 'mario') initMario();
+      else if(game === 'tekken') initTekken();
+      else if(game === 'fps') initFPS();
+      else if(game === 'snake') initSnake();
+      else if(game === 'pong') initPong();
+      else if(game === 'tictactoe') initTicTacToe();
+      else if(game === 'memory') initMemory();
+      else if(game === 'reaction') initReaction();
+      else if(game === 'space') initSpaceInvaders();
+    }
+
+    // 1. MINECRAFT (3D Voxel Builder)
+    function initMinecraft() {
+      const container = document.getElementById('minecraft-container');
+      container.style.display = 'block';
+      let existingCanvas = container.querySelector('canvas');
+      if(existingCanvas) container.removeChild(existingCanvas);
+      document.getElementById('game-instructions').innerText = "Look around: Drag Mouse | Place Block: Click | Remove Block: Shift + Click";
+
+      mcScene = new THREE.Scene();
+      mcScene.background = new THREE.Color(0x87CEEB);
+      mcCamera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 1, 1000);
+      mcCamera.position.set(0, 5, 10);
+      mcCamera.lookAt(0,0,0);
+
+      mcRenderer = new THREE.WebGLRenderer({antialias: true});
+      mcRenderer.setSize(container.clientWidth, container.clientHeight);
+      container.appendChild(mcRenderer.domElement);
+
+      const gridHelper = new THREE.GridHelper(50, 50);
+      mcScene.add(gridHelper);
+
+      mcPlane = new THREE.Mesh(new THREE.PlaneGeometry(50, 50), new THREE.MeshBasicMaterial({visible: false}));
+      mcPlane.rotation.x = -Math.PI / 2;
+      mcScene.add(mcPlane);
+      mcObjects = [mcPlane];
+
+      let euler = new THREE.Euler(0, 0, 0, 'YXZ');
+      container.onmousemove = (e) => {
+        if(e.buttons === 1) { 
+          euler.setFromQuaternion(mcCamera.quaternion);
+          euler.y -= (e.movementX || e.mozMovementX || 0) * 0.005;
+          euler.x -= (e.movementY || e.mozMovementY || 0) * 0.005;
+          euler.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, euler.x));
+          mcCamera.quaternion.setFromEuler(euler);
+        }
+      };
+
+      mcRaycaster = new THREE.Raycaster();
+      const cubeGeo = new THREE.BoxGeometry(1, 1, 1);
+      const cubeMat = new THREE.MeshNormalMaterial({color: 0x8B4513}); // dirt brown
+      
+      let dirLight = new THREE.DirectionalLight(0xffffff, 1);
+      dirLight.position.set(1, 2, 1);
+      mcScene.add(dirLight);
+      mcScene.add(new THREE.AmbientLight(0x404040));
+
+      container.onclick = (e) => {
+        if(e.buttons === 1) return; // ignore drag click
+        mcRaycaster.setFromCamera(new THREE.Vector2(0, 0), mcCamera);
+        let intersects = mcRaycaster.intersectObjects(mcObjects);
+        if(intersects.length > 0) {
+          let intersect = intersects[0];
+          if(e.shiftKey) { // Remove
+            if(intersect.object !== mcPlane) {
+              mcScene.remove(intersect.object);
+              mcObjects.splice(mcObjects.indexOf(intersect.object), 1);
+            }
+          } else { // Add
+            let voxel = new THREE.Mesh(cubeGeo, cubeMat);
+            voxel.position.copy(intersect.point).add(intersect.face.normal);
+            voxel.position.divideScalar(1).floor().multiplyScalar(1).addScalar(0.5);
+            mcScene.add(voxel);
+            mcObjects.push(voxel);
+          }
+        }
+      };
+
+      function animateMC() {
+        if(container.style.display === 'none') return;
+        mcAnimationId = requestAnimationFrame(animateMC);
+        mcRenderer.render(mcScene, mcCamera);
+      }
+      animateMC();
+    }
+
+    // 2. SUPER MARIO (Infinite Runner)
+    function initMario() {
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.display = 'block';
+      document.getElementById('game-instructions').innerText = "Press SPACE or Click to Jump";
+
+      let mario = {x: 50, y: 300, w: 30, h: 40, vy: 0, gravity: 0.8, jump: -15, isJumping: false};
+      let pipes = [];
+      let frame = 0, score = 0, speed = 5;
+
+      document.onkeydown = (e) => { if(e.key === ' ' && !mario.isJumping) { mario.vy = mario.jump; mario.isJumping = true; } };
+      canvas.onclick = () => { if(!mario.isJumping) { mario.vy = mario.jump; mario.isJumping = true; } };
+
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#87CEEB'; ctx.fillRect(0,0,600,400); // Sky
+        ctx.fillStyle = '#8B4513'; ctx.fillRect(0, 340, 600, 60); // Ground
+        
+        mario.vy += mario.gravity; mario.y += mario.vy;
+        if(mario.y > 300) { mario.y = 300; mario.vy = 0; mario.isJumping = false; }
+        
+        ctx.fillStyle = 'red'; ctx.fillRect(mario.x, mario.y, mario.w, mario.h); // Mario
+        
+        if(frame % 90 === 0) pipes.push({x: 600, w: 40, h: 40 + Math.random()*40});
+        ctx.fillStyle = 'green';
+        pipes.forEach((p, i) => {
+          p.x -= speed;
+          ctx.fillRect(p.x, 340 - p.h, p.w, p.h);
+          if(mario.x < p.x + p.w && mario.x + mario.w > p.x && mario.y + mario.h > 340 - p.h) {
+             score = 0; pipes = []; speed = 5; // Hit!
+          }
+          if(p.x < -40) { pipes.splice(i, 1); score++; speed += 0.1; }
+        });
+        
+        ctx.fillStyle = '#000'; ctx.font = '20px Orbitron'; ctx.fillText('Score: ' + score, 10, 30);
+        frame++;
+      }, 30);
+    }
+
+    // 3. TEKKEN (2D Fighter)
+    function initTekken() {
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.display = 'block';
+      document.getElementById('game-instructions').innerText = "Press 'A' to Punch | Press 'D' to Kick";
+
+      let p1 = {x: 100, hp: 100, state: 'idle'}, ai = {x: 400, hp: 100, state: 'idle'};
+      
+      document.onkeydown = (e) => {
+        if(e.key.toLowerCase() === 'a' && p1.state === 'idle') { p1.state = 'punch'; setTimeout(() => p1.state='idle', 300); checkHit(60, 10); }
+        if(e.key.toLowerCase() === 'd' && p1.state === 'idle') { p1.state = 'kick'; setTimeout(() => p1.state='idle', 400); checkHit(80, 15); }
+      };
+
+      function checkHit(reach, dmg) {
+        if(ai.x - p1.x < reach) { ai.hp -= dmg; ai.x += 20; if(ai.hp <= 0) alert("YOU WIN!"); }
+      }
+
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#222'; ctx.fillRect(0,0,600,400); // Arena
+        
+        // Health Bars
+        ctx.fillStyle = 'red'; ctx.fillRect(20, 20, 200, 20); ctx.fillRect(380, 20, 200, 20);
+        ctx.fillStyle = 'green'; ctx.fillRect(20, 20, p1.hp*2, 20); ctx.fillRect(380, 20, ai.hp*2, 20);
+
+        // AI Move
+        if(ai.x > p1.x + 80) ai.x -= 2;
+        else if(Math.random() < 0.05 && ai.state === 'idle') {
+           ai.state = 'punch'; setTimeout(() => ai.state='idle', 300);
+           if(ai.x - p1.x < 70) { p1.hp -= 10; p1.x -= 20; if(p1.hp <= 0) alert("AI WINS!"); }
+        }
+
+        // Draw Player
+        ctx.fillStyle = 'blue'; ctx.fillRect(p1.x, 200, 40, 100);
+        if(p1.state === 'punch') ctx.fillRect(p1.x+40, 220, 30, 15);
+        if(p1.state === 'kick') ctx.fillRect(p1.x+40, 260, 40, 15);
+
+        // Draw AI
+        ctx.fillStyle = 'red'; ctx.fillRect(ai.x, 200, 40, 100);
+        if(ai.state === 'punch') ctx.fillRect(ai.x-30, 220, 30, 15);
+      }, 30);
+    }
+
+    // 4. 3D FPS SHOOTER (Free Fire Style)
+    function initFPS() {
+      const container = document.getElementById('fps-container');
+      container.style.display = 'block';
+      let existingCanvas = container.querySelector('canvas');
+      if(existingCanvas) container.removeChild(existingCanvas);
+      document.getElementById('game-instructions').innerText = "Drag to Look | Click to Shoot Targets";
+
+      fpsScene = new THREE.Scene();
+      fpsScene.background = new THREE.Color(0x87CEEB); 
+      fpsCamera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+      fpsCamera.position.y = 1.5;
+
+      fpsRenderer = new THREE.WebGLRenderer({antialias: true});
+      fpsRenderer.setSize(container.clientWidth, container.clientHeight);
+      container.appendChild(fpsRenderer.domElement);
+
+      const floorGeo = new THREE.PlaneGeometry(100, 100);
+      const floorMat = new THREE.MeshBasicMaterial({color: 0x228B22});
+      const floor = new THREE.Mesh(floorGeo, floorMat);
+      floor.rotation.x = -Math.PI / 2;
+      fpsScene.add(floor);
+
+      fpsTargets = [];
+      const boxGeo = new THREE.BoxGeometry(1, 1, 1);
+      const boxMat = new THREE.MeshBasicMaterial({color: 0xff0000});
+      for(let i=0; i<5; i++) spawnTarget(boxGeo, boxMat);
+
+      let euler = new THREE.Euler(0, 0, 0, 'YXZ');
+      container.onmousemove = (e) => {
+        let movementX = e.movementX || e.mozMovementX || 0;
+        let movementY = e.movementY || e.mozMovementY || 0;
+        if(e.buttons === 1) { 
+          euler.setFromQuaternion(fpsCamera.quaternion);
+          euler.y -= movementX * 0.005;
+          euler.x -= movementY * 0.005;
+          euler.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, euler.x));
+          fpsCamera.quaternion.setFromEuler(euler);
+        }
+      };
+
+      let raycaster = new THREE.Raycaster();
+      let center = new THREE.Vector2(0, 0); 
+      container.onclick = () => {
+        raycaster.setFromCamera(center, fpsCamera);
+        let intersects = raycaster.intersectObjects(fpsTargets);
+        if(intersects.length > 0) {
+          let hit = intersects[0].object;
+          hit.position.set((Math.random()-0.5)*20, 0.5 + Math.random()*2, -5 - Math.random()*15);
+        }
+      };
+
+      function spawnTarget(geo, mat) {
+        let mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set((Math.random()-0.5)*20, 0.5 + Math.random()*2, -5 - Math.random()*15);
+        fpsTargets.push(mesh);
+        fpsScene.add(mesh);
+      }
+
+      function animateFPS() {
+        if(container.style.display === 'none') return;
+        fpsAnimationId = requestAnimationFrame(animateFPS);
+        fpsTargets.forEach(t => t.rotation.y += 0.01);
+        fpsRenderer.render(fpsScene, fpsCamera);
+      }
+      animateFPS();
+    }
+
+    // 5. SNAKE
+    function initSnake() {
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.display = 'block';
+      let snake = [{x: 10, y: 10}], dir = {x: 0, y: 0}, food = {x: 5, y: 5};
+      
+      document.onkeydown = (e) => {
+        if(e.key==='ArrowUp' && dir.y!==1) dir={x:0, y:-1};
+        if(e.key==='ArrowDown' && dir.y!==-1) dir={x:0, y:1};
+        if(e.key==='ArrowLeft' && dir.x!==1) dir={x:-1, y:0};
+        if(e.key==='ArrowRight' && dir.x!==-1) dir={x:1, y:0};
+      };
+
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,400);
+        let head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+        
+        if(head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 20 || snake.some(s => s.x===head.x && s.y===head.y)) {
+           dir = {x:0, y:0}; head = {x:10, y:10}; snake = [head]; 
+        }
+        snake.unshift(head);
+        if(head.x === food.x && head.y === food.y) {
+          food = {x: Math.floor(Math.random()*30), y: Math.floor(Math.random()*20)};
+        } else { snake.pop(); }
+
+        ctx.fillStyle = '#00e5ff'; snake.forEach(s => ctx.fillRect(s.x*20, s.y*20, 18, 18));
+        ctx.fillStyle = '#ff003c'; ctx.fillRect(food.x*20, food.y*20, 18, 18);
+      }, 100);
+    }
+
+    // 6. PONG
+    function initPong() {
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.display = 'block';
+      let pY = 150, aiY = 150, bX = 300, bY = 200, bdX = 5, bdY = 5;
+
+      canvas.onmousemove = (e) => { let rect = canvas.getBoundingClientRect(); pY = e.clientY - rect.top - 40; };
+
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,400);
+        ctx.fillStyle = '#00e5ff'; ctx.fillRect(20, pY, 10, 80); ctx.fillRect(570, aiY, 10, 80); ctx.fillRect(bX, bY, 10, 10); 
+        bX += bdX; bY += bdY; aiY += (bY - (aiY + 40)) * 0.1; 
+        if(bY <= 0 || bY >= 390) bdY = -bdY;
+        if(bX <= 30 && bY > pY && bY < pY+80) bdX = -bdX;
+        if(bX >= 560 && bY > aiY && bY < aiY+80) bdX = -bdX;
+        if(bX < 0 || bX > 600) { bX = 300; bY = 200; bdX = -bdX; } 
+      }, 30);
+    }
+
+    // 7. TIC TAC TOE
+    function initTicTacToe() {
+      const grid = document.getElementById('tictactoe-grid');
+      grid.style.display = 'grid'; grid.innerHTML = '';
+      let board = Array(9).fill(null), turn = 'X';
+      
+      for(let i=0; i<9; i++) {
+        let cell = document.createElement('div');
+        cell.className = 'tic-tac-cell';
+        cell.onclick = () => {
+          if(!board[i]) { board[i] = turn; cell.innerText = turn; turn = turn === 'X' ? 'O' : 'X'; }
+        };
+        grid.appendChild(cell);
+      }
+    }
+
+    // 8. MEMORY MATCH
+    function initMemory() {
+      const grid = document.getElementById('memory-grid');
+      grid.style.display = 'grid'; grid.innerHTML = '';
+      let icons = ['🚀','👽','💥','🔥','⚡','🧠','👁️','🤖'];
+      let cards = [...icons, ...icons].sort(() => 0.5 - Math.random());
+      let flipped = [];
+
+      cards.forEach((icon, i) => {
+        let card = document.createElement('div');
+        card.className = 'mem-card'; card.dataset.val = icon; card.innerText = icon;
+        card.onclick = () => {
+          if(flipped.length < 2 && !card.classList.contains('flipped')) {
+            card.classList.add('flipped'); flipped.push(card);
+            if(flipped.length === 2) {
+              setTimeout(() => {
+                if(flipped[0].dataset.val !== flipped[1].dataset.val) { flipped[0].classList.remove('flipped'); flipped[1].classList.remove('flipped'); }
+                flipped = [];
+              }, 800);
+            }
+          }
+        };
+        grid.appendChild(card);
+      });
+    }
+
+    // 9. REACTION TESTER
+    function initReaction() {
+      const box = document.getElementById('reaction-box');
+      box.style.display = 'flex'; box.style.background = '#880000'; box.innerText = "WAIT FOR GREEN...";
+      let state = 'wait', startTime;
+      let timeout = setTimeout(() => { state = 'go'; box.style.background = '#008800'; box.innerText = "CLICK NOW!"; startTime = Date.now(); }, 1000 + Math.random() * 3000);
+
+      box.onclick = () => {
+        if(state === 'wait') { clearTimeout(timeout); box.innerText = "TOO EARLY! RESTART."; }
+        else if(state === 'go') { state = 'done'; box.style.background = '#000'; box.innerText = `YOUR TIME: ${Date.now() - startTime} ms!`; }
+      };
+    }
+
+    // 10. SPACE INVADERS (Simplified)
+    function initSpaceInvaders() {
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.style.display = 'block';
+      let px = 280, bullets = [], enemies = [];
+      for(let i=0; i<5; i++) for(let j=0; j<3; j++) enemies.push({x: i*60 + 50, y: j*40 + 20});
+
+      canvas.onmousemove = (e) => { let rect = canvas.getBoundingClientRect(); px = e.clientX - rect.left - 20; };
+      canvas.onclick = () => bullets.push({x: px + 20, y: 350});
+
+      arcadeTimer = setInterval(() => {
+        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,400);
+        ctx.fillStyle = '#00ff00'; ctx.fillRect(px, 360, 40, 20); // Player
+
+        ctx.fillStyle = '#fff';
+        bullets.forEach((b, i) => {
+          b.y -= 10; ctx.fillRect(b.x, b.y, 4, 10);
+          if(b.y < 0) bullets.splice(i, 1);
+        });
+
+        ctx.fillStyle = '#ff003c';
+        enemies.forEach((en, eIdx) => {
+          en.y += 0.5; ctx.fillRect(en.x, en.y, 30, 20);
+          bullets.forEach((b, bIdx) => {
+            if(b.x > en.x && b.x < en.x+30 && b.y > en.y && b.y < en.y+20) {
+              enemies.splice(eIdx, 1); bullets.splice(bIdx, 1);
+            }
+          });
+        });
+      }, 30);
+    }
+
+    /* =======================================================
+       MOVIES HUB (PVR PLAY)
+       ======================================================= */
+    function searchMovie() {
+      const query = document.getElementById('movie-search-input').value.trim();
+      const iframe = document.getElementById('movie-iframe');
+      if(query) {
+        // Most WordPress/Streaming sites use ?s= search
+        iframe.src = `https://pvrplay.online/?s=${encodeURIComponent(query)}`;
+      } else {
+        iframe.src = "https://pvrplay.online/";
+      }
+      speakJARVIS("Searching for movie " + query);
+    }
+
+    /* =======================================================
+       SYSTEM UTILITIES (10+ TOOLS)
+       ======================================================= */
+    function genPassword() {
+      const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
+      let pass = ""; for(let i=0; i<16; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+      document.getElementById('pass-output').value = pass;
+    }
+    
+    function genQR() {
+      const text = document.getElementById('qr-input').value.trim();
+      const img = document.getElementById('qr-output');
+      const dl = document.getElementById('qr-download');
+      if(text) { 
+        let url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(text); 
+        img.src = url; 
+        img.style.display = 'inline'; 
+        // Convert to blob to allow download attribute to work across origins
+        fetch(url).then(res => res.blob()).then(blob => {
+          let objectURL = URL.createObjectURL(blob);
+          dl.href = objectURL;
+          dl.style.display = 'block';
+        });
+      }
+    }
+
+    function encodeB64() { document.getElementById('b64-output').value = btoa(document.getElementById('b64-input').value); }
+    function convertCase() { document.getElementById('case-output').value = document.getElementById('case-input').value.toUpperCase(); }
+    
+    function countWords() {
+      const text = document.getElementById('word-input').value;
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      document.getElementById('word-count-output').innerText = `Words: ${words} | Characters: ${text.length}`;
+    }
+
+    function saveTimetable() {
+      localStorage.setItem('JARVIS_TIMETABLE', document.getElementById('timetable-input').value);
+      speakJARVIS("Study Timetable saved locally.");
+    }
+
+    function saveNote() {
+      localStorage.setItem('JARVIS_NOTE', document.getElementById('quick-note').value);
+      speakJARVIS("Quick note saved.");
+    }
+
+    // Pomodoro
+    let pomoTimer;
+    let pomoTimeLeft = 25 * 60;
+    function startPomo() {
+      clearInterval(pomoTimer);
+      speakJARVIS("Focus mode activated.");
+      pomoTimer = setInterval(() => {
+        pomoTimeLeft--;
+        let m = Math.floor(pomoTimeLeft / 60).toString().padStart(2, '0');
+        let s = (pomoTimeLeft % 60).toString().padStart(2, '0');
+        document.getElementById('pomo-display').innerText = `${m}:${s}`;
+        if(pomoTimeLeft <= 0) { clearInterval(pomoTimer); speakJARVIS("Timer complete boss! Take a break."); }
+      }, 1000);
+    }
+    function resetPomo() { clearInterval(pomoTimer); pomoTimeLeft = 25 * 60; document.getElementById('pomo-display').innerText = "25:00"; }
+
+    // SECURE VAULT
+    let vaultMaster = "stark2026"; // Simple default master for demo
+    function unlockVault() {
+      const key = document.getElementById('vault-master-key').value;
+      if(key === vaultMaster || key === "admin") { // Allows 'admin' as fallback
+        document.getElementById('vault-content').style.display = "flex";
+        renderVault();
+        speakJARVIS("Vault unlocked.");
+      } else {
+        alert("Incorrect Master Password");
+      }
+    }
+    
+    function saveToVault() {
+      const desc = document.getElementById('vault-desc').value.trim();
+      const pass = document.getElementById('vault-pass').value.trim();
+      if(desc && pass) {
+        let vault = JSON.parse(localStorage.getItem('JARVIS_VAULT') || '{}');
+        vault[desc] = pass;
+        localStorage.setItem('JARVIS_VAULT', JSON.stringify(vault));
+        document.getElementById('vault-desc').value = ''; document.getElementById('vault-pass').value = '';
+        renderVault();
+      }
+    }
+
+    function renderVault() {
+      const list = document.getElementById('vault-list');
+      let vault = JSON.parse(localStorage.getItem('JARVIS_VAULT') || '{}');
+      list.innerHTML = '';
+      for (const [desc, pass] of Object.entries(vault)) {
+        list.innerHTML += `<div style="border-bottom:1px solid #333; padding:5px 0;"><strong style="color:var(--accent);">${desc}:</strong> ${pass}</div>`;
+      }
+    }
+
+    /* =======================================================
        3D AR HOLOGRAM (Elements 1-30) + HAND GESTURES
        ======================================================= */
     const elementsData = [
@@ -866,7 +1300,6 @@
       
       let Z = parseInt(document.getElementById('element-selector').value) || 1;
       
-      // Nucleus
       let nucGeo = new THREE.SphereGeometry(0.8, 16, 16);
       let nucMat = new THREE.MeshPhongMaterial({ color: 0xff003c, emissive: 0x440000 });
       for(let i=0; i < Z*2; i++) {
@@ -875,7 +1308,6 @@
         atomGroup.add(mesh);
       }
 
-      // Electrons
       let eGeo = new THREE.SphereGeometry(0.3, 16, 16);
       let eMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff });
       let shells = [2, 8, 18, 2];
@@ -954,359 +1386,6 @@
           camera.start();
         });
       }
-    }
-
-    /* =======================================================
-       ARCADE GAMES (10 MINI GAMES INCL 3D FPS)
-       ======================================================= */
-    let arcadeTimer, fpsAnimationId;
-    let fpsScene, fpsCamera, fpsRenderer, fpsTargets = [];
-
-    function startArcadeGame() {
-      clearInterval(arcadeTimer);
-      if(fpsAnimationId) cancelAnimationFrame(fpsAnimationId);
-
-      const game = document.getElementById('arcade-selector').value;
-      document.getElementById('game-canvas').style.display = 'none';
-      document.getElementById('tictactoe-grid').style.display = 'none';
-      document.getElementById('memory-grid').style.display = 'none';
-      document.getElementById('reaction-box').style.display = 'none';
-      document.getElementById('fps-container').style.display = 'none';
-
-      if(game === 'fps') initFPS();
-      else if(game === 'snake') initSnake();
-      else if(game === 'pong') initPong();
-      else if(game === 'tictactoe') initTicTacToe();
-      else if(game === 'memory') initMemory();
-      else if(game === 'reaction') initReaction();
-      else if(game === 'space') initSpaceInvaders();
-      else if(game === 'flappy') initFlappyBird();
-      else if(game === 'breakout') initBreakout();
-      else if(game === 'whack') initWhackAMole();
-    }
-
-    // 1. 3D FPS SHOOTER (Free Fire Style)
-    function initFPS() {
-      const container = document.getElementById('fps-container');
-      container.style.display = 'block';
-      let existingCanvas = container.querySelector('canvas');
-      if(existingCanvas) container.removeChild(existingCanvas);
-
-      fpsScene = new THREE.Scene();
-      fpsScene.background = new THREE.Color(0x87CEEB); 
-      fpsCamera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-      fpsCamera.position.y = 1.5;
-
-      fpsRenderer = new THREE.WebGLRenderer({antialias: true});
-      fpsRenderer.setSize(container.clientWidth, container.clientHeight);
-      container.appendChild(fpsRenderer.domElement);
-
-      const floorGeo = new THREE.PlaneGeometry(100, 100);
-      const floorMat = new THREE.MeshBasicMaterial({color: 0x228B22});
-      const floor = new THREE.Mesh(floorGeo, floorMat);
-      floor.rotation.x = -Math.PI / 2;
-      fpsScene.add(floor);
-
-      fpsTargets = [];
-      const boxGeo = new THREE.BoxGeometry(1, 1, 1);
-      const boxMat = new THREE.MeshBasicMaterial({color: 0xff0000});
-      for(let i=0; i<5; i++) spawnTarget(boxGeo, boxMat);
-
-      let euler = new THREE.Euler(0, 0, 0, 'YXZ');
-      container.onmousemove = (e) => {
-        let movementX = e.movementX || e.mozMovementX || 0;
-        let movementY = e.movementY || e.mozMovementY || 0;
-        if(e.buttons === 1) { 
-          euler.setFromQuaternion(fpsCamera.quaternion);
-          euler.y -= movementX * 0.005;
-          euler.x -= movementY * 0.005;
-          euler.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, euler.x));
-          fpsCamera.quaternion.setFromEuler(euler);
-        }
-      };
-
-      let raycaster = new THREE.Raycaster();
-      let center = new THREE.Vector2(0, 0); 
-      container.onclick = () => {
-        raycaster.setFromCamera(center, fpsCamera);
-        let intersects = raycaster.intersectObjects(fpsTargets);
-        if(intersects.length > 0) {
-          let hit = intersects[0].object;
-          hit.position.set((Math.random()-0.5)*20, 0.5 + Math.random()*2, -5 - Math.random()*15);
-          speakJARVIS("Target Eliminated!");
-        }
-      };
-
-      function spawnTarget(geo, mat) {
-        let mesh = new THREE.Mesh(geo, mat);
-        mesh.position.set((Math.random()-0.5)*20, 0.5 + Math.random()*2, -5 - Math.random()*15);
-        fpsTargets.push(mesh);
-        fpsScene.add(mesh);
-      }
-
-      function animateFPS() {
-        if(container.style.display === 'none') return;
-        fpsAnimationId = requestAnimationFrame(animateFPS);
-        fpsTargets.forEach(t => t.rotation.y += 0.01);
-        fpsRenderer.render(fpsScene, fpsCamera);
-      }
-      animateFPS();
-    }
-
-    // 2. SNAKE
-    function initSnake() {
-      const canvas = document.getElementById('game-canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.style.display = 'block';
-      let snake = [{x: 10, y: 10}], dir = {x: 0, y: 0}, food = {x: 5, y: 5};
-      
-      document.onkeydown = (e) => {
-        if(e.key==='ArrowUp' && dir.y!==1) dir={x:0, y:-1};
-        if(e.key==='ArrowDown' && dir.y!==-1) dir={x:0, y:1};
-        if(e.key==='ArrowLeft' && dir.x!==1) dir={x:-1, y:0};
-        if(e.key==='ArrowRight' && dir.x!==-1) dir={x:1, y:0};
-      };
-
-      arcadeTimer = setInterval(() => {
-        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,400);
-        let head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
-        
-        if(head.x < 0 || head.x >= 30 || head.y < 0 || head.y >= 20 || snake.some(s => s.x===head.x && s.y===head.y)) {
-           dir = {x:0, y:0}; head = {x:10, y:10}; snake = [head]; 
-        }
-        snake.unshift(head);
-        if(head.x === food.x && head.y === food.y) {
-          food = {x: Math.floor(Math.random()*30), y: Math.floor(Math.random()*20)};
-        } else { snake.pop(); }
-
-        ctx.fillStyle = '#00e5ff'; snake.forEach(s => ctx.fillRect(s.x*20, s.y*20, 18, 18));
-        ctx.fillStyle = '#ff003c'; ctx.fillRect(food.x*20, food.y*20, 18, 18);
-      }, 100);
-    }
-
-    // 3. PONG
-    function initPong() {
-      const canvas = document.getElementById('game-canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.style.display = 'block';
-      let pY = 150, aiY = 150, bX = 300, bY = 200, bdX = 5, bdY = 5;
-
-      canvas.onmousemove = (e) => { let rect = canvas.getBoundingClientRect(); pY = e.clientY - rect.top - 40; };
-
-      arcadeTimer = setInterval(() => {
-        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,400);
-        ctx.fillStyle = '#00e5ff';
-        ctx.fillRect(20, pY, 10, 80); 
-        ctx.fillRect(570, aiY, 10, 80); 
-        ctx.fillRect(bX, bY, 10, 10); 
-
-        bX += bdX; bY += bdY;
-        aiY += (bY - (aiY + 40)) * 0.1; 
-
-        if(bY <= 0 || bY >= 390) bdY = -bdY;
-        if(bX <= 30 && bY > pY && bY < pY+80) bdX = -bdX;
-        if(bX >= 560 && bY > aiY && bY < aiY+80) bdX = -bdX;
-        if(bX < 0 || bX > 600) { bX = 300; bY = 200; bdX = -bdX; } 
-      }, 30);
-    }
-
-    // 4. TIC TAC TOE
-    function initTicTacToe() {
-      const grid = document.getElementById('tictactoe-grid');
-      grid.style.display = 'grid'; grid.innerHTML = '';
-      let board = Array(9).fill(null), turn = 'X';
-      
-      for(let i=0; i<9; i++) {
-        let cell = document.createElement('div');
-        cell.className = 'tic-tac-cell';
-        cell.onclick = () => {
-          if(!board[i]) { board[i] = turn; cell.innerText = turn; turn = turn === 'X' ? 'O' : 'X'; }
-        };
-        grid.appendChild(cell);
-      }
-    }
-
-    // 5. MEMORY MATCH
-    function initMemory() {
-      const grid = document.getElementById('memory-grid');
-      grid.style.display = 'grid'; grid.innerHTML = '';
-      let icons = ['🚀','👽','💥','🔥','⚡','🧠','👁️','🤖'];
-      let cards = [...icons, ...icons].sort(() => 0.5 - Math.random());
-      let flipped = [];
-
-      cards.forEach((icon, i) => {
-        let card = document.createElement('div');
-        card.className = 'mem-card'; card.dataset.val = icon; card.innerText = icon;
-        card.onclick = () => {
-          if(flipped.length < 2 && !card.classList.contains('flipped')) {
-            card.classList.add('flipped'); flipped.push(card);
-            if(flipped.length === 2) {
-              setTimeout(() => {
-                if(flipped[0].dataset.val !== flipped[1].dataset.val) { flipped[0].classList.remove('flipped'); flipped[1].classList.remove('flipped'); }
-                flipped = [];
-              }, 800);
-            }
-          }
-        };
-        grid.appendChild(card);
-      });
-    }
-
-    // 6. REACTION TESTER
-    function initReaction() {
-      const box = document.getElementById('reaction-box');
-      box.style.display = 'flex'; box.style.background = '#880000'; box.innerText = "WAIT FOR GREEN...";
-      let state = 'wait', startTime;
-      let timeout = setTimeout(() => { state = 'go'; box.style.background = '#008800'; box.innerText = "CLICK NOW!"; startTime = Date.now(); }, 1000 + Math.random() * 3000);
-
-      box.onclick = () => {
-        if(state === 'wait') { clearTimeout(timeout); box.innerText = "TOO EARLY! RESTART."; }
-        else if(state === 'go') { state = 'done'; box.style.background = '#000'; box.innerText = `YOUR TIME: ${Date.now() - startTime} ms!`; }
-      };
-    }
-
-    // 7. SPACE INVADERS (Simplified)
-    function initSpaceInvaders() {
-      const canvas = document.getElementById('game-canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.style.display = 'block';
-      let px = 280, bullets = [], enemies = [];
-      for(let i=0; i<5; i++) for(let j=0; j<3; j++) enemies.push({x: i*60 + 50, y: j*40 + 20});
-
-      canvas.onmousemove = (e) => { let rect = canvas.getBoundingClientRect(); px = e.clientX - rect.left - 20; };
-      canvas.onclick = () => bullets.push({x: px + 20, y: 350});
-
-      arcadeTimer = setInterval(() => {
-        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,400);
-        ctx.fillStyle = '#00ff00'; ctx.fillRect(px, 360, 40, 20); // Player
-
-        ctx.fillStyle = '#fff';
-        bullets.forEach((b, i) => {
-          b.y -= 10; ctx.fillRect(b.x, b.y, 4, 10);
-          if(b.y < 0) bullets.splice(i, 1);
-        });
-
-        ctx.fillStyle = '#ff003c';
-        enemies.forEach((en, eIdx) => {
-          en.y += 0.5; ctx.fillRect(en.x, en.y, 30, 20);
-          bullets.forEach((b, bIdx) => {
-            if(b.x > en.x && b.x < en.x+30 && b.y > en.y && b.y < en.y+20) {
-              enemies.splice(eIdx, 1); bullets.splice(bIdx, 1);
-            }
-          });
-        });
-      }, 30);
-    }
-
-    // 8. FLAPPY BIRD
-    function initFlappyBird() {
-      const canvas = document.getElementById('game-canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.style.display = 'block';
-      let birdY = 200, vel = 0, pipes = [{x: 600, y: 150}];
-
-      canvas.onclick = () => { vel = -8; };
-
-      arcadeTimer = setInterval(() => {
-        ctx.fillStyle = '#87CEEB'; ctx.fillRect(0,0,600,400);
-        vel += 0.5; birdY += vel;
-        ctx.fillStyle = '#ffcc00'; ctx.beginPath(); ctx.arc(100, birdY, 15, 0, Math.PI*2); ctx.fill();
-
-        ctx.fillStyle = '#008000';
-        pipes.forEach((p, i) => {
-          p.x -= 4;
-          ctx.fillRect(p.x, 0, 50, p.y); 
-          ctx.fillRect(p.x, p.y + 120, 50, 400); 
-          if(p.x === 300) pipes.push({x: 600, y: Math.random()*200 + 50});
-          if(p.x < -50) pipes.splice(i, 1);
-
-          if((100 > p.x && 100 < p.x+50) && (birdY < p.y || birdY > p.y+120) || birdY > 400 || birdY < 0) {
-            birdY = 200; vel = 0; pipes = [{x: 600, y: 150}];
-          }
-        });
-      }, 30);
-    }
-
-    // 9. BREAKOUT
-    function initBreakout() {
-      const canvas = document.getElementById('game-canvas');
-      const ctx = canvas.getContext('2d');
-      canvas.style.display = 'block';
-      let px = 250, bx = 300, by = 200, bdx = 4, bdy = 4;
-      let bricks = [];
-      for(let i=0; i<6; i++) for(let j=0; j<4; j++) bricks.push({x: i*90 + 30, y: j*30 + 30, active: 1});
-
-      canvas.onmousemove = (e) => { let rect = canvas.getBoundingClientRect(); px = e.clientX - rect.left - 50; };
-
-      arcadeTimer = setInterval(() => {
-        ctx.fillStyle = '#000'; ctx.fillRect(0,0,600,400);
-        ctx.fillStyle = '#00f0ff'; ctx.fillRect(px, 370, 100, 10);
-        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(bx, by, 8, 0, Math.PI*2); ctx.fill();
-
-        bx += bdx; by += bdy;
-        if(bx < 0 || bx > 600) bdx = -bdx;
-        if(by < 0) bdy = -bdy;
-        if(by > 360 && bx > px && bx < px + 100) bdy = -bdy;
-        if(by > 400) { bx = 300; by = 200; bdy = -4; } 
-
-        ctx.fillStyle = '#ff007f';
-        bricks.forEach(br => {
-          if(br.active) {
-            ctx.fillRect(br.x, br.y, 80, 20);
-            if(bx > br.x && bx < br.x+80 && by > br.y && by < br.y+20) { br.active = 0; bdy = -bdy; }
-          }
-        });
-      }, 30);
-    }
-
-    // 10. WHACK A MOLE
-    function initWhackAMole() {
-      const grid = document.getElementById('tictactoe-grid'); 
-      grid.style.display = 'grid'; grid.innerHTML = '';
-      let score = 0;
-      
-      for(let i=0; i<9; i++) {
-        let cell = document.createElement('div');
-        cell.className = 'tic-tac-cell';
-        cell.onclick = () => { if(cell.innerText === '👽') { score++; cell.innerText = '💥'; } };
-        grid.appendChild(cell);
-      }
-
-      arcadeTimer = setInterval(() => {
-        for(let i=0; i<9; i++) grid.children[i].innerText = '';
-        grid.children[Math.floor(Math.random()*9)].innerText = '👽';
-      }, 800);
-    }
-
-    /* =======================================================
-       UTILITIES (5 TOOLS)
-       ======================================================= */
-    function genPassword() {
-      const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
-      let pass = ""; for(let i=0; i<12; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-      document.getElementById('pass-output').value = pass;
-    }
-    
-    function genQR() {
-      const text = document.getElementById('qr-input').value.trim();
-      const img = document.getElementById('qr-output');
-      if(text) { img.src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(text); img.style.display = 'inline'; }
-    }
-
-    function encodeB64() {
-      const text = document.getElementById('b64-input').value;
-      document.getElementById('b64-output').value = btoa(text);
-    }
-
-    function convertCase() {
-      const text = document.getElementById('case-input').value;
-      document.getElementById('case-output').value = text.toUpperCase();
-    }
-
-    function countWords() {
-      const text = document.getElementById('word-input').value;
-      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-      document.getElementById('word-count-output').innerText = `Words: ${words} | Characters: ${text.length}`;
     }
 
     /* =======================================================
