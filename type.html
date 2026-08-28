@@ -520,7 +520,7 @@
       try {
         const res = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
           method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
-          body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: [ { role: "system", content: PUBLIC_PERSONA }, { role: "user", content: msg } ], temperature: 0.6 })
+          body: JSON.stringify({ model: "openai/gpt-oss-120b", messages: [ { role: "system", content: PUBLIC_PERSONA }, { role: "user", content: msg } ], temperature: 0.6 })
         });
         const data = await res.json();
         document.getElementById('jarvis-orb').style.filter = "none";
