@@ -28,7 +28,7 @@
     :root[data-theme="neon"] { --bg: #000000; --panel: rgba(10, 10, 10, 0.9); --accent: #39ff14; --accent-alt: #ccff00; --text: #ffffff; --muted: #333333; --correct: #00ffff; --wrong: #ff00ff; --font: 'Orbitron', sans-serif; }
 
     * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.4s ease, border-color 0.4s ease, transform 0.3s ease; }
-    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; scroll-behavior: smooth; font-size: 14px; } /* REDUCED BASE FONT SIZE */
+    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; scroll-behavior: smooth; font-size: 14px; } 
     
     /* ========================================================
        APPLE STYLE ANIMATIONS & UI COMPACTNESS
@@ -402,7 +402,7 @@
             <select id="element-selector" onchange="loadElementHologram()"></select>
             <button class="action-btn" onclick="toggleARCamera()" id="ar-cam-btn">Turn ON AR Hand Gestures</button>
           </div>
-          <p style="text-align:center; color:var(--correct); margin-bottom:10px; font-size:0.9rem; font-weight:bold;">Gestures: 🤚 Open Palm to Rotate | 🤏 Pinch to Scale</p>
+          <p style="text-align:center; color:var(--correct); margin-bottom:10px; font-size:0.9rem; font-weight:bold;">Gestures: 🤚 Open Palm to Rotate | 🤏 Pinch to Scale | ✊ Fist to Move</p>
           <div id="ar-container" style="flex:1; position:relative; background:#000; border-radius:10px; overflow:hidden; border: 1px solid var(--muted);">
             <video id="ar-video" style="position:absolute; width:100%; height:100%; object-fit:cover; opacity:0.3; display:none;" autoplay muted playsinline></video>
             <div id="three-canvas-container" style="position:absolute; width:100%; height:100%;"></div>
@@ -502,7 +502,7 @@
     function updateMemoryDisplay() { document.getElementById('memory-display').innerText = JSON.stringify(memoryVault, null, 2) || "Memory is empty."; }
 
     /* =======================================================
-       GROQ AGI ENGINE
+       GROQ AGI ENGINE (WITH POLLINATIONS FALLBACK)
        ======================================================= */
     const PUBLIC_PERSONA = `You are jarvis, an advanced AI assistant created by Moulik Soni. Speak Hinglish. Be concise. No markdown.`;
     async function sendJarvisMessage() {
@@ -515,18 +515,24 @@
       if(l.includes("open arcade")) return switchTab('arcade');
       if(l.includes("open movies")) return switchTab('movies');
 
-      if (!API_KEY) { appendChat('jarvis', "Groq API Key missing."); speakJARVIS("Please add API key in settings."); return; }
       document.getElementById('jarvis-orb').style.filter = "hue-rotate(180deg)";
       try {
-        const res = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
-          body: JSON.stringify({ model: "openai/gpt-oss-120b", messages: [ { role: "system", content: PUBLIC_PERSONA }, { role: "user", content: msg } ], temperature: 0.6 })
-        });
-        const data = await res.json();
+        let final_ans = "";
+        if (API_KEY) {
+            const res = await fetch(`https://api.groq.com/openai/v1/chat/completions`, {
+              method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` },
+              body: JSON.stringify({ model: "openai/gpt-oss-120b", messages: [ { role: "system", content: PUBLIC_PERSONA }, { role: "user", content: msg } ], temperature: 0.6 })
+            });
+            const data = await res.json();
+            final_ans = data.choices[0].message.content.replace(/<think>[\s\S]*?(<\/think>|$)/g, '').trim();
+        } else {
+            // Fallback for immediate working functionality
+            const res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(PUBLIC_PERSONA + " User said: " + msg)}`);
+            final_ans = await res.text();
+        }
         document.getElementById('jarvis-orb').style.filter = "none";
-        let final_ans = data.choices[0].message.content.replace(/<think>[\s\S]*?(<\/think>|$)/g, '').trim();
         appendChat('jarvis', final_ans); speakJARVIS(final_ans);
-      } catch (error) { document.getElementById('jarvis-orb').style.filter = "none"; appendChat('jarvis', "API Error."); }
+      } catch (error) { document.getElementById('jarvis-orb').style.filter = "none"; appendChat('jarvis', "API Error. " + error.message); }
     }
     function appendChat(role, msg) { const log = document.getElementById('jarvis-chat-log'); const div = document.createElement('div'); div.className = `chat-msg ${role}`; div.innerText = msg; log.appendChild(div); log.scrollTop = log.scrollHeight; }
 
@@ -615,13 +621,22 @@
     async function generateDynamicIQTest() {
       const container = document.getElementById('iq-questions-container'); const qCount = parseInt(document.getElementById('iq-q-count').value) || 5;
       document.getElementById('iq-result').innerText = ''; document.getElementById('certificate-canvas').style.display = 'none'; document.getElementById('download-cert-btn').style.display = 'none';
-      container.innerHTML = `<p style="color:var(--accent); font-size:1.2rem; padding:1rem; text-align:center;">⚡ Generating Questions via Groq AI...</p>`;
-      if (!API_KEY) { container.innerHTML = `<p style="color:var(--wrong); text-align:center; font-size:1.2rem;">GROQ API KEY REQUIRED!</p>`; return; }
+      container.innerHTML = `<p style="color:var(--accent); font-size:1.2rem; padding:1rem; text-align:center;">⚡ Generating Questions via AI...</p>`;
       try {
-        const prompt = `Generate exactly ${qCount} unique multiple-choice IQ questions. Output strictly as valid JSON array of objects: {"q": "string", "opts": ["opt1","opt2","opt3","opt4"], "ans": integer_index}. Return ONLY JSON.`;
-        const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` }, body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: [{ role: "user", content: prompt }], temperature: 0.7 }) });
-        const data = await response.json();
-        let rawText = data.choices[0].message.content.trim().replace(/<think>[\s\S]*?<\/think>/g, '').replace(/```json/g, '').replace(/```/g, '').trim();
+        const prompt = `Generate exactly ${qCount} unique multiple-choice IQ questions. Output strictly as valid JSON array of objects: [{"q": "string", "opts": ["opt1","opt2","opt3","opt4"], "ans": integer_index}]. Return ONLY JSON.`;
+        let rawText = "";
+        
+        if (API_KEY) {
+            const response = await fetch(`https://api.groq.com/openai/v1/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` }, body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: [{ role: "user", content: prompt }], temperature: 0.7 }) });
+            const data = await response.json();
+            rawText = data.choices[0].message.content;
+        } else {
+            // Fallback for immediate working functionality
+            const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}`);
+            rawText = await response.text();
+        }
+
+        rawText = rawText.trim().replace(/<think>[\s\S]*?<\/think>/g, '').replace(/```json/g, '').replace(/```/g, '').trim();
         let startIndex = rawText.indexOf('['), endIndex = rawText.lastIndexOf(']') + 1;
         if(startIndex !== -1 && endIndex !== 0) rawText = rawText.substring(startIndex, endIndex);
         iqData = JSON.parse(rawText); renderIQQuestions();
@@ -713,12 +728,29 @@
           handTracker.onResults(r => {
             if(r.multiHandLandmarks && r.multiHandLandmarks.length > 0 && atomGroup) {
               let lm = r.multiHandLandmarks[0];
-              let thumb = lm[4], index = lm[8], palm = lm[9]; // Use palm base (9) for rotation
-              let dist = Math.hypot(thumb.x - index.x, thumb.y - index.y);
-              // PINCH TO SCALE
-              if(dist < 0.08) { let s = Math.max(0.5, Math.min(3, 1+(0.5-palm.y)*3)); atomGroup.scale.set(s,s,s); } 
-              // OPEN PALM TO ROTATE
-              else { atomGroup.rotation.y = (palm.x - 0.5) * 5; atomGroup.rotation.x = (palm.y - 0.5) * 5; }
+              let thumb = lm[4], index = lm[8], middle = lm[12], wrist = lm[0];
+              
+              // Calculates distance for gestures
+              let pinchDist = Math.hypot(thumb.x - index.x, thumb.y - index.y);
+              let grabDist = Math.hypot(middle.x - wrist.x, middle.y - wrist.y);
+
+              // 1. PINCH TO SCALE / RESIZE
+              if(pinchDist < 0.08 && grabDist > 0.2) {
+                  let s = Math.max(0.5, Math.min(3, 1 + (0.5 - wrist.y) * 4));
+                  atomGroup.scale.set(s,s,s);
+              } 
+              // 2. GRAB/FIST TO MOVE
+              else if (grabDist < 0.2) {
+                  let targetX = (wrist.x - 0.5) * 15;
+                  let targetY = -(wrist.y - 0.5) * 15;
+                  atomGroup.position.x += (targetX - atomGroup.position.x) * 0.1;
+                  atomGroup.position.y += (targetY - atomGroup.position.y) * 0.1;
+              } 
+              // 3. OPEN PALM TO ROTATE
+              else {
+                  atomGroup.rotation.y = (wrist.x - 0.5) * 6;
+                  atomGroup.rotation.x = (wrist.y - 0.5) * 6;
+              }
             }
           });
         }
@@ -1265,7 +1297,7 @@
         osc.stop(ctx.currentTime + 0.2); 
     }
 
-    // AI Hub Groq Functions
+    // AI Hub Groq Functions (With Automatic Free Fallback)
     function genAIImage() { 
         let p = document.getElementById('ai-img-prompt').value; 
         if(!p) { alert("Enter a prompt!"); return; }
@@ -1302,26 +1334,31 @@
     }
 
     async function callGroqModule(inputId, outputId, systemPrefix) {
-        if (!API_KEY) { speakJARVIS("API Key Missing. Please update settings."); return; }
         let msg = document.getElementById(inputId).value; 
         if(!msg) return;
         
         let out = document.getElementById(outputId);
-        out.innerText = "Loading Quantum Link...";
+        out.innerText = "Processing Data...";
         try {
-          let res = await fetch(`https://api.groq.com/openai/v1/chat/completions`, { 
-              method: 'POST', 
-              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` }, 
-              body: JSON.stringify({ 
-                  model: "llama-3.3-70b-versatile", 
-                  messages: [
-                      { role: "system", content: systemPrefix }, 
-                      { role: "user", content: msg }
-                  ] 
-              }) 
-          });
-          let d = await res.json(); 
-          out.innerText = d.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+          if (API_KEY) {
+              let res = await fetch(`https://api.groq.com/openai/v1/chat/completions`, { 
+                  method: 'POST', 
+                  headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_KEY}` }, 
+                  body: JSON.stringify({ 
+                      model: "llama-3.3-70b-versatile", 
+                      messages: [
+                          { role: "system", content: systemPrefix }, 
+                          { role: "user", content: msg }
+                      ] 
+                  }) 
+              });
+              let d = await res.json(); 
+              out.innerText = d.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+          } else {
+              // Fallback for immediate working functionality across all tools
+              let res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(systemPrefix + "\n\n" + msg)}`);
+              out.innerText = await res.text();
+          }
         } catch(e) { 
             out.innerText = "Error connecting to AI Neural Link."; 
         }
