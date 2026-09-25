@@ -605,7 +605,7 @@
       document.querySelectorAll('.apple-fade').forEach(el => { let obs = new IntersectionObserver(e => { e.forEach(en => { if(en.isIntersecting) en.target.classList.add('visible'); })}, {threshold:0.05}); obs.observe(el); });
     }
     function searchStarkMovie() { playStarkMovie(document.getElementById('movie-search-input').value); }
-    function playStarkMovie(title) { document.getElementById('movie-grid').style.display='none'; document.getElementById('movie-player').style.display='flex'; document.getElementById('movie-iframe').src=`https://pvrplay.online/?s=${encodeURIComponent(title)}`; }
+    function playStarkMovie(title) { document.getElementById('movie-grid').style.display='none'; document.getElementById('movie-player').style.display='flex'; document.getElementById('movie-iframe').src=`https://pvrplay.live/?s=${encodeURIComponent(title)}`; }
     function closeMoviePlayer() { document.getElementById('movie-player').style.display='none'; document.getElementById('movie-grid').style.display='grid'; document.getElementById('movie-iframe').src=''; }
     function toggleMovieFullscreen() { const f = document.getElementById('movie-iframe'); if(!document.fullscreenElement){f.requestFullscreen?.()||f.webkitRequestFullscreen?.();}else{document.exitFullscreen?.();} }
 
