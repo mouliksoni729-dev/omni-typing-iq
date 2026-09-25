@@ -505,7 +505,7 @@
     /* =======================================================
        GROQ AGI ENGINE
        ======================================================= */
-    const PUBLIC_PERSONA = `You are jarvis, an advanced AI assistant created by Moulik Soni. Speak Hinglish. Be concise. No markdown.`;
+    const PUBLIC_PERSONA = `You are jarvis, an advanced AI assistant created by Moulik Soni. Speak english . Be concise. No markdown.`;
     async function sendJarvisMessage() {
       const input = document.getElementById('jarvis-input'); let msg = input.value.trim(); if(!msg) return;
       appendChat('user', msg); input.value = '';
