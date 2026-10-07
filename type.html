@@ -1,994 +1,999 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="stark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniType & JARVIS AGI | Cloud Firebase Edition</title>
-  
-  <!-- Sleek Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  
-  <!-- 3D & GESTURE LIBRARIES -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OmniType & JARVIS AGI | Cloud Firebase Edition</title>
+    
+    <!-- Sleek Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- 3D & GESTURE LIBRARIES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
 
-  <style>
-    /* ========================================================
-       10 UNIQUE THEMES
-       ======================================================== */
-    :root[data-theme="stark"] { 
-        --bg: #050a0f; 
-        --panel: rgba(10, 15, 25, 0.7); 
-        --accent: #00e5ff; 
-        --accent-alt: #0077ff; 
-        --text: #e0ffff; 
-        --muted: #005577; 
-        --correct: #00ff88; 
-        --wrong: #ff003c; 
-        --font: 'Inter', sans-serif; 
-    }
-    :root[data-theme="hacker"] { 
-        --bg: #000000; 
-        --panel: rgba(10, 0, 0, 0.8); 
-        --accent: #ff003c; 
-        --accent-alt: #880000; 
-        --text: #ff3333; 
-        --muted: #440000; 
-        --correct: #00ff00; 
-        --wrong: #ffcc00; 
-        --font: 'Share Tech Mono', monospace; 
-    }
-    :root[data-theme="matrix"] { 
-        --bg: #020502; 
-        --panel: rgba(5, 15, 5, 0.9); 
-        --accent: #00ff41; 
-        --accent-alt: #008f11; 
-        --text: #00ff41; 
-        --muted: #003b00; 
-        --correct: #ffffff; 
-        --wrong: #ff0000; 
-        --font: 'Share Tech Mono', monospace; 
-    }
-    :root[data-theme="ironman"] { 
-        --bg: #110000; 
-        --panel: rgba(30, 0, 0, 0.75); 
-        --accent: #ffcc00; 
-        --accent-alt: #ff0000; 
-        --text: #ffdd66; 
-        --muted: #880000; 
-        --correct: #00ff88; 
-        --wrong: #ff003c; 
-        --font: 'Orbitron', sans-serif; 
-    }
-    :root[data-theme="cyberpunk"] { 
-        --bg: #0d0e15; 
-        --panel: rgba(22, 25, 37, 0.9); 
-        --accent: #00f0ff; 
-        --accent-alt: #ff007f; 
-        --text: #e0e6ed; 
-        --muted: #4a5568; 
-        --correct: #00ff88; 
-        --wrong: #ff3366; 
-        --font: 'Inter', sans-serif; 
-    }
-    :root[data-theme="synthwave"] { 
-        --bg: #1a0933; 
-        --panel: rgba(45, 17, 77, 0.85); 
-        --accent: #f72585; 
-        --accent-alt: #7209b7; 
-        --text: #4cc9f0; 
-        --muted: #3f37c9; 
-        --correct: #4361ee; 
-        --wrong: #f72585; 
-        --font: 'Inter', sans-serif; 
-    }
-    :root[data-theme="dark"] { 
-        --bg: #121212; 
-        --panel: rgba(30, 30, 30, 0.9); 
-        --accent: #bb86fc; 
-        --accent-alt: #03dac6; 
-        --text: #e1e1e1; 
-        --muted: #555555; 
-        --correct: #4caf50; 
-        --wrong: #f44336; 
-        --font: 'Inter', sans-serif; 
-    }
-    :root[data-theme="light"] { 
-        --bg: #f4f4f9; 
-        --panel: rgba(255, 255, 255, 0.9); 
-        --accent: #0055ff; 
-        --accent-alt: #0033cc; 
-        --text: #111111; 
-        --muted: #cccccc; 
-        --correct: #00aa55; 
-        --wrong: #ee0000; 
-        --font: 'Inter', sans-serif; 
-    }
-    :root[data-theme="dracula"] { 
-        --bg: #282a36; 
-        --panel: rgba(40, 42, 54, 0.95); 
-        --accent: #ff79c6; 
-        --accent-alt: #bd93f9; 
-        --text: #f8f8f2; 
-        --muted: #6272a4; 
-        --correct: #50fa7b; 
-        --wrong: #ff5555; 
-        --font: 'Inter', sans-serif; 
-    }
-    :root[data-theme="neon"] { 
-        --bg: #000000; 
-        --panel: rgba(10, 10, 10, 0.9); 
-        --accent: #39ff14; 
-        --accent-alt: #ccff00; 
-        --text: #ffffff; 
-        --muted: #333333; 
-        --correct: #00ffff; 
-        --wrong: #ff00ff; 
-        --font: 'Orbitron', sans-serif; 
-    }
-
-    * { 
-        box-sizing: border-box; 
-        margin: 0; 
-        padding: 0; 
-        transition: background 0.4s ease, border-color 0.4s ease, transform 0.3s ease; 
-    }
-
-    body { 
-        background: var(--bg); 
-        color: var(--text); 
-        font-family: var(--font); 
-        min-height: 100vh; 
-        display: flex; 
-        flex-direction: column; 
-        overflow-x: hidden; 
-        scroll-behavior: smooth; 
-        font-size: 14px; 
-    }
-    
-    /* ========================================================
-       APPLE STYLE ANIMATIONS & UI COMPACTNESS
-       ======================================================== */
-    .apple-fade { 
-        opacity: 0; 
-        transform: translateY(20px) scale(0.98); 
-        transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); 
-    }
-    .apple-fade.visible { 
-        opacity: 1; 
-        transform: translateY(0) scale(1); 
-    }
-    
-    /* ========================================================
-       HEADER & NAVIGATION
-       ======================================================== */
-    header { 
-        background: var(--panel); 
-        backdrop-filter: blur(20px); 
-        padding: 0.8rem 1.5rem; 
-        display: flex; 
-        flex-wrap: wrap; 
-        justify-content: space-between; 
-        align-items: center; 
-        border-bottom: 1px solid rgba(0,229,255,0.2); 
-        z-index: 10; 
-        position: sticky; 
-        top: 0; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
-    }
-    
-    .logo-area { 
-        display: flex; 
-        align-items: center; 
-        gap: 15px; 
-    }
-
-    h1 { 
-        font-size: 1.4rem; 
-        color: var(--accent); 
-        text-transform: uppercase; 
-        letter-spacing: 2px; 
-        font-family: 'Orbitron', sans-serif; 
-        font-weight: 900; 
-        margin: 0; 
-    }
-    
-    .yt-premium-badge { 
-        background: linear-gradient(45deg, #ff0000, #ff007f); 
-        color: #fff; 
-        padding: 4px 10px; 
-        border-radius: 4px; 
-        font-family: 'Orbitron'; 
-        font-size: 0.8rem; 
-        font-weight: bold; 
-        letter-spacing: 1px; 
-        box-shadow: 0 0 10px rgba(255,0,0,0.5); 
-        display: flex; 
-        align-items: center; 
-        gap: 5px; 
-    }
-    .yt-premium-badge.free { 
-        background: #555; 
-        box-shadow: none; 
-    }
-    .yt-premium-badge.premium { 
-        background: linear-gradient(45deg, gold, #ffaa00); 
-        color: #000; 
-        box-shadow: 0 0 10px rgba(255,215,0,0.5); 
-    }
-    .yt-premium-badge.vip { 
-        background: linear-gradient(45deg, #ff003c, #880000); 
-        color: #fff; 
-        box-shadow: 0 0 15px rgba(255,0,60,0.6); 
-        border: 1px solid #ffcc00; 
-    }
-
-    nav { 
-        display: flex; 
-        gap: 0.4rem; 
-        flex-wrap: wrap; 
-        margin-top: 10px; 
-        width: 100%; 
-        justify-content: center; 
-    }
-    @media(min-width: 1200px) { 
-        nav { 
-            width: auto; 
-            margin-top: 0; 
-            justify-content: flex-end; 
-        } 
-    }
-
-    nav button { 
-        background: transparent; 
-        border: 1px solid rgba(0,229,255,0.3); 
-        color: var(--text); 
-        padding: 0.5rem 0.9rem; 
-        border-radius: 6px; 
-        cursor: pointer; 
-        font-family: 'Orbitron', sans-serif; 
-        font-size: 0.75rem; 
-        font-weight: bold; 
-        transition: all 0.2s; 
-    }
-    nav button.active, nav button:hover { 
-        background: var(--accent); 
-        color: #000; 
-        box-shadow: 0 0 15px rgba(0,229,255,0.4); 
-        transform: translateY(-2px); 
-        border-color: var(--accent); 
-    }
-
-    /* ========================================================
-       AUTH OVERLAY & LOADING OVERLAY
-       ======================================================== */
-    #auth-overlay, #loading-overlay { 
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        width: 100vw; 
-        height: 100vh; 
-        background: rgba(0,0,0,0.95); 
-        z-index: 99999; 
-        display: flex; 
-        justify-content: center; 
-        align-items: center; 
-        flex-direction: column; 
-        backdrop-filter: blur(15px); 
-    }
-    
-    .auth-box { 
-        background: #111; 
-        border: 2px solid var(--accent); 
-        border-radius: 12px; 
-        padding: 30px; 
-        width: 90%; 
-        max-width: 450px; 
-        text-align: center; 
-        box-shadow: 0 0 40px rgba(0,229,255,0.2); 
-    }
-    
-    .auth-box input, .auth-box select { 
-        background: #000; 
-        color: #fff; 
-        border: 1px solid var(--muted); 
-        padding: 12px; 
-        border-radius: 6px; 
-        font-family: 'Inter'; 
-        font-size: 1rem; 
-    }
-    
-    .phone-group {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
-    
-    .phone-group select {
-        flex: 0 0 100px;
-    }
-    
-    .phone-group input {
-        flex: 1;
-        margin-bottom: 0;
-    }
-    
-    .auth-error {
-        color: var(--wrong);
-        font-size: 0.85rem;
-        margin-bottom: 15px;
-        display: none;
-        text-align: left;
-    }
-
-    /* ========================================================
-       CUSTOM TOAST / MODALS
-       ======================================================== */
-    #custom-toast { 
-        position: fixed; 
-        bottom: 30px; 
-        left: 50%; 
-        transform: translateX(-50%) translateY(100px); 
-        background: var(--panel); 
-        border: 1px solid var(--accent); 
-        color: var(--text); 
-        padding: 15px 30px; 
-        border-radius: 8px; 
-        z-index: 100000; 
-        opacity: 0; 
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-        font-family: 'Orbitron', sans-serif; 
-        font-weight: bold; 
-        backdrop-filter: blur(10px); 
-    }
-    #custom-toast.show { 
-        transform: translateX(-50%) translateY(0); 
-        opacity: 1; 
-    }
-    
-    #confirm-modal { 
-        display: none; 
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        width: 100vw; 
-        height: 100vh; 
-        background: rgba(0,0,0,0.8); 
-        z-index: 100001; 
-        justify-content: center; 
-        align-items: center; 
-        backdrop-filter: blur(5px); 
-    }
-    .confirm-box { 
-        background: #111; 
-        border: 2px solid var(--wrong); 
-        padding: 25px; 
-        border-radius: 10px; 
-        max-width: 400px; 
-        text-align: center; 
-        box-shadow: 0 0 30px rgba(255,0,60,0.3); 
-    }
-
-    /* ========================================================
-       MAIN LAYOUT
-       ======================================================== */
-    main { 
-        flex: 1; 
-        padding: 1.5rem; 
-        max-width: 1500px; 
-        margin: 0 auto; 
-        width: 100%; 
-        display: grid; 
-        grid-template-columns: 1fr 350px; 
-        gap: 1.5rem; 
-        align-items: start; 
-    }
-    
-    .section-page { 
-        display: none; 
-    }
-    
-    .section-page.active { 
-        display: block; 
-        animation: slideFadeUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
-    }
-    
-    @keyframes slideFadeUp { 
-        from { opacity: 0; transform: translateY(15px); } 
-        to { opacity: 1; transform: translateY(0); } 
-    }
-
-    .card { 
-        background: var(--panel); 
-        backdrop-filter: blur(15px); 
-        padding: 1.5rem; 
-        border-radius: 12px; 
-        border: 1px solid rgba(0,229,255,0.15); 
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
-        margin-bottom: 1rem; 
-    }
-    
-    .controls-grid { 
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
-        gap: 0.8rem; 
-        margin-bottom: 1.2rem; 
-    }
-    
-    select, input, textarea { 
-        width: 100%; 
-        background: rgba(0,0,0,0.6); 
-        border: 1px solid var(--muted); 
-        color: var(--text); 
-        padding: 0.7rem; 
-        border-radius: 6px; 
-        font-family: inherit; 
-        font-size: 0.9rem; 
-        outline: none; 
-        transition: 0.3s; 
-        margin-bottom: 10px; 
-    }
-    
-    select:focus, input:focus, textarea:focus { 
-        border-color: var(--accent); 
-        box-shadow: 0 0 10px rgba(0,229,255,0.2); 
-    }
-    
-    button.action-btn { 
-        width: 100%; 
-        background: var(--accent); 
-        color: #000; 
-        padding: 0.7rem; 
-        border: none; 
-        border-radius: 6px; 
-        font-weight: 700; 
-        font-family: 'Orbitron', sans-serif; 
-        font-size: 0.9rem; 
-        cursor: pointer; 
-        text-transform: uppercase; 
-        transition: 0.2s; 
-        letter-spacing: 1px; 
-    }
-    
-    button.action-btn:hover { 
-        transform: translateY(-2px); 
-        box-shadow: 0 6px 15px rgba(0,229,255,0.3); 
-    }
-
-    /* ========================================================
-       PREMIUM TIERS & PRICING
-       ======================================================== */
-    .premium-card { 
-        background: rgba(0, 0, 0, 0.6); 
-        border: 2px solid var(--muted); 
-        border-radius: 12px; 
-        padding: 2rem; 
-        text-align: center; 
-        position: relative; 
-        overflow: hidden; 
-        display: flex; 
-        flex-direction: column; 
-        justify-content: space-between;
-    }
-    .premium-card:hover { 
-        box-shadow: 0 0 30px rgba(0, 229, 255, 0.2); 
-        transform: translateY(-5px); 
-        border-color: var(--accent); 
-    }
-    .premium-card.vip-card { 
-        border-color: #ff003c; 
-        box-shadow: 0 0 20px rgba(255,0,60,0.2); 
-    }
-    .premium-card h3 { 
-        font-family: 'Orbitron'; 
-        font-size: 2rem; 
-        color: var(--accent); 
-        margin-bottom: 10px; 
-    }
-    .premium-card.vip-card h3 { 
-        color: #ff003c; 
-    }
-    .premium-card .price { 
-        font-size: 3rem; 
-        font-weight: bold; 
-        color: #fff; 
-        margin-bottom: 15px; 
-    }
-    
-    .benefits-list { 
-        list-style: none; 
-        padding: 0; 
-        margin-bottom: 25px; 
-        text-align: left; 
-        max-height: 250px; 
-        overflow-y: auto; 
-        padding-right: 10px; 
-        border-top: 1px solid #333; 
-        padding-top: 15px;
-    }
-    .benefits-list::-webkit-scrollbar { width: 4px; } 
-    .benefits-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
-    .benefits-list li { 
-        margin-bottom: 10px; 
-        font-size: 0.9rem; 
-        color: var(--text); 
-        display: flex; 
-        gap: 8px; 
-        align-items: flex-start; 
-        line-height: 1.4;
-    }
-    
-    /* ========================================================
-       PREMIUM HUB & ADMIN TABLES
-       ======================================================== */
-    .hub-grid { 
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-        gap: 15px; 
-    }
-    .hub-column { 
-        background: rgba(0,0,0,0.5); 
-        padding: 15px; 
-        border-radius: 10px; 
-        border: 1px solid var(--muted); 
-        display: flex; 
-        flex-direction: column; 
-    }
-    
-    table.history-table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        margin-top: 10px; 
-        font-size: 0.85rem; 
-    }
-    table.history-table th, table.history-table td { 
-        padding: 8px; 
-        border: 1px solid #333; 
-        text-align: left; 
-    }
-    table.history-table th { 
-        background: #111; 
-        color: var(--accent); 
-        font-family: 'Orbitron'; 
-    }
-
-    /* ========================================================
-       SPLIT LAYOUT (SIDEBAR + CONTENT)
-       ======================================================== */
-    .split-layout { 
-        display: flex; 
-        gap: 15px; 
-        height: 75vh; 
-        align-items: stretch; 
-    }
-    
-    .side-menu { 
-        width: 250px; 
-        background: rgba(0,0,0,0.3); 
-        border: 1px solid var(--muted); 
-        border-radius: 10px; 
-        overflow-y: auto; 
-        padding: 10px; 
-        display: flex; 
-        flex-direction: column; 
-        gap: 5px; 
-        backdrop-filter: blur(10px); 
-    }
-    .side-menu::-webkit-scrollbar { width: 4px; } 
-    .side-menu::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
-    
-    .side-menu-btn { 
-        background: transparent; 
-        border: none; 
-        color: var(--text); 
-        padding: 10px 14px; 
-        text-align: left; 
-        border-radius: 6px; 
-        cursor: pointer; 
-        transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); 
-        border-left: 3px solid transparent; 
-        font-family: 'Inter', sans-serif; 
-        font-size: 0.9rem; 
-        font-weight: 600; 
-        opacity: 0.7; 
-        display: flex; 
-        align-items: center; 
-        gap: 8px; 
-    }
-    .side-menu-btn:hover { 
-        background: rgba(0, 229, 255, 0.05); 
-        opacity: 1; 
-        transform: translateX(3px); 
-    }
-    .side-menu-btn.active { 
-        background: rgba(0, 229, 255, 0.15); 
-        border-left-color: var(--accent); 
-        color: var(--accent); 
-        opacity: 1; 
-        transform: translateX(5px); 
-    }
-    
-    .content-view { 
-        flex: 1; 
-        background: rgba(0,0,0,0.2); 
-        border: 1px solid var(--muted); 
-        border-radius: 10px; 
-        padding: 25px; 
-        overflow-y: auto; 
-        position: relative; 
-        backdrop-filter: blur(10px); 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        justify-content: flex-start; 
-    }
-    
-    .tool-view { 
-        display: none; 
-        width: 100%; 
-        max-width: 700px; 
-        animation: scaleFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-        text-align: center; 
-    }
-    .tool-view.active { display: block; }
-    
-    @keyframes scaleFadeIn { 
-        from { opacity:0; transform: scale(0.97) translateY(10px); } 
-        to { opacity:1; transform: scale(1) translateY(0); } 
-    }
-    
-    .tool-view h2 { 
-        color: var(--accent); 
-        font-family: 'Orbitron', sans-serif; 
-        font-size: 1.6rem; 
-        margin-bottom: 8px; 
-        letter-spacing: 1px; 
-    }
-    .tool-view p.desc {
-        color: var(--text);
-        opacity: 0.7;
-        font-size: 0.95rem;
-        margin-bottom: 20px;
-    }
-    .tool-ui-box { 
-        background: rgba(0,0,0,0.4); 
-        padding: 20px; 
-        border-radius: 10px; 
-        border: 1px solid var(--muted); 
-        width: 100%; 
-        box-shadow: 0 5px 20px rgba(0,0,0,0.4); 
-        text-align: left; 
-    }
-    .result-box { 
-        background: #000; 
-        padding: 12px; 
-        border-radius: 6px; 
-        border: 1px dashed var(--accent); 
-        min-height: 40px; 
-        max-height: 200px; 
-        overflow-y: auto; 
-        color: var(--correct); 
-        font-family: 'Share Tech Mono', monospace; 
-        font-size: 0.9rem; 
-        text-align: left; 
-        white-space: pre-wrap; 
-        margin-top: 10px; 
-    }
-
-    /* ========================================================
-       TYPING & STATS
-       ======================================================== */
-    .stats-bar { 
-        display: flex; 
-        justify-content: space-around; 
-        margin-bottom: 1.5rem; 
-        background: rgba(0,0,0,0.4); 
-        padding: 1rem; 
-        border-radius: 8px; 
-        border: 1px solid var(--muted); 
-    }
-    .stat-value { 
-        font-size: 2rem; 
-        color: var(--accent); 
-        font-weight: 900; 
-        font-family: 'Orbitron', sans-serif; 
-        text-shadow: 0 0 10px rgba(0,229,255,0.3);
-    }
-    .stat-label { 
-        font-size: 0.8rem; 
-        color: var(--text); 
-        opacity: 0.6; 
-        text-transform: uppercase; 
-        letter-spacing: 1px; 
-    }
-    #typing-display { 
-        font-size: 1.3rem; 
-        line-height: 1.6; 
-        min-height: 120px; 
-        background: rgba(0,0,0,0.3); 
-        padding: 1.5rem; 
-        border-radius: 8px; 
-        border: 1px solid var(--muted); 
-        margin-bottom: 1rem; 
-        user-select: none; 
-    }
-    .char.correct { color: var(--correct); } 
-    .char.wrong { color: var(--wrong); text-decoration: underline; } 
-    .char.current { background: var(--accent); color: #000; animation: blink 1s infinite; }
-    
-    /* ========================================================
-       MOVIES
-       ======================================================== */
-    .movie-grid { 
-        display: grid; 
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-        gap: 15px; 
-        max-height: 60vh; 
-        overflow-y: auto; 
-        padding-right: 10px; 
-    }
-    .movie-grid::-webkit-scrollbar { width: 5px; } 
-    .movie-grid::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
-    
-    .movie-card { 
-        background: #111; 
-        border: 1px solid var(--muted); 
-        border-radius: 8px; 
-        overflow: hidden; 
-        cursor: pointer; 
-        transition: 0.3s; 
-        position: relative; 
-        height: 220px; 
-        display: flex; 
-        align-items: flex-end; 
-        padding: 10px; 
-        text-align: center; 
-    }
-    .movie-card:hover { 
-        transform: scale(1.05); 
-        border-color: var(--accent); 
-        box-shadow: 0 0 15px var(--accent); 
-    }
-    .movie-title { 
-        color: #fff; 
-        font-family: 'Orbitron', sans-serif; 
-        font-weight: bold; 
-        width: 100%; 
-        text-shadow: 0 2px 4px #000; 
-        z-index: 2; 
-        font-size: 0.85rem; 
-    }
-    .movie-overlay { 
-        position: absolute; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 100%; 
-        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); 
-        z-index: 1;
-    }
-
-    /* ========================================================
-       ARCADE
-       ======================================================== */
-    #arcade-viewport { 
-        width: 100%; 
-        height: 450px; 
-        background: #050505; 
-        border: 2px solid var(--muted); 
-        border-radius: 8px; 
-        position: relative; 
-        overflow: hidden; 
-        display: flex; 
-        justify-content: center; 
-        align-items: center; 
-        cursor: crosshair; 
-    }
-    canvas.game-canvas { 
-        display: none; 
-        background: #000; 
-        width: 100%; 
-        height: 100%; 
-    }
-
-    /* ========================================================
-       JARVIS SIDEBAR
-       ======================================================== */
-    .jarvis-sidebar { 
-        background: var(--panel); 
-        border: 1px solid rgba(0,229,255,0.2); 
-        border-radius: 12px; 
-        padding: 1.2rem; 
-        display: flex; 
-        flex-direction: column; 
-        gap: 1rem; 
-        height: 85vh; 
-        position: sticky; 
-        top: 20px; 
-        box-shadow: 0 15px 40px rgba(0,0,0,0.5); 
-        backdrop-filter: blur(15px); 
-    }
-    .jarvis-header { 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        border-bottom: 1px solid var(--muted); 
-        padding-bottom: 0.8rem; 
-        font-family: 'Orbitron'; 
-        font-weight: 900; 
-        color: var(--accent); 
-        font-size: 1.1rem; 
-    }
-    .orb-container { 
-        display: flex; 
-        justify-content: center; 
-        align-items: center; 
-        height: 100px; 
-    }
-    .jarvis-orb { 
-        width: 60px; 
-        height: 60px; 
-        border-radius: 50%; 
-        background: radial-gradient(circle at 30% 30%, #ffffff, var(--accent) 50%, #000 100%); 
-        box-shadow: 0 0 30px var(--accent); 
-        animation: float 3s infinite ease-in-out; 
-        transition: filter 0.3s;
-    }
-    .jarvis-orb.speaking {
-        animation: speak-pulse 0.15s infinite alternate;
-        filter: brightness(1.5);
-    }
-    
-    @keyframes speak-pulse {
-        0% { transform: scale(1); box-shadow: 0 0 30px var(--accent); }
-        100% { transform: scale(1.1); box-shadow: 0 0 60px var(--accent); }
-    }
-
-    .jarvis-chat-log { 
-        flex-grow: 1; 
-        overflow-y: auto; 
-        background: rgba(0,0,0,0.4); 
-        padding: 0.8rem; 
-        border-radius: 8px; 
-        display: flex; 
-        flex-direction: column; 
-        gap: 0.8rem; 
-        border: 1px solid rgba(0,229,255,0.1); 
-        font-size: 0.95rem; 
-    }
-    .chat-msg { 
-        padding: 0.8rem; 
-        border-radius: 8px; 
-        line-height: 1.4; 
-        word-wrap: break-word;
-    }
-    .chat-msg.user { 
-        background: rgba(255,255,255,0.05); 
-        color: #fff; 
-        align-self: flex-end; 
-        border-right: 3px solid #fff; 
-    }
-    .chat-msg.jarvis { 
-        background: rgba(0, 229, 255, 0.1); 
-        color: var(--accent); 
-        align-self: flex-start; 
-        border-left: 3px solid var(--accent); 
-    }
-
-    /* ========================================================
-       IRON MAN HUD & NEW FEATURES
-       ======================================================== */
-    #global-hud { 
-        display: none; 
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        width: 100vw; 
-        height: 100vh; 
-        pointer-events: none; 
-        z-index: 9999; 
-        background: radial-gradient(circle, transparent 60%, rgba(0,229,255,0.15) 100%); 
-        border: 4px solid rgba(0,229,255,0.3); 
-        box-sizing: border-box; 
-    }
-    #global-hud::before { 
-        content: ''; 
-        position: absolute; 
-        top: 50%; 
-        left: 50%; 
-        width: 400px; 
-        height: 400px; 
-        border: 2px dashed var(--accent); 
-        border-radius: 50%; 
-        transform: translate(-50%, -50%); 
-        animation: spinHud 15s linear infinite; 
-        opacity: 0.5; 
-    }
-    @keyframes spinHud { 
-        100% { transform: translate(-50%, -50%) rotate(360deg); } 
-    }
-
-    /* Leaderboards & Chat */
-    .leaderboard-panel {
-        background: rgba(0,0,0,0.5);
-        padding: 15px;
-        border-radius: 8px;
-        border: 1px solid var(--accent);
-        margin-top: 15px;
-    }
-    .lb-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 5px 0;
-        border-bottom: 1px solid #333;
-        font-family: 'Share Tech Mono';
-    }
-    .lb-row:first-child {
-        color: gold;
-        font-weight: bold;
-    }
-    
-    .chat-container {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-    .chat-messages {
-        flex: 1;
-        overflow-y: auto;
-        background: rgba(0,0,0,0.4);
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid var(--muted);
-        margin-bottom: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-    .gc-msg {
-        font-size: 0.9rem;
-        padding: 8px;
-        border-radius: 6px;
-        background: rgba(255,255,255,0.05);
-    }
-    .gc-msg strong {
-        color: var(--accent);
-    }
-
-    /* ========================================================
-       RESPONSIVE DESIGN
-       ======================================================== */
-    @media (max-width: 1100px) {
-        main { 
-            grid-template-columns: 1fr; 
+    <style>
+        /* ========================================================
+           10 UNIQUE UI THEMES ENGINE
+           ======================================================== */
+        :root[data-theme="stark"] { 
+            --bg: #050a0f; 
+            --panel: rgba(10, 15, 25, 0.7); 
+            --accent: #00e5ff; 
+            --accent-alt: #0077ff; 
+            --text: #e0ffff; 
+            --muted: #005577; 
+            --correct: #00ff88; 
+            --wrong: #ff003c; 
+            --font: 'Inter', sans-serif; 
         }
-        .split-layout { 
+        :root[data-theme="hacker"] { 
+            --bg: #000000; 
+            --panel: rgba(10, 0, 0, 0.8); 
+            --accent: #ff003c; 
+            --accent-alt: #880000; 
+            --text: #ff3333; 
+            --muted: #440000; 
+            --correct: #00ff00; 
+            --wrong: #ffcc00; 
+            --font: 'Share Tech Mono', monospace; 
+        }
+        :root[data-theme="matrix"] { 
+            --bg: #020502; 
+            --panel: rgba(5, 15, 5, 0.9); 
+            --accent: #00ff41; 
+            --accent-alt: #008f11; 
+            --text: #00ff41; 
+            --muted: #003b00; 
+            --correct: #ffffff; 
+            --wrong: #ff0000; 
+            --font: 'Share Tech Mono', monospace; 
+        }
+        :root[data-theme="ironman"] { 
+            --bg: #110000; 
+            --panel: rgba(30, 0, 0, 0.75); 
+            --accent: #ffcc00; 
+            --accent-alt: #ff0000; 
+            --text: #ffdd66; 
+            --muted: #880000; 
+            --correct: #00ff88; 
+            --wrong: #ff003c; 
+            --font: 'Orbitron', sans-serif; 
+        }
+        :root[data-theme="cyberpunk"] { 
+            --bg: #0d0e15; 
+            --panel: rgba(22, 25, 37, 0.9); 
+            --accent: #00f0ff; 
+            --accent-alt: #ff007f; 
+            --text: #e0e6ed; 
+            --muted: #4a5568; 
+            --correct: #00ff88; 
+            --wrong: #ff3366; 
+            --font: 'Inter', sans-serif; 
+        }
+        :root[data-theme="synthwave"] { 
+            --bg: #1a0933; 
+            --panel: rgba(45, 17, 77, 0.85); 
+            --accent: #f72585; 
+            --accent-alt: #7209b7; 
+            --text: #4cc9f0; 
+            --muted: #3f37c9; 
+            --correct: #4361ee; 
+            --wrong: #f72585; 
+            --font: 'Inter', sans-serif; 
+        }
+        :root[data-theme="dark"] { 
+            --bg: #121212; 
+            --panel: rgba(30, 30, 30, 0.9); 
+            --accent: #bb86fc; 
+            --accent-alt: #03dac6; 
+            --text: #e1e1e1; 
+            --muted: #555555; 
+            --correct: #4caf50; 
+            --wrong: #f44336; 
+            --font: 'Inter', sans-serif; 
+        }
+        :root[data-theme="light"] { 
+            --bg: #f4f4f9; 
+            --panel: rgba(255, 255, 255, 0.9); 
+            --accent: #0055ff; 
+            --accent-alt: #0033cc; 
+            --text: #111111; 
+            --muted: #cccccc; 
+            --correct: #00aa55; 
+            --wrong: #ee0000; 
+            --font: 'Inter', sans-serif; 
+        }
+        :root[data-theme="dracula"] { 
+            --bg: #282a36; 
+            --panel: rgba(40, 42, 54, 0.95); 
+            --accent: #ff79c6; 
+            --accent-alt: #bd93f9; 
+            --text: #f8f8f2; 
+            --muted: #6272a4; 
+            --correct: #50fa7b; 
+            --wrong: #ff5555; 
+            --font: 'Inter', sans-serif; 
+        }
+        :root[data-theme="neon"] { 
+            --bg: #000000; 
+            --panel: rgba(10, 10, 10, 0.9); 
+            --accent: #39ff14; 
+            --accent-alt: #ccff00; 
+            --text: #ffffff; 
+            --muted: #333333; 
+            --correct: #00ffff; 
+            --wrong: #ff00ff; 
+            --font: 'Orbitron', sans-serif; 
+        }
+
+        /* Global Reset & Transitions */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            transition: background 0.4s ease, border-color 0.4s ease, transform 0.3s ease; 
+        }
+
+        body { 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: var(--font); 
+            min-height: 100vh; 
+            display: flex; 
             flex-direction: column; 
-            height: auto; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth; 
+            font-size: 14px; 
         }
-        .side-menu { 
-            width: 100%; 
-            max-height: 150px; 
-            flex-direction: row; 
+        
+        /* ========================================================
+           APPLE STYLE ANIMATIONS & UI COMPACTNESS
+           ======================================================== */
+        .apple-fade { 
+            opacity: 0; 
+            transform: translateY(20px) scale(0.98); 
+            transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); 
+        }
+        .apple-fade.visible { 
+            opacity: 1; 
+            transform: translateY(0) scale(1); 
+        }
+        
+        /* ========================================================
+           HEADER & NAVIGATION
+           ======================================================== */
+        header { 
+            background: var(--panel); 
+            backdrop-filter: blur(20px); 
+            padding: 0.8rem 1.5rem; 
+            display: flex; 
             flex-wrap: wrap; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid rgba(0,229,255,0.2); 
+            z-index: 10; 
+            position: sticky; 
+            top: 0; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
         }
-        .side-menu-btn {
+        
+        .logo-area { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+
+        h1 { 
+            font-size: 1.4rem; 
+            color: var(--accent); 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-family: 'Orbitron', sans-serif; 
+            font-weight: 900; 
+            margin: 0; 
+        }
+        
+        .yt-premium-badge { 
+            background: linear-gradient(45deg, #ff0000, #ff007f); 
+            color: #fff; 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            font-family: 'Orbitron'; 
+            font-size: 0.8rem; 
+            font-weight: bold; 
+            letter-spacing: 1px; 
+            box-shadow: 0 0 10px rgba(255,0,0,0.5); 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+        }
+        .yt-premium-badge.free { 
+            background: #555; 
+            box-shadow: none; 
+        }
+        .yt-premium-badge.premium { 
+            background: linear-gradient(45deg, gold, #ffaa00); 
+            color: #000; 
+            box-shadow: 0 0 10px rgba(255,215,0,0.5); 
+        }
+        .yt-premium-badge.vip { 
+            background: linear-gradient(45deg, #ff003c, #880000); 
+            color: #fff; 
+            box-shadow: 0 0 15px rgba(255,0,60,0.6); 
+            border: 1px solid #ffcc00; 
+        }
+
+        nav { 
+            display: flex; 
+            gap: 0.4rem; 
+            flex-wrap: wrap; 
+            margin-top: 10px; 
+            width: 100%; 
+            justify-content: center; 
+        }
+        @media(min-width: 1200px) { 
+            nav { 
+                width: auto; 
+                margin-top: 0; 
+                justify-content: flex-end; 
+            } 
+        }
+
+        nav button { 
+            background: transparent; 
+            border: 1px solid rgba(0,229,255,0.3); 
+            color: var(--text); 
+            padding: 0.5rem 0.9rem; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 0.75rem; 
+            font-weight: bold; 
+            transition: all 0.2s; 
+        }
+        nav button.active, nav button:hover { 
+            background: var(--accent); 
+            color: #000; 
+            box-shadow: 0 0 15px rgba(0,229,255,0.4); 
+            transform: translateY(-2px); 
+            border-color: var(--accent); 
+        }
+
+        /* ========================================================
+           AUTH OVERLAY & LOADING OVERLAY
+           ======================================================== */
+        #auth-overlay, #loading-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 99999; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column; 
+            backdrop-filter: blur(15px); 
+        }
+        
+        .auth-box { 
+            background: #111; 
+            border: 2px solid var(--accent); 
+            border-radius: 12px; 
+            padding: 30px; 
+            width: 90%; 
+            max-width: 450px; 
+            text-align: center; 
+            box-shadow: 0 0 40px rgba(0,229,255,0.2); 
+        }
+        
+        .auth-box input, .auth-box select { 
+            background: #000; 
+            color: #fff; 
+            border: 1px solid var(--muted); 
+            padding: 12px; 
+            border-radius: 6px; 
+            font-family: 'Inter'; 
+            font-size: 1rem; 
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        
+        .phone-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .phone-group select {
+            flex: 0 0 100px;
+            margin-bottom: 0;
+        }
+        
+        .phone-group input {
             flex: 1;
-            min-width: 120px;
-            text-align: center;
-            justify-content: center;
-            border-left: none;
-            border-bottom: 2px solid transparent;
+            margin-bottom: 0;
         }
-        .side-menu-btn.active {
-            border-left: none;
-            border-bottom-color: var(--accent);
-            transform: translateY(-2px);
+        
+        .auth-error {
+            color: var(--wrong);
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            display: none;
+            text-align: left;
         }
-    }
-  </style>
+
+        /* ========================================================
+           CUSTOM TOAST / MODALS (Replaces standard alerts)
+           ======================================================== */
+        #custom-toast { 
+            position: fixed; 
+            bottom: 30px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(100px); 
+            background: var(--panel); 
+            border: 1px solid var(--accent); 
+            color: var(--text); 
+            padding: 15px 30px; 
+            border-radius: 8px; 
+            z-index: 100000; 
+            opacity: 0; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            font-family: 'Orbitron', sans-serif; 
+            font-weight: bold; 
+            backdrop-filter: blur(10px); 
+        }
+        #custom-toast.show { 
+            transform: translateX(-50%) translateY(0); 
+            opacity: 1; 
+        }
+        
+        #confirm-modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            background: rgba(0,0,0,0.8); 
+            z-index: 100001; 
+            justify-content: center; 
+            align-items: center; 
+            backdrop-filter: blur(5px); 
+        }
+        .confirm-box { 
+            background: #111; 
+            border: 2px solid var(--wrong); 
+            padding: 25px; 
+            border-radius: 10px; 
+            max-width: 400px; 
+            text-align: center; 
+            box-shadow: 0 0 30px rgba(255,0,60,0.3); 
+        }
+
+        /* ========================================================
+           MAIN LAYOUT & GRID
+           ======================================================== */
+        main { 
+            flex: 1; 
+            padding: 1.5rem; 
+            max-width: 1500px; 
+            margin: 0 auto; 
+            width: 100%; 
+            display: grid; 
+            grid-template-columns: 1fr 350px; 
+            gap: 1.5rem; 
+            align-items: start; 
+        }
+        
+        .section-page { 
+            display: none; 
+        }
+        
+        .section-page.active { 
+            display: block; 
+            animation: slideFadeUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        }
+        
+        @keyframes slideFadeUp { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .card { 
+            background: var(--panel); 
+            backdrop-filter: blur(15px); 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            border: 1px solid rgba(0,229,255,0.15); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4); 
+            margin-bottom: 1rem; 
+        }
+        
+        /* FORMS & BUTTONS (COMPACT) */
+        .controls-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
+            gap: 0.8rem; 
+            margin-bottom: 1.2rem; 
+        }
+        
+        select, input, textarea { 
+            width: 100%; 
+            background: rgba(0,0,0,0.6); 
+            border: 1px solid var(--muted); 
+            color: var(--text); 
+            padding: 0.7rem; 
+            border-radius: 6px; 
+            font-family: inherit; 
+            font-size: 0.9rem; 
+            outline: none; 
+            transition: 0.3s; 
+            margin-bottom: 10px; 
+        }
+        
+        select:focus, input:focus, textarea:focus { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 10px rgba(0,229,255,0.2); 
+        }
+        
+        button.action-btn { 
+            width: 100%; 
+            background: var(--accent); 
+            color: #000; 
+            padding: 0.7rem; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: 700; 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 0.9rem; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            transition: 0.2s; 
+            letter-spacing: 1px; 
+        }
+        
+        button.action-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 15px rgba(0,229,255,0.3); 
+        }
+
+        /* ========================================================
+           PREMIUM TIERS & PRICING
+           ======================================================== */
+        .premium-card { 
+            background: rgba(0, 0, 0, 0.6); 
+            border: 2px solid var(--muted); 
+            border-radius: 12px; 
+            padding: 2rem; 
+            text-align: center; 
+            position: relative; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between;
+        }
+        .premium-card:hover { 
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.2); 
+            transform: translateY(-5px); 
+            border-color: var(--accent); 
+        }
+        .premium-card.vip-card { 
+            border-color: #ff003c; 
+            box-shadow: 0 0 20px rgba(255,0,60,0.2); 
+        }
+        .premium-card h3 { 
+            font-family: 'Orbitron'; 
+            font-size: 2rem; 
+            color: var(--accent); 
+            margin-bottom: 10px; 
+        }
+        .premium-card.vip-card h3 { 
+            color: #ff003c; 
+        }
+        .premium-card .price { 
+            font-size: 3rem; 
+            font-weight: bold; 
+            color: #fff; 
+            margin-bottom: 15px; 
+        }
+        
+        .benefits-list { 
+            list-style: none; 
+            padding: 0; 
+            margin-bottom: 25px; 
+            text-align: left; 
+            max-height: 250px; 
+            overflow-y: auto; 
+            padding-right: 10px; 
+            border-top: 1px solid #333; 
+            padding-top: 15px;
+        }
+        .benefits-list::-webkit-scrollbar { width: 4px; } 
+        .benefits-list::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+        .benefits-list li { 
+            margin-bottom: 10px; 
+            font-size: 0.9rem; 
+            color: var(--text); 
+            display: flex; 
+            gap: 8px; 
+            align-items: flex-start; 
+            line-height: 1.4;
+        }
+        
+        /* ========================================================
+           PREMIUM HUB & ADMIN TABLES
+           ======================================================== */
+        .hub-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 15px; 
+        }
+        .hub-column { 
+            background: rgba(0,0,0,0.5); 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 1px solid var(--muted); 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        table.history-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px; 
+            font-size: 0.85rem; 
+        }
+        table.history-table th, table.history-table td { 
+            padding: 8px; 
+            border: 1px solid #333; 
+            text-align: left; 
+        }
+        table.history-table th { 
+            background: #111; 
+            color: var(--accent); 
+            font-family: 'Orbitron'; 
+        }
+
+        /* ========================================================
+           SPLIT LAYOUT (SIDEBAR + CONTENT)
+           ======================================================== */
+        .split-layout { 
+            display: flex; 
+            gap: 15px; 
+            height: 75vh; 
+            align-items: stretch; 
+        }
+        
+        .side-menu { 
+            width: 250px; 
+            background: rgba(0,0,0,0.3); 
+            border: 1px solid var(--muted); 
+            border-radius: 10px; 
+            overflow-y: auto; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 5px; 
+            backdrop-filter: blur(10px); 
+        }
+        .side-menu::-webkit-scrollbar { width: 4px; } 
+        .side-menu::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+        
+        .side-menu-btn { 
+            background: transparent; 
+            border: none; 
+            color: var(--text); 
+            padding: 10px 14px; 
+            text-align: left; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            border-left: 3px solid transparent; 
+            font-family: 'Inter', sans-serif; 
+            font-size: 0.9rem; 
+            font-weight: 600; 
+            opacity: 0.7; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        .side-menu-btn:hover { 
+            background: rgba(0, 229, 255, 0.05); 
+            opacity: 1; 
+            transform: translateX(3px); 
+        }
+        .side-menu-btn.active { 
+            background: rgba(0, 229, 255, 0.15); 
+            border-left-color: var(--accent); 
+            color: var(--accent); 
+            opacity: 1; 
+            transform: translateX(5px); 
+            box-shadow: 0 2px 10px rgba(0,229,255,0.1); 
+        }
+        
+        .content-view { 
+            flex: 1; 
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid var(--muted); 
+            border-radius: 10px; 
+            padding: 25px; 
+            overflow-y: auto; 
+            position: relative; 
+            backdrop-filter: blur(10px); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start; 
+        }
+        
+        .tool-view { 
+            display: none; 
+            width: 100%; 
+            max-width: 700px; 
+            animation: scaleFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            text-align: center; 
+        }
+        .tool-view.active { display: block; }
+        
+        @keyframes scaleFadeIn { 
+            from { opacity:0; transform: scale(0.97) translateY(10px); } 
+            to { opacity:1; transform: scale(1) translateY(0); } 
+        }
+        
+        .tool-view h2 { 
+            color: var(--accent); 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 1.6rem; 
+            margin-bottom: 8px; 
+            letter-spacing: 1px; 
+        }
+        .tool-view p.desc {
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+        .tool-ui-box { 
+            background: rgba(0,0,0,0.4); 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 1px solid var(--muted); 
+            width: 100%; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4); 
+            text-align: left; 
+        }
+        .result-box { 
+            background: #000; 
+            padding: 12px; 
+            border-radius: 6px; 
+            border: 1px dashed var(--accent); 
+            min-height: 40px; 
+            max-height: 200px; 
+            overflow-y: auto; 
+            color: var(--correct); 
+            font-family: 'Share Tech Mono', monospace; 
+            font-size: 0.9rem; 
+            text-align: left; 
+            white-space: pre-wrap; 
+            margin-top: 10px; 
+        }
+
+        /* ========================================================
+           TYPING STATS
+           ======================================================== */
+        .stats-bar { 
+            display: flex; 
+            justify-content: space-around; 
+            margin-bottom: 1.5rem; 
+            background: rgba(0,0,0,0.4); 
+            padding: 1rem; 
+            border-radius: 8px; 
+            border: 1px solid var(--muted); 
+        }
+        .stat-value { 
+            font-size: 2rem; 
+            color: var(--accent); 
+            font-weight: 900; 
+            font-family: 'Orbitron', sans-serif; 
+            text-shadow: 0 0 10px rgba(0,229,255,0.3); 
+        }
+        .stat-label { 
+            font-size: 0.8rem; 
+            color: var(--text); 
+            opacity: 0.6; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+        #typing-display { 
+            font-size: 1.3rem; 
+            line-height: 1.6; 
+            min-height: 120px; 
+            background: rgba(0,0,0,0.3); 
+            padding: 1.5rem; 
+            border-radius: 8px; 
+            border: 1px solid var(--muted); 
+            margin-bottom: 1rem; 
+            user-select: none; 
+        }
+        .char.correct { color: var(--correct); } 
+        .char.wrong { color: var(--wrong); text-decoration: underline; } 
+        .char.current { background: var(--accent); color: #000; animation: blink 1s infinite; }
+        
+        /* ========================================================
+           MOVIES & ARCADE
+           ======================================================== */
+        .movie-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 15px; 
+            max-height: 60vh; 
+            overflow-y: auto; 
+            padding-right: 10px; 
+        }
+        .movie-grid::-webkit-scrollbar { width: 5px; } 
+        .movie-grid::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+        .movie-card { 
+            background: #111; 
+            border: 1px solid var(--muted); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            position: relative; 
+            height: 220px; 
+            display: flex; 
+            align-items: flex-end; 
+            padding: 10px; 
+            text-align: center; 
+        }
+        .movie-card:hover { 
+            transform: scale(1.05); 
+            border-color: var(--accent); 
+            box-shadow: 0 0 15px var(--accent); 
+        }
+        .movie-title { 
+            color: #fff; 
+            font-family: 'Orbitron', sans-serif; 
+            font-weight: bold; 
+            width: 100%; 
+            text-shadow: 0 2px 4px #000; 
+            z-index: 2; 
+            font-size: 0.85rem; 
+        }
+        .movie-overlay { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); 
+            z-index: 1;
+        }
+
+        #arcade-viewport { 
+            width: 100%; 
+            height: 450px; 
+            background: #050505; 
+            border: 2px solid var(--muted); 
+            border-radius: 8px; 
+            position: relative; 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            cursor: crosshair; 
+        }
+        canvas.game-canvas { 
+            display: none; 
+            background: #000; 
+            width: 100%; 
+            height: 100%; 
+        }
+
+        /* ========================================================
+           JARVIS SIDEBAR UI
+           ======================================================== */
+        .jarvis-sidebar { 
+            background: var(--panel); 
+            border: 1px solid rgba(0,229,255,0.2); 
+            border-radius: 12px; 
+            padding: 1.2rem; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 1rem; 
+            height: 85vh; 
+            position: sticky; 
+            top: 20px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5); 
+            backdrop-filter: blur(15px); 
+        }
+        .jarvis-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--muted); 
+            padding-bottom: 0.8rem; 
+            font-family: 'Orbitron'; 
+            font-weight: 900; 
+            color: var(--accent); 
+            font-size: 1.1rem; 
+        }
+        .orb-container { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100px; 
+        }
+        .jarvis-orb { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 50%; 
+            background: radial-gradient(circle at 30% 30%, #ffffff, var(--accent) 50%, #000 100%); 
+            box-shadow: 0 0 30px var(--accent); 
+            animation: float 3s infinite ease-in-out; 
+            transition: filter 0.3s;
+        }
+        .jarvis-orb.speaking {
+            animation: speak-pulse 0.15s infinite alternate;
+            filter: brightness(1.5);
+        }
+        .jarvis-orb.listening {
+            animation: listen-pulse 0.5s infinite alternate;
+            box-shadow: 0 0 40px var(--correct);
+            filter: hue-rotate(90deg);
+        }
+        
+        @keyframes speak-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 30px var(--accent); }
+            100% { transform: scale(1.1); box-shadow: 0 0 60px var(--accent); }
+        }
+
+        .jarvis-chat-log { 
+            flex-grow: 1; 
+            overflow-y: auto; 
+            background: rgba(0,0,0,0.4); 
+            padding: 0.8rem; 
+            border-radius: 8px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.8rem; 
+            border: 1px solid rgba(0,229,255,0.1); 
+            font-size: 0.95rem; 
+        }
+        .chat-msg { 
+            padding: 0.8rem; 
+            border-radius: 8px; 
+            line-height: 1.4; 
+            word-wrap: break-word;
+        }
+        .chat-msg.user { 
+            background: rgba(255,255,255,0.05); 
+            color: #fff; 
+            align-self: flex-end; 
+            border-right: 3px solid #fff; 
+        }
+        .chat-msg.jarvis { 
+            background: rgba(0, 229, 255, 0.1); 
+            color: var(--accent); 
+            align-self: flex-start; 
+            border-left: 3px solid var(--accent); 
+        }
+
+        /* GLOBAL IRON MAN HUD */
+        #global-hud { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            pointer-events: none; 
+            z-index: 9999; 
+            background: radial-gradient(circle, transparent 60%, rgba(0,229,255,0.15) 100%); 
+            border: 4px solid rgba(0,229,255,0.3); 
+            box-sizing: border-box; 
+        }
+        #global-hud::before { 
+            content: ''; 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            width: 400px; 
+            height: 400px; 
+            border: 2px dashed var(--accent); 
+            border-radius: 50%; 
+            transform: translate(-50%, -50%); 
+            animation: spinHud 15s linear infinite; 
+            opacity: 0.5; 
+        }
+        @keyframes spinHud { 
+            100% { transform: translate(-50%, -50%) rotate(360deg); } 
+        }
+
+        /* Leaderboards & Chat */
+        .leaderboard-panel {
+            background: rgba(0,0,0,0.5);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--accent);
+            margin-top: 15px;
+        }
+        .lb-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #333;
+            font-family: 'Share Tech Mono';
+        }
+        .lb-row:first-child {
+            color: gold;
+            font-weight: bold;
+        }
+        
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.4);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--muted);
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .gc-msg {
+            font-size: 0.9rem;
+            padding: 8px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+        }
+        .gc-msg strong {
+            color: var(--accent);
+        }
+
+        /* ========================================================
+           RESPONSIVE DESIGN
+           ======================================================== */
+        @media (max-width: 1100px) {
+            main { 
+                grid-template-columns: 1fr; 
+            }
+            .split-layout { 
+                flex-direction: column; 
+                height: auto; 
+            }
+            .side-menu { 
+                width: 100%; 
+                max-height: 150px; 
+                flex-direction: row; 
+                flex-wrap: wrap; 
+            }
+            .side-menu-btn {
+                flex: 1;
+                min-width: 120px;
+                text-align: center;
+                justify-content: center;
+                border-left: none;
+                border-bottom: 2px solid transparent;
+            }
+            .side-menu-btn.active {
+                border-left: none;
+                border-bottom-color: var(--accent);
+                transform: translateY(-2px);
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -1360,6 +1365,7 @@
                     <button class="action-btn" style="background:var(--wrong); color:#fff; width:60%; padding:15px;" onclick="toggleHUD()">TOGGLE HUD</button>
                 </div>
              </div>
+
           </div>
         </div>
       </section>
@@ -1477,6 +1483,9 @@
             <img id="upi-qr" src="mouliksoni_qr.jpg" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=mouliksoni@fam'" alt="UPI QR Code" style="width:250px; height:auto; border:4px solid #fff; border-radius:10px; margin-bottom:5px;">
             <p style="color:var(--accent); font-weight:bold; font-size:1.2rem; margin-bottom:10px;">UPI ID: mouliksoni@fam</p>
             
+            <a href="mouliksoni_qr.jpg" download="Moulik_QR_Code.jpg" class="action-btn" style="display:inline-block; margin-bottom:20px; width:250px; text-decoration:none; background:var(--accent-alt); color:#fff;">⬇️ Download QR Code</a>
+            <br>
+            
             <input type="hidden" id="payment-tier">
             <input type="hidden" id="payment-price">
             <br>
@@ -1539,7 +1548,7 @@
           <h2 style="text-align:center; color:#555; font-family:'Orbitron'; font-size:2rem; margin-bottom:1.5rem;">🛡️ FIREBASE ADMIN TERMINAL</h2>
           
           <div id="admin-login" style="text-align:center; max-width:400px; margin:auto;">
-              <input type="password" id="admin-code" placeholder="Enter Admin Code" style="text-align:center; font-size:1.2rem;">
+              <input type="password" id="admin-code" placeholder="Enter Admin Code " style="text-align:center; font-size:1.2rem;">
               <button class="action-btn" style="background:#555; color:#fff;" onclick="adminLogin()">Access Terminal</button>
           </div>
           
@@ -1594,40 +1603,39 @@
        ======================================================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // IMPORTANT: The user will paste their actual Firebase config here.
-    // Ensure the structure matches your Google Cloud / Firebase console details.
+    // =========================================================
+    // FIREBASE CONFIGURATION (PASTE YOUR DATABASE KEYS HERE)
+    // =========================================================
     const userDefinedConfig = {
-        // PASTE YOUR FIREBASE CONFIGURATION OBJECT HERE:
-        // apiKey: "AIzaSyDOCAbC123dEf456GhI789jKl01-MnO",
-        // authDomain: "myapp.firebaseapp.com",
-        // projectId: "myapp",
-        // storageBucket: "myapp.appspot.com",
-        // messagingSenderId: "123456789",
-        // appId: "1:123456789:web:abcdef123456"
+         apiKey: "AIzaSyDpIaIt5D__NUn5JSVmXiPLVvLERR9Ssvo",
+         authDomain: "omniapp-f3a19.firebaseapp.com",
+         databaseURL: "https://omniapp-f3a19-default-rtdb.firebaseio.com",
+         projectId: "omniapp-f3a19",
+         storageBucket: "omniapp-f3a19.firebasestorage.app",
+         messagingSenderId: "604746095152",
+         appId: "1:604746095152:web:2e018de765c78b38ba6bf5",
+         measurementId: "G-Q112ZDC82E"
     };
 
-    // Use environment injected config if available (Canvas environment), else use the user defined one above.
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'omni-cloud-v3';
+    // Advanced routing handling for global architecture
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'omni-cloud-v4';
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userDefinedConfig;
     
     let app, auth, db, fbUserId;
     
     // Global user state object
     window.currentUser = { id: null, name: 'Guest', contact: 'N/A', tier: 'none', credits: 0, phone: 'N/A' };
-    
-    // Attach Firestore methods to window so inline HTML scripts can access the cloud
     window.dbRefs = {}; 
 
     /**
-     * Initializes Firebase and authenticates the user.
-     * Follows strict rules for custom tokens and anonymous fallbacks.
+     * Initializes Firebase and authenticates the user globally.
      */
     async function initFirebase() {
         if (!firebaseConfig || !firebaseConfig.projectId) {
-            console.warn("Firebase config is empty. Running in local mode.");
+            console.warn("Firebase config is empty. Proceeding securely to Auth Overlay.");
             document.getElementById('loading-overlay').style.display = 'none';
             document.getElementById('auth-overlay').style.display = 'flex';
             return;
@@ -1638,15 +1646,10 @@
             auth = getAuth(app);
             db = getFirestore(app);
             
-            // Expose to window for global access by utility functions
-            window.dbRefs = { db, doc, getDoc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, addDoc, getDocs, appId };
+            window.dbRefs = { db, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, addDoc, getDocs, appId };
             
-            // Authentication Protocol
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-                await signInAnonymously(auth);
-            }
+            // Sign in anonymously to get a secure UID for database actions
+            await signInAnonymously(auth);
             
             fbUserId = auth.currentUser.uid;
             window.currentUser.id = fbUserId;
@@ -1656,7 +1659,6 @@
             const userSnap = await getDoc(userRef);
             
             if (userSnap.exists()) {
-                // Returning User
                 const data = userSnap.data();
                 window.currentUser = { id: fbUserId, ...data };
                 document.getElementById('loading-overlay').style.display = 'none';
@@ -1664,19 +1666,17 @@
                 window.updateGlobalUI();
                 setupRealtimeListeners();
             } else {
-                // New User: Show Auth Overlay
                 document.getElementById('loading-overlay').style.display = 'none';
                 document.getElementById('auth-overlay').style.display = 'flex';
             }
         } catch(e) { 
             console.error("Firebase Initialization Failed:", e); 
-            window.showToast("Database connection failed. Check config.", "error");
+            window.showToast("Database connection failed. Please check your config.", "error");
         }
     }
 
     /**
      * Processes the Cloud Login from the Auth Overlay.
-     * Validates input strictly and saves to Firestore.
      */
     window.processCloudLogin = async () => {
         let name = document.getElementById('auth-name').value.trim();
@@ -1690,28 +1690,26 @@
             errBox.innerText = "All fields are required."; errBox.style.display = 'block'; return; 
         }
         
-        // Email Regex
+        // Email Regex Check
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if(!emailRegex.test(email)) {
-            errBox.innerText = "Invalid email format. Include '@' and provider."; errBox.style.display = 'block'; return;
+            errBox.innerText = "Invalid email format. Must include '@' and provider."; errBox.style.display = 'block'; return;
         }
 
-        // Phone Validation (must be 10 digits exactly)
+        // Phone Validation (10 digits)
         const phoneRegex = /^\d{10}$/;
         if(!phoneRegex.test(phoneStr)) {
-            errBox.innerText = "Phone number must be exactly 10 digits."; errBox.style.display = 'block'; return;
+            errBox.innerText = "Phone number must be exactly 10 numeric digits."; errBox.style.display = 'block'; return;
         }
         
         errBox.style.display = 'none';
         let fullPhone = cc + " " + phoneStr;
         
-        // Update Local State
         window.currentUser.name = name;
         window.currentUser.contact = email;
         window.currentUser.phone = fullPhone;
         
         if(!db) {
-            // Local fallback if Firebase not configured
             document.getElementById('auth-overlay').style.display = 'none';
             window.speakJARVIS(`Welcome to local mode, ${name}.`);
             window.updateGlobalUI();
@@ -1719,7 +1717,7 @@
         }
 
         try {
-            // Save to Firestore Database
+            // Write User Profile to Global Database
             const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', fbUserId);
             await setDoc(userRef, { 
                 name: name, 
@@ -1729,27 +1727,27 @@
                 credits: 0 
             });
             
-            // Log the Login Event globally
+            // Log Event
             const logRef = collection(db, 'artifacts', appId, 'public', 'data', 'log_logins');
             await addDoc(logRef, { time: new Date().toLocaleString(), name, contact: email, uid: fbUserId });
             
             document.getElementById('auth-overlay').style.display = 'none';
-            window.speakJARVIS(`Welcome to the cloud mainframe, ${name}.`);
+            window.speakJARVIS(`Welcome to the global cloud mainframe, ${name}.`);
             window.updateGlobalUI();
             setupRealtimeListeners();
         } catch(e) {
             console.error(e);
-            window.showToast("Failed to write to database.", "error");
+            window.showToast("Failed to write to global database.", "error");
         }
     };
 
     /**
-     * Real-time listeners to keep the app in sync across devices globally.
+     * Real-time listeners keeping all devices worldwide in perfect sync.
      */
     function setupRealtimeListeners() {
         if(!fbUserId || !db) return;
         
-        // 1. Listen to User Tier changes (For instant Admin Approvals)
+        // 1. Listen to Tier upgrades from Admin Terminal instantly
         const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', fbUserId);
         onSnapshot(userRef, (docSnap) => {
             if(docSnap.exists() && docSnap.data().tier !== window.currentUser.tier) {
@@ -1760,16 +1758,16 @@
             }
         }, (err) => console.error("Tier listener error:", err));
 
-        // 2. Listen to Global Chat
+        // 2. Global Cloud Chat listener
         const chatRef = collection(db, 'artifacts', appId, 'public', 'data', 'global_chat');
         onSnapshot(chatRef, (snapshot) => {
             let msgs = [];
             snapshot.forEach(d => msgs.push(d.data()));
-            msgs.sort((a,b) => a.timestamp - b.timestamp); // Sort in memory as per rules
+            msgs.sort((a,b) => a.timestamp - b.timestamp);
             window.renderGlobalChat(msgs);
         }, (err) => console.error("Chat listener error:", err));
         
-        // 3. Listen to Leaderboards
+        // 3. Global Leaderboards
         const lbRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
         onSnapshot(lbRef, (snapshot) => {
             let data = [];
@@ -1778,7 +1776,6 @@
         }, (err) => console.error("Leaderboard listener error:", err));
     }
 
-    // Initialize application on load
     window.addEventListener('load', () => {
         window.buildUtilitiesUI();
         initFirebase();
@@ -1831,6 +1828,7 @@
             planText.innerText = "Current Plan: Premium (₹49)";
             document.getElementById('premium-hub-btn').style.display = 'inline-block'; 
             creditsNode.innerText = u.credits || 5;
+            
             let btn99 = document.getElementById('btn-buy-99'); 
             if(btn99) {
                 btn99.innerText = "Upgrade to VIP (Pay ₹50)"; 
@@ -1842,6 +1840,7 @@
             planText.innerText = "Current Plan: VIP Extra Premium";
             document.getElementById('premium-hub-btn').style.display = 'inline-block'; 
             creditsNode.innerText = u.credits || 20;
+            
             if(document.getElementById('btn-buy-49')) document.getElementById('btn-buy-49').style.display = 'none'; 
             if(document.getElementById('btn-buy-99')) document.getElementById('btn-buy-99').style.display = 'none';
         }
@@ -1850,7 +1849,7 @@
     function switchTab(tabId) {
       let u = window.currentUser || { tier: 'none' };
       
-      // Strict Locks
+      // Strict Locks for Premium Tabs
       if ((tabId === 'movies' || tabId === 'ai-hub') && u.tier === 'none') {
           showToast("🔒 Premium (₹49) required for this feature.", "error"); 
           return switchTab('premium');
@@ -1860,12 +1859,28 @@
           return switchTab('premium');
       }
       
+      // Remove active states
       document.querySelectorAll('.section-page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabId + '-tab').classList.add('active');
+      
+      // Add active state to target tab
+      const activeSection = document.getElementById(tabId + '-tab');
+      activeSection.classList.add('active');
       
       let navBtn = document.querySelector(`nav button[onclick="switchTab('${tabId}')"]`);
       if(navBtn) navBtn.classList.add('active');
+      
+      // CRITICAL FIX: The Apple-Fade Elements "Black Screen" fix.
+      // Because `display: none` to `display: block` messes with IntersectionObserver,
+      // we explicitly fade in the child elements smoothly to prevent a blank dark screen.
+      setTimeout(() => {
+          activeSection.querySelectorAll('.apple-fade').forEach(el => {
+              el.classList.add('visible');
+          });
+          if(activeSection.classList.contains('apple-fade')) {
+              activeSection.classList.add('visible');
+          }
+      }, 10);
       
       if(typeof arcadeTimer !== 'undefined') clearInterval(arcadeTimer);
 
@@ -1976,11 +1991,11 @@
     }
 
     // 4. Admin Approves Payment -> Updates Firebase Global
-    async function approveRequest(docId, uid, tier, name) {
+    function approveRequest(docId, uid, tier, name) {
         let finalTier = tier.includes('VIP') ? 'Extra Premium VIP' : 'Premium';
         let creds = finalTier === 'Premium' ? 5 : 20;
         
-        showConfirm(`Approve ${name} for ${finalTier}?`, async () => {
+        showConfirm(`Approve ${name} for${finalTier}?`, async () => {
             if(!window.dbRefs || !window.dbRefs.db) return;
             try {
                 // Update User Doc
@@ -2043,7 +2058,7 @@
         box.innerHTML = '';
         msgs.forEach(m => {
             let color = m.tier.includes('VIP') ? '#ff003c' : m.tier === 'Premium' ? 'gold' : 'var(--accent)';
-            box.innerHTML += `<div class="gc-msg"><strong style="color:${color};">${m.name}:</strong> ${m.text}</div>`;
+            box.innerHTML += `<div class="gc-msg"><strong style="color:${color};">${m.name}:</strong>${m.text}</div>`;
         });
         box.scrollTop = box.scrollHeight; // Auto scroll down
     }
@@ -2063,7 +2078,7 @@
                     score, 
                     timestamp: Date.now() 
                 });
-                showToast(`Score of ${score} synced to ${type} Global Leaderboard!`);
+                showToast(`Score of ${score} synced to${type} Global Leaderboard!`);
             } catch(e) {
                 console.error(e);
             }
@@ -2467,270 +2482,405 @@
     const utilsData = [
       {
           id:'u1', icon:'🔒', name:'Cloud Vault (VIP)', 
-          html:`<input type="password" id="vault-master-key" placeholder="Master Key">
+          html:`
+            <div class="util-container">
+                <input type="password" id="vault-master-key" placeholder="Master Key">
                 <button class="action-btn" onclick="unlockCloudVault()">Unlock</button>
                 <div id="vault-content" style="display:none; flex-direction:column; gap:10px; margin-top:15px;">
                     <input type="text" id="vault-desc" placeholder="Site Name">
                     <input type="text" id="vault-pass" placeholder="Password">
                     <button class="action-btn" onclick="saveToCloudVault()">Save Password</button>
                     <div id="vault-list" class="result-box"></div>
-                </div>`
+                </div>
+            </div>`
       },
       {
           id:'u2', icon:'📚', name:'Study Timetable', 
-          html:`<textarea id="timetable-input" rows="6">5:00 AM - Wake up\n6:00 AM - Exercise</textarea>
-                <button class="action-btn" onclick="showToast('Timetable Saved Locally')">Save</button>`
+          html:`
+            <div class="util-container">
+                <textarea id="timetable-input" rows="6">5:00 AM - Wake up\n6:00 AM - Exercise</textarea>
+                <button class="action-btn" onclick="showToast('Timetable Saved Locally')">Save</button>
+            </div>`
       },
       {
           id:'u3', icon:'📷', name:'QR Generator', 
-          html:`<input type="text" id="qr-input" placeholder="Enter URL">
+          html:`
+            <div class="util-container">
+                <input type="text" id="qr-input" placeholder="Enter URL">
                 <button class="action-btn" onclick="document.getElementById('qr-output').src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+encodeURIComponent(document.getElementById('qr-input').value); document.getElementById('qr-output').style.display='block';">Create QR</button>
-                <img id="qr-output" style="display:none; margin:10px auto; border:2px solid var(--accent); padding:5px; border-radius:8px;">`
+                <img id="qr-output" style="display:none; margin:10px auto; border:2px solid var(--accent); padding:5px; border-radius:8px;">
+            </div>`
       },
       {
           id:'u4', icon:'🔑', name:'Password Gen', 
-          html:`<button class="action-btn" onclick="document.getElementById('pass-output').value=Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-8).toUpperCase() + '!@#';">Generate</button>
-                <input type="text" id="pass-output" style="margin-top:10px;" readonly>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" onclick="document.getElementById('pass-output').value=Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-8).toUpperCase() + '!@#';">Generate</button>
+                <input type="text" id="pass-output" style="margin-top:10px;" readonly>
+            </div>`
       },
       {
           id:'u5', icon:'📝', name:'Quick Notepad', 
-          html:`<textarea id="quick-note" rows="8"></textarea>
-                <button class="action-btn" onclick="showToast('Note Saved Locally')">Save</button>`
+          html:`
+            <div class="util-container">
+                <textarea id="quick-note" rows="8"></textarea>
+                <button class="action-btn" onclick="showToast('Note Saved Locally')">Save</button>
+            </div>`
       },
       {
           id:'u6', icon:'⏱️', name:'Pomodoro Timer', 
-          html:`<div id="pomo-display" style="font-size:4rem; text-align:center; color:var(--accent); font-family:'Orbitron';">25:00</div>
+          html:`
+            <div class="util-container">
+                <div id="pomo-display" style="font-size:4rem; text-align:center; color:var(--accent); font-family:'Orbitron';">25:00</div>
                 <div style="display:flex; gap:10px; margin-top:10px;">
                     <button class="action-btn" onclick="startPomo()">Start</button>
                     <button class="action-btn" style="background:var(--wrong);" onclick="resetPomo()">Reset</button>
-                </div>`
+                </div>
+            </div>`
       },
       {
           id:'u7', icon:'🧮', name:'Calculator', 
-          html:`<input type="text" id="calc-input" style="font-size:1.5rem; text-align:right;">
-                <button class="action-btn" onclick="try{document.getElementById('calc-input').value=eval(document.getElementById('calc-input').value)}catch(e){showToast('Error in syntax', 'error');}">Calculate =</button>`
+          html:`
+            <div class="util-container">
+                <input type="text" id="calc-input" style="font-size:1.5rem; text-align:right;">
+                <button class="action-btn" onclick="try{document.getElementById('calc-input').value=eval(document.getElementById('calc-input').value)}catch(e){showToast('Error in syntax', 'error');}">Calculate =</button>
+            </div>`
       },
       {
           id:'u8', icon:'⏱️', name:'Stopwatch', 
-          html:`<div id="sw-display" style="font-size:3.5rem; text-align:center; font-family:'Orbitron';">00:00.00</div>
+          html:`
+            <div class="util-container">
+                <div id="sw-display" style="font-size:3.5rem; text-align:center; font-family:'Orbitron';">00:00.00</div>
                 <div style="display:flex; gap:10px; margin-top:10px;">
                     <button class="action-btn" onclick="startSw()">Start</button>
                     <button class="action-btn" style="background:var(--wrong);" onclick="stopSw()">Stop</button>
-                </div>`
+                </div>
+            </div>`
       },
       {
           id:'u9', icon:'⚖️', name:'BMI Calculator', 
-          html:`<input type="number" id="bmi-w" placeholder="Weight (kg)">
+          html:`
+            <div class="util-container">
+                <input type="number" id="bmi-w" placeholder="Weight (kg)">
                 <input type="number" id="bmi-h" placeholder="Height (cm)">
                 <button class="action-btn" onclick="let w=document.getElementById('bmi-w').value,h=document.getElementById('bmi-h').value/100; document.getElementById('bmi-res').innerText='BMI: '+(w/(h*h)).toFixed(1);">Calculate</button>
-                <div id="bmi-res" class="result-box"></div>`
+                <div id="bmi-res" class="result-box"></div>
+            </div>`
       },
       {
           id:'u10', icon:'🎂', name:'Age Calculator', 
-          html:`<input type="date" id="age-dob">
+          html:`
+            <div class="util-container">
+                <input type="date" id="age-dob">
                 <button class="action-btn" onclick="let d=new Date(document.getElementById('age-dob').value); document.getElementById('age-res').innerText=Math.abs(new Date(Date.now()-d.getTime()).getUTCFullYear()-1970)+' Years Old';">Calculate Age</button>
-                <div id="age-res" class="result-box"></div>`
+                <div id="age-res" class="result-box"></div>
+            </div>`
       },
       {
           id:'u11', icon:'🎲', name:'Dice Roller', 
-          html:`<button class="action-btn" style="height:80px; font-size:1.5rem;" onclick="document.getElementById('dice-res').innerText = Math.floor(Math.random() * 6) + 1;">ROLL DICE</button>
-                <div id="dice-res" style="font-size:5rem; text-align:center; margin-top:10px; color:var(--accent);">🎲</div>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" style="height:80px; font-size:1.5rem;" onclick="document.getElementById('dice-res').innerText = Math.floor(Math.random() * 6) + 1;">ROLL DICE</button>
+                <div id="dice-res" style="font-size:5rem; text-align:center; margin-top:10px; color:var(--accent);">🎲</div>
+            </div>`
       },
       {
           id:'u12', icon:'🪙', name:'Coin Flipper', 
-          html:`<button class="action-btn" style="height:80px; font-size:1.5rem;" onclick="document.getElementById('coin-res').innerText = Math.random() > 0.5 ? 'HEADS' : 'TAILS';">FLIP COIN</button>
-                <div id="coin-res" style="font-size:3rem; text-align:center; margin-top:10px; color:var(--correct);">🪙</div>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" style="height:80px; font-size:1.5rem;" onclick="document.getElementById('coin-res').innerText = Math.random() > 0.5 ? 'HEADS' : 'TAILS';">FLIP COIN</button>
+                <div id="coin-res" style="font-size:3rem; text-align:center; margin-top:10px; color:var(--correct);">🪙</div>
+            </div>`
       },
       {
           id:'u13', icon:'🔒', name:'Base64 Encode', 
-          html:`<input type="text" id="b64-input" placeholder="Text">
+          html:`
+            <div class="util-container">
+                <input type="text" id="b64-input" placeholder="Text">
                 <button class="action-btn" onclick="document.getElementById('b64-output').value=btoa(document.getElementById('b64-input').value)">Encode</button>
-                <textarea id="b64-output" rows="3" style="margin-top:15px;" readonly></textarea>`
+                <textarea id="b64-output" rows="3" style="margin-top:15px;" readonly></textarea>
+            </div>`
       },
       {
           id:'u14', icon:'🔠', name:'Case Convert', 
-          html:`<input type="text" id="case-input">
+          html:`
+            <div class="util-container">
+                <input type="text" id="case-input">
                 <button class="action-btn" onclick="let e=document.getElementById('case-input'); document.getElementById('case-output').value=e.value===e.value.toUpperCase()?e.value.toLowerCase():e.value.toUpperCase();">UPPER / lower</button>
-                <input type="text" id="case-output" style="margin-top:15px;" readonly>`
+                <input type="text" id="case-output" style="margin-top:15px;" readonly>
+            </div>`
       },
       {
           id:'u15', icon:'📝', name:'Word Count', 
-          html:`<textarea id="word-input" rows="5" oninput="let v=this.value.trim(); document.getElementById('word-count-output').innerText = 'Words: '+(v?v.split(/\\s+/).length:0)+' | Chars: '+v.length;"></textarea>
-                <div id="word-count-output" class="result-box">Words: 0 | Characters: 0</div>`
+          html:`
+            <div class="util-container">
+                <textarea id="word-input" rows="5" oninput="let v=this.value.trim(); document.getElementById('word-count-output').innerText = 'Words: '+(v?v.split(/\\s+/).length:0)+' | Chars: '+v.length;"></textarea>
+                <div id="word-count-output" class="result-box">Words: 0 | Characters: 0</div>
+            </div>`
       },
       {
           id:'u16', icon:'💸', name:'Split Bill', 
-          html:`<input type="number" id="bill-amt" placeholder="Amount">
+          html:`
+            <div class="util-container">
+                <input type="number" id="bill-amt" placeholder="Amount">
                 <input type="number" id="bill-ppl" placeholder="People">
                 <button class="action-btn" onclick="document.getElementById('bill-res').innerText='₹ '+ (document.getElementById('bill-amt').value/document.getElementById('bill-ppl').value).toFixed(2);">Split</button>
-                <div id="bill-res" class="result-box"></div>`
+                <div id="bill-res" class="result-box"></div>
+            </div>`
       },
       {
           id:'u17', icon:'🌐', name:'IP Checker', 
-          html:`<button class="action-btn" onclick="fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>document.getElementById('ip-res').innerText='IP: '+d.ip)">Get IP</button>
-                <div id="ip-res" class="result-box"></div>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" onclick="fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>document.getElementById('ip-res').innerText='IP: '+d.ip)">Get IP</button>
+                <div id="ip-res" class="result-box"></div>
+            </div>`
       },
       {
           id:'u18', icon:'🔄', name:'Reverse Text', 
-          html:`<input type="text" id="rev-input">
+          html:`
+            <div class="util-container">
+                <input type="text" id="rev-input">
                 <button class="action-btn" onclick="document.getElementById('rev-output').value=document.getElementById('rev-input').value.split('').reverse().join('');">Reverse</button>
-                <input type="text" id="rev-output" style="margin-top:15px;" readonly>`
+                <input type="text" id="rev-output" style="margin-top:15px;" readonly>
+            </div>`
       },
       {
           id:'u19', icon:'🔢', name:'Random Num', 
-          html:`<input type="number" id="rn-min" placeholder="Min">
+          html:`
+            <div class="util-container">
+                <input type="number" id="rn-min" placeholder="Min">
                 <input type="number" id="rn-max" placeholder="Max">
                 <button class="action-btn" onclick="let m1=parseInt(document.getElementById('rn-min').value), m2=parseInt(document.getElementById('rn-max').value); document.getElementById('rn-res').innerText=Math.floor(Math.random()*(m2-m1+1))+m1;">Generate</button>
-                <div id="rn-res" class="result-box"></div>`
+                <div id="rn-res" class="result-box"></div>
+            </div>`
       },
       {
           id:'u20', icon:'💻', name:'Sys Info', 
-          html:`<button class="action-btn" onclick="document.getElementById('sys-res').innerText='Platform: '+navigator.platform+'\\nLanguage: '+navigator.language;">Show Sys Info</button>
-                <div id="sys-res" class="result-box"></div>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" onclick="document.getElementById('sys-res').innerText='Platform: '+navigator.platform+'\\nLanguage: '+navigator.language;">Show Sys Info</button>
+                <div id="sys-res" class="result-box"></div>
+            </div>`
       },
       {
           id:'u21', icon:'🗣️', name:'Text to Speech', 
-          html:`<textarea id="tts-in" rows="4"></textarea>
-                <button class="action-btn" onclick="speakJARVIS(document.getElementById('tts-in').value)">Speak</button>`
+          html:`
+            <div class="util-container">
+                <textarea id="tts-in" rows="4"></textarea>
+                <button class="action-btn" onclick="speakJARVIS(document.getElementById('tts-in').value)">Speak</button>
+            </div>`
       },
       {
           id:'u22', icon:'🎙', name:'Dictation', 
-          html:`<button class="action-btn" onclick="toggleMic()">Start Mic</button>
-                <textarea id="stt-out" rows="4" style="margin-top:15px;" readonly placeholder="Voice output will appear here..."></textarea>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" onclick="toggleMic()">Start Mic</button>
+                <textarea id="stt-out" rows="4" style="margin-top:15px;" readonly placeholder="Voice output will appear here..."></textarea>
+            </div>`
       },
       {
           id:'u23', icon:'🎨', name:'HEX to RGB', 
-          html:`<input type="text" id="color-in" placeholder="#FFFFFF">
+          html:`
+            <div class="util-container">
+                <input type="text" id="color-in" placeholder="#FFFFFF">
                 <button class="action-btn" onclick="let h=document.getElementById('color-in').value.replace('#',''); document.getElementById('color-out').value='rgb('+parseInt(h.substring(0,2),16)+','+parseInt(h.substring(2,4),16)+','+parseInt(h.substring(4,6),16)+')';">Convert</button>
-                <input type="text" id="color-out" style="margin-top:15px;" readonly>`
+                <input type="text" id="color-out" style="margin-top:15px;" readonly>
+            </div>`
       },
       {
           id:'u24', icon:'< >', name:'JSON Format', 
-          html:`<textarea id="json-in" rows="6"></textarea>
-                <button class="action-btn" onclick="try{document.getElementById('json-in').value=JSON.stringify(JSON.parse(document.getElementById('json-in').value),null,4)}catch(e){showToast('Invalid JSON','error')}">Format</button>`
+          html:`
+            <div class="util-container">
+                <textarea id="json-in" rows="6"></textarea>
+                <button class="action-btn" onclick="try{document.getElementById('json-in').value=JSON.stringify(JSON.parse(document.getElementById('json-in').value),null,4)}catch(e){showToast('Invalid JSON','error')}">Format</button>
+            </div>`
       },
       {
           id:'u25', icon:'📏', name:'Km to Miles', 
-          html:`<input type="number" id="unit-in">
+          html:`
+            <div class="util-container">
+                <input type="number" id="unit-in">
                 <button class="action-btn" onclick="document.getElementById('unit-out').innerText=(document.getElementById('unit-in').value*0.621371).toFixed(2)+' Miles'">Convert</button>
-                <div id="unit-out" class="result-box"></div>`
+                <div id="unit-out" class="result-box"></div>
+            </div>`
       },
       {
           id:'u26', icon:'⌨️', name:'Keycode Finder', 
-          html:`<input type="text" placeholder="Press key..." onkeydown="document.getElementById('key-out').innerText=event.keyCode; return false;">
-                <div id="key-out" style="font-size:5rem; text-align:center; color:var(--accent);">_</div>`
+          html:`
+            <div class="util-container">
+                <input type="text" placeholder="Press key..." onkeydown="document.getElementById('key-out').innerText=event.keyCode; return false;">
+                <div id="key-out" style="font-size:5rem; text-align:center; color:var(--accent);">_</div>
+            </div>`
       },
       {
           id:'u27', icon:'⏳', name:'World Clock', 
-          html:`<button class="action-btn" onclick="document.getElementById('time-out').innerText=new Date().toLocaleString();">Show Time</button>
-                <div id="time-out" class="result-box"></div>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" onclick="document.getElementById('time-out').innerText=new Date().toLocaleString();">Show Time</button>
+                <div id="time-out" class="result-box"></div>
+            </div>`
       },
       {
           id:'u28', icon:'🖼️', name:'Aspect Ratio', 
-          html:`<input type="number" id="ar-w" placeholder="Width">
+          html:`
+            <div class="util-container">
+                <input type="number" id="ar-w" placeholder="Width">
                 <input type="number" id="ar-h" placeholder="Height">
                 <button class="action-btn" onclick="document.getElementById('ar-out').innerText=document.getElementById('ar-w').value/document.getElementById('ar-h').value;">Calculate</button>
-                <div id="ar-out" class="result-box"></div>`
+                <div id="ar-out" class="result-box"></div>
+            </div>`
       },
       {
           id:'u29', icon:'🔐', name:'ROT13 Encrypt', 
-          html:`<input type="text" id="enc-in">
+          html:`
+            <div class="util-container">
+                <input type="text" id="enc-in">
                 <button class="action-btn" onclick="document.getElementById('enc-out').value=document.getElementById('enc-in').value.replace(/[a-zA-Z]/g,c=>String.fromCharCode((c<='Z'?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26))">Encrypt</button>
-                <input type="text" id="enc-out" style="margin-top:15px;" readonly>`
+                <input type="text" id="enc-out" style="margin-top:15px;" readonly>
+            </div>`
       },
       {
           id:'u30', icon:'🤓', name:'Emoji Translate', 
-          html:`<input type="text" id="emo-in">
+          html:`
+            <div class="util-container">
+                <input type="text" id="emo-in">
                 <button class="action-btn" onclick="document.getElementById('emo-out').innerText=document.getElementById('emo-in').value;">Translate</button>
-                <div id="emo-out" class="result-box"></div>`
+                <div id="emo-out" class="result-box"></div>
+            </div>`
       },
       {
           id:'u31', icon:'📖', name:'Readability', 
-          html:`<textarea id="read-in" rows="4"></textarea>
+          html:`
+            <div class="util-container">
+                <textarea id="read-in" rows="4"></textarea>
                 <button class="action-btn" onclick="document.getElementById('read-out').innerText='Score Checked';">Check</button>
-                <div id="read-out" class="result-box"></div>`
+                <div id="read-out" class="result-box"></div>
+            </div>`
       },
       {
           id:'u32', icon:'🔗', name:'URL Encoder', 
-          html:`<input type="text" id="url-in">
+          html:`
+            <div class="util-container">
+                <input type="text" id="url-in">
                 <button class="action-btn" onclick="document.getElementById('url-out').value=encodeURIComponent(document.getElementById('url-in').value)">Encode</button>
-                <textarea id="url-out" rows="2" style="margin-top:15px;" readonly></textarea>`
+                <textarea id="url-out" rows="2" style="margin-top:15px;" readonly></textarea>
+            </div>`
       },
       {
           id:'u33', icon:'📏', name:'String Bytes', 
-          html:`<input type="text" id="byte-in" oninput="document.getElementById('byte-out').innerText=new Blob([this.value]).size+' Bytes'">
-                <div id="byte-out" class="result-box">0 Bytes</div>`
+          html:`
+            <div class="util-container">
+                <input type="text" id="byte-in" oninput="document.getElementById('byte-out').innerText=new Blob([this.value]).size+' Bytes'">
+                <div id="byte-out" class="result-box">0 Bytes</div>
+            </div>`
       },
       {
           id:'u34', icon:'🔋', name:'Battery Info', 
-          html:`<button class="action-btn" onclick="navigator.getBattery().then(b=>document.getElementById('batt-out').innerText=Math.round(b.level*100)+'%')">Check Battery</button>
-                <div id="batt-out" class="result-box"></div>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" onclick="navigator.getBattery().then(b=>document.getElementById('batt-out').innerText=Math.round(b.level*100)+'%')">Check Battery</button>
+                <div id="batt-out" class="result-box"></div>
+            </div>`
       },
       {
           id:'u35', icon:'👽', name:'ASCII Art', 
-          html:`<input type="text" id="ascii-in">
+          html:`
+            <div class="util-container">
+                <input type="text" id="ascii-in">
                 <button class="action-btn" onclick="document.getElementById('ascii-out').innerText=document.getElementById('ascii-in').value.toUpperCase();">Generate</button>
-                <pre id="ascii-out" class="result-box"></pre>`
+                <pre id="ascii-out" class="result-box"></pre>
+            </div>`
       },
       {
           id:'u36', icon:'🌈', name:'Color Palette', 
-          html:`<button class="action-btn" onclick="let p=document.getElementById('pal-out');p.innerHTML='';for(let i=0;i<4;i++)p.innerHTML+='<div style=\\'flex:1;background:#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0')+'\\'></div>'">Generate Palette</button>
-                <div id="pal-out" style="display:flex; height:80px; margin-top:20px; border-radius:8px; overflow:hidden;"></div>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" onclick="let p=document.getElementById('pal-out');p.innerHTML='';for(let i=0;i<4;i++)p.innerHTML+='<div style=\\'flex:1;background:#'+Math.floor(Math.random()*16777215).toString(16).padStart(6,'0')+'\\'></div>'">Generate Palette</button>
+                <div id="pal-out" style="display:flex; height:80px; margin-top:20px; border-radius:8px; overflow:hidden;"></div>
+            </div>`
       },
       {
           id:'u37', icon:'🔊', name:'Freq Gen', 
-          html:`<input type="range" id="freq-in" min="200" max="1000" value="440" oninput="document.getElementById('freq-val').innerText=this.value+' Hz'">
+          html:`
+            <div class="util-container">
+                <input type="range" id="freq-in" min="200" max="1000" value="440" oninput="document.getElementById('freq-val').innerText=this.value+' Hz'">
                 <div id="freq-val" style="text-align:center; font-size:1.5rem;">440 Hz</div>
-                <button class="action-btn" onclick="let ctx=new(window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator();o.frequency.value=document.getElementById('freq-in').value;o.connect(ctx.destination);o.start();o.stop(ctx.currentTime+0.2);">Play Audio</button>`
+                <button class="action-btn" onclick="let ctx=new(window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator();o.frequency.value=document.getElementById('freq-in').value;o.connect(ctx.destination);o.start();o.stop(ctx.currentTime+0.2);">Play Audio</button>
+            </div>`
       },
       {
           id:'u38', icon:'📝', name:'Lorem Ipsum', 
-          html:`<button class="action-btn" onclick="document.getElementById('lorem-out').value='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'">Generate</button>
-                <textarea id="lorem-out" rows="5" style="margin-top:15px;" readonly></textarea>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" onclick="document.getElementById('lorem-out').value='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'">Generate</button>
+                <textarea id="lorem-out" rows="5" style="margin-top:15px;" readonly></textarea>
+            </div>`
       },
       {
           id:'u39', icon:'🖱️', name:'Click Tester', 
-          html:`<button class="action-btn" style="height:120px; font-size:1.5rem;" onclick="document.getElementById('click-res').innerText=parseInt(document.getElementById('click-res').innerText)+1">CLICK</button>
-                <div id="click-res" class="result-box" style="text-align:center; font-size:2.5rem;">0</div>`
+          html:`
+            <div class="util-container">
+                <button class="action-btn" style="height:120px; font-size:1.5rem;" onclick="document.getElementById('click-res').innerText=parseInt(document.getElementById('click-res').innerText)+1">CLICK</button>
+                <div id="click-res" class="result-box" style="text-align:center; font-size:2.5rem;">0</div>
+            </div>`
       },
       {
           id:'u40', icon:'🖌️', name:'Whiteboard', 
-          html:`<canvas id="mini-canvas" width="600" height="300" style="background:#fff; border-radius:8px; width:100%; border:2px solid var(--accent);"></canvas>
-                <button class="action-btn" style="margin-top:15px;" onclick="let c=document.getElementById('mini-canvas'); c.getContext('2d').clearRect(0,0,c.width,c.height);">Clear Board</button>`
+          html:`
+            <div class="util-container">
+                <canvas id="mini-canvas" width="600" height="300" style="background:#fff; border-radius:8px; width:100%; border:2px solid var(--accent);"></canvas>
+                <button class="action-btn" style="margin-top:15px;" onclick="let c=document.getElementById('mini-canvas'); c.getContext('2d').clearRect(0,0,c.width,c.height);">Clear Board</button>
+            </div>`
       },
       
       // ==========================================
-      // NEW FEATURES (FREE, PREMIUM, VIP)
+      // NEW CLOUD & PREMIUM FEATURES
       // ==========================================
       {
           id:'u41', icon:'✅', name:'Habit Tracker (Free)', 
-          html:`<input type="text" id="habit-in" placeholder="New Habit">
+          html:`
+            <div class="util-container">
+                <input type="text" id="habit-in" placeholder="New Habit">
                 <button class="action-btn" onclick="document.getElementById('habit-list').innerHTML+='<div style=\\'padding:5px; border-bottom:1px solid #333;\\'><input type=\\'checkbox\\'> '+document.getElementById('habit-in').value+'</div>'; document.getElementById('habit-in').value='';">Add Habit</button>
-                <div id="habit-list" class="result-box"></div>`
+                <div id="habit-list" class="result-box"></div>
+            </div>`
       },
       {
           id:'u42', icon:'🔽', name:'Markdown Editor (Free)', 
-          html:`<textarea id="md-in" rows="4" placeholder="*Italic* **Bold**"></textarea>
+          html:`
+            <div class="util-container">
+                <textarea id="md-in" rows="4" placeholder="*Italic* **Bold**"></textarea>
                 <button class="action-btn" onclick="document.getElementById('md-out').innerHTML=document.getElementById('md-in').value.replace(/\\*\\*(.*?)\\*\\*/g, '<b>$1</b>').replace(/\\*(.*?)\\*/g, '<i>$1</i>');">Render Markdown</button>
-                <div id="md-out" class="result-box"></div>`
+                <div id="md-out" class="result-box"></div>
+            </div>`
       },
       {
           id:'u43', icon:'☁️', name:'Cloud Notes (Premium)', 
-          html:`<textarea id="c-note-in" rows="6" placeholder="Write securely. Syncs to Firebase..."></textarea>
+          html:`
+            <div class="util-container">
+                <textarea id="c-note-in" rows="6" placeholder="Write securely. Syncs to Firebase..."></textarea>
                 <button class="action-btn" onclick="saveCloudNote()">Save to Firebase</button>
-                <button class="action-btn" style="margin-top:5px; background:var(--muted);" onclick="loadCloudNote()">Load from Firebase</button>`
+                <button class="action-btn" style="margin-top:5px; background:var(--muted);" onclick="loadCloudNote()">Load from Firebase</button>
+            </div>`
       },
       {
           id:'u44', icon:'🌦️', name:'Live Weather (Premium)', 
-          html:`<input type="text" id="weather-in" placeholder="City Name">
+          html:`
+            <div class="util-container">
+                <input type="text" id="weather-in" placeholder="City Name">
                 <button class="action-btn" onclick="fetchWeather()">Get Weather</button>
-                <div id="weather-out" class="result-box" style="text-align:center; font-size:1.5rem; font-family:'Inter';"></div>`
+                <div id="weather-out" class="result-box" style="text-align:center; font-size:1.5rem; font-family:'Inter';"></div>
+            </div>`
       },
       {
           id:'u45', icon:'📈', name:'Crypto Ticker (VIP)', 
-          html:`<input type="text" id="crypto-in" placeholder="Coin ID (e.g. bitcoin, ethereum)">
+          html:`
+            <div class="util-container">
+                <input type="text" id="crypto-in" placeholder="Coin ID (e.g. bitcoin, ethereum)">
                 <button class="action-btn" onclick="fetchCrypto()">Check Live Price</button>
-                <div id="crypto-out" class="result-box" style="text-align:center; font-size:2rem;"></div>`
+                <div id="crypto-out" class="result-box" style="text-align:center; font-size:2rem;"></div>
+            </div>`
       }
     ];
 
@@ -2970,130 +3120,6 @@
       }
     }
 
-    /* ========================================================
-       ARCADE GAMES - REALISTIC FREE FIRE & OTHERS
-       ======================================================== */
-    function initMario2D() {
-      let m={x:100,y:350,vy:0}, p=[], sc=0, f=0, j=false;
-      document.onkeydown=e=>{if(e.key===' '&&!j){m.vy=-16;j=true;}}; 
-      canvas.onclick=()=>{if(!j){m.vy=-16;j=true;}};
-      
-      arcadeTimer=setInterval(()=>{
-        ctx.fillStyle='#8ce'; ctx.fillRect(0,0,800,500); 
-        ctx.fillStyle='#841'; ctx.fillRect(0,390,800,110);
-        
-        m.vy+=1.2; m.y+=m.vy; 
-        if(m.y>=350){m.y=350;m.vy=0;j=false;} 
-        ctx.fillStyle='red'; ctx.fillRect(m.x,m.y,30,40);
-        
-        if(f%80===0) p.push({x:800,h:40+Math.random()*60});
-        
-        ctx.fillStyle='#0f0'; 
-        p.forEach((pi,i)=>{ 
-            pi.x-=8; 
-            ctx.fillRect(pi.x,390-pi.h,40,pi.h); 
-            if(m.x<pi.x+40 && m.x+30>pi.x && m.y+40>390-pi.h){
-                showToast("GAME OVER");
-                startArcadeGame();
-            } 
-            if(pi.x<-40){
-                p.splice(i,1);
-                sc++;
-            } 
-        });
-        ctx.fillStyle='#000'; ctx.font='20px Orbitron'; ctx.fillText('Score: '+sc,10,30); 
-        f++;
-      },30);
-    }
-
-    function initSnake() {
-      let s=[{x:10,y:10}], d={x:0,y:0}, f={x:15,y:10}, sc=0;
-      
-      document.onkeydown=e=>{
-          if(e.key==='ArrowUp'&&d.y!==1)d={x:0,y:-1};
-          if(e.key==='ArrowDown'&&d.y!==-1)d={x:0,y:1};
-          if(e.key==='ArrowLeft'&&d.x!==1)d={x:-1,y:0};
-          if(e.key==='ArrowRight'&&d.x!==-1)d={x:1,y:0};
-      };
-      
-      arcadeTimer=setInterval(()=>{
-        ctx.fillStyle='#000'; ctx.fillRect(0,0,800,500); 
-        let h={x:s[0].x+d.x,y:s[0].y+d.y};
-        
-        if(h.x<0||h.x>=40||h.y<0||h.y>=25||s.some(b=>b.x===h.x&&b.y===h.y)){
-            d={x:0,y:0}; s=[{x:10,y:10}]; sc=0; return;
-        }
-        
-        s.unshift(h); 
-        if(h.x===f.x&&h.y===f.y){
-            f={x:Math.floor(Math.random()*40),y:Math.floor(Math.random()*25)};
-            sc++;
-        } else {
-            s.pop();
-        }
-        
-        ctx.fillStyle='#0f8'; s.forEach(b=>ctx.fillRect(b.x*20,b.y*20,18,18)); 
-        ctx.fillStyle='#f03'; ctx.fillRect(f.x*20,f.y*20,18,18);
-        ctx.fillStyle='#fff'; ctx.font='20px Orbitron'; ctx.fillText('Score: '+sc,10,30);
-      },80);
-    }
-
-    function initPong() {
-      let py=200, ay=200, bx=400, by=250, bdx=7, bdy=7; 
-      canvas.onmousemove=e=>py=e.clientY-canvas.getBoundingClientRect().top-50;
-      
-      arcadeTimer=setInterval(()=>{
-        ctx.fillStyle='#000'; ctx.fillRect(0,0,800,500); 
-        ctx.fillStyle='#0ef'; ctx.fillRect(20,py,15,100); 
-        ctx.fillRect(765,ay,15,100); 
-        ctx.fillRect(bx,by,15,15);
-        
-        bx+=bdx; by+=bdy; 
-        ay+=(by-(ay+50))*0.1; // AI logic
-        
-        if(by<=0||by>=485) bdy=-bdy;
-        if((bx<=35&&by>py&&by<py+100)||(bx>=750&&by>ay&&by<ay+100)) bdx=-bdx; 
-        if(bx<0||bx>800){ bx=400; by=250; bdx=-bdx; }
-      },30);
-    }
-
-    // Pomo Timers logic
-    let pt_timer;
-    let pt_time = 1500;
-    function startPomo() {
-        clearInterval(pt_timer);
-        pt_timer = setInterval(() => {
-            pt_time--;
-            let m = Math.floor(pt_time/60).toString().padStart(2, '0');
-            let s = (pt_time%60).toString().padStart(2, '0');
-            document.getElementById('pomo-display').innerText = `${m}:${s}`;
-            if (pt_time <= 0) {
-                clearInterval(pt_timer);
-                showToast("Pomodoro complete! Take a break.");
-            }
-        }, 1000);
-    }
-    function resetPomo() {
-        clearInterval(pt_timer);
-        pt_time = 1500;
-        document.getElementById('pomo-display').innerText = "25:00";
-    }
-
-    let sw_timer, sw_ms = 0;
-    function startSw() {
-        clearInterval(sw_timer);
-        sw_timer = setInterval(() => {
-            sw_ms += 10;
-            let d = new Date(sw_ms);
-            let min = d.getUTCMinutes().toString().padStart(2, '0');
-            let sec = d.getUTCSeconds().toString().padStart(2, '0');
-            let ms = Math.floor(d.getUTCMilliseconds()/10).toString().padStart(2, '0');
-            document.getElementById('sw-display').innerText = `${min}:${sec}.${ms}`;
-        }, 10);
-    }
-    function stopSw() {
-        clearInterval(sw_timer);
-    }
   </script>
 </body>
 </html>
